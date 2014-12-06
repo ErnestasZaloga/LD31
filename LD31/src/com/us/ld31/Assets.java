@@ -11,7 +11,8 @@ public class Assets implements Disposable {
 	private final TextureAtlas atlas;
 	
 	public final TextureRegion uiBlock;
-	public final TextureRegion uiArrow;
+	public final TextureRegion uiArrowUp;
+	public final TextureRegion uiArrowDown;
 	public final BitmapFont fontBig;
 	public final BitmapFont fontSmall;
 	
@@ -20,18 +21,23 @@ public class Assets implements Disposable {
 	public final TextureRegion tileRoad;
 	public final TextureRegion tileRock;
 	public final TextureRegion tileTree;
+	public final TextureRegion debugIcon;
 	
 	public Assets() {
 		atlas = new TextureAtlas(Gdx.files.internal("textures/Game.pack"));
 		
 		uiBlock = atlas.findRegion("Block");
-		uiArrow = atlas.findRegion("arrow");
+		uiArrowUp = atlas.findRegion("arrow");
+		uiArrowDown = new TextureRegion(uiArrowUp);
+		uiArrowDown.flip(false, true);
 		
 		tileGrass = atlas.findRegion("grass");
 		tileHouse = atlas.findRegion("house");
 		tileRoad = atlas.findRegion("road");
 		tileRock = atlas.findRegion("rock");
 		tileTree = atlas.findRegion("tree");
+
+		debugIcon = tileRock;
 		
 		fontBig = new BitmapFont(Gdx.files.internal("fonts/FontBig.fnt"), atlas.findRegion("FontBig"));
 		fontSmall = new BitmapFont(Gdx.files.internal("fonts/FontSmall.fnt"), atlas.findRegion("FontSmall"));

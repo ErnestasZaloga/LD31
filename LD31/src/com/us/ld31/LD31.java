@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.us.ld31.game.GameWorld;
-import com.us.ld31.game.MenuOverlay;
+import com.us.ld31.screens.MenuOverlay;
+import com.us.ld31.utils.Space;
 
 public class LD31 implements ApplicationListener {
 	
@@ -19,13 +20,15 @@ public class LD31 implements ApplicationListener {
 	public GameWorld gameWorld;
 	public MenuOverlay menuOverlay;
 	public Assets assets;
+	public Space space;
 	
 	@Override
 	public void create() {
-		batch = new PolygonSpriteBatch(1000);
+		batch = new PolygonSpriteBatch(4000);
 		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Gdx.input.setInputProcessor(stage);
 		assets = new Assets();
+		space = new Space();
 	}
 
 	@Override

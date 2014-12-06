@@ -1,7 +1,6 @@
 package com.us.ld31.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,15 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.us.ld31.LD31;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.TouchListener;
+import com.us.ld31.utils.tiles.WorldMap;
 
 public class GameWorld extends Group {
 
 	private final LD31 app;
 	private final Character character;
 	private final Astar astar;
+	private final WorldMap worldMap;
 	
 	public GameWorld(final LD31 app) {
 		this.app = app;
+		
+		worldMap = new WorldMap();
+		addActor(worldMap);
 		
 		character = new Character();
 		addListener(new TouchListener() {
@@ -28,7 +32,7 @@ public class GameWorld extends Group {
 			}
 		});
 		
-		character.setTileSize(32);
+		character.setTileSize(128);
 		character.setRegion(app.assets.tileGrass);
 		
 		Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
@@ -63,6 +67,14 @@ public class GameWorld extends Group {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void setSize(final float width, 
+						final float height) {
+		
+		super.setSize(width, height);
+		worldMap.setSize(width, height);
 	}
 	
 }

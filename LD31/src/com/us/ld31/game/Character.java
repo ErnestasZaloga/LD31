@@ -80,4 +80,23 @@ public class Character extends SpriteActor {
 		}
 	}
 	
+	@Override
+	public void act(final float delta) {
+		super.act(delta);
+		
+		if(getX() < 0) {
+			setX(0);
+		}
+		else if(getX() > getParent().getWidth() - getWidth()) {
+			setX(getParent().getWidth() - getWidth());
+		}
+		
+		if(getY() < 0) {
+			setY(0);
+		}
+		else if(getY() > getParent().getHeight() - getHeight()) {
+			setY(getParent().getHeight() - getHeight());
+		}
+	}
+	
 }

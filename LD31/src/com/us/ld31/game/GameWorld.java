@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.us.ld31.LD31;
+import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.TouchListener;
 
 public class GameWorld extends Group {
 
 	private final LD31 app;
 	private final Character character;
+	private final Astar astar;
 	
 	public GameWorld(final LD31 app) {
 		this.app = app;
@@ -27,6 +29,8 @@ public class GameWorld extends Group {
 		Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
 		pixmap.setColor(Color.GREEN);
 		pixmap.fillCircle(5, 5, 5);
+		
+		astar = new Astar(0, 0, null);
 		
 		Foe foe = new Foe(new TextureRegion(new Texture(pixmap)));
 		

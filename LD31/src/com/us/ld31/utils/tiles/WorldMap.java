@@ -14,5 +14,13 @@ public class WorldMap extends Group {
 	public WorldMap() {
 		
 	}
+
+	public float getTileSize() {
+		return tileWH;
+	}
+
+	public boolean isWalkable(final int x, final int y) {
+		return true;
+	}
 	
 }

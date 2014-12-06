@@ -6,6 +6,8 @@ import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
 	
+	private float movementSpeed;
+	
 	public Foe(TextureRegion region) {
 		super(region);
 		

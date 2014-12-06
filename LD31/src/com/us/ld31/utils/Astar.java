@@ -74,13 +74,13 @@ public class Astar {
 				int y = node.y;
 				if (x < lastColumn) {
 					addNode(node, x + 1, y, 10);
-					//if (y < lastRow) addNode(node, x + 1, y + 1, 14); // Diagonals cost more, roughly equivalent to sqrt(2).
-					//if (y > 0) addNode(node, x + 1, y - 1, 14);
+					if (y < lastRow) addNode(node, x + 1, y + 1, 14); // Diagonals cost more, roughly equivalent to sqrt(2).
+					if (y > 0) addNode(node, x + 1, y - 1, 14);
 				}
 				if (x > 0) {
 					addNode(node, x - 1, y, 10);
-					//if (y < lastRow) addNode(node, x - 1, y + 1, 14);
-					//if (y > 0) addNode(node, x - 1, y - 1, 14);
+					if (y < lastRow) addNode(node, x - 1, y + 1, 14);
+					if (y > 0) addNode(node, x - 1, y - 1, 14);
 				}
 				if (y < lastRow) addNode(node, x, y + 1, 10);
 				if (y > 0) addNode(node, x, y - 1, 10);

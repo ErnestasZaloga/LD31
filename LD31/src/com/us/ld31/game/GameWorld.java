@@ -16,9 +16,6 @@ import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;
 
 
-
-
-
 public class GameWorld extends Group {
 
 	private final LD31 app;

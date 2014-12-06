@@ -32,6 +32,7 @@ public class Foe extends SpriteActor{
 	
 	private int distance = 10;
 	private int difficulity;
+	private int hp;
 	
 	public Foe(final GameWorld world) {
 		//super();
@@ -155,5 +156,22 @@ public class Foe extends SpriteActor{
 		this.tilesPerSecond = speedInTilesPerSecond;
 		this.secondsPerTile = 1f / speedInTilesPerSecond;
 	}
+	
+	public int getDifficulity() {
+		return difficulity;
+	}
+
+	public void setDifficulity(int difficulity) {
+		this.difficulity = difficulity;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
 	
 }

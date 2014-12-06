@@ -28,6 +28,8 @@ public class FoeManager {
 			}
 		};
 		
+		foes = new Array<Foe>();
+		
 	}
 	
 	public Foe makeFoe(TextureRegion region, int distance, int speed) {
@@ -36,6 +38,8 @@ public class FoeManager {
 		foe.setAstar(world.getAstar());
 		foe.setDistance(distance);
 		foe.setSpeed(speed);
+		
+		foes.add(foe);
 		
 		return foe;
 	}
@@ -57,5 +61,9 @@ public class FoeManager {
 		spawnPositions[5] = (int) (world.getHeight() / 2);
 		spawnPositions[6] = (int) (world.getWidth() / 2);
 		spawnPositions[7] = (int) (0);
+	}
+	
+	public Array<Foe> getAllFoes() {
+		return foes;
 	}
 }

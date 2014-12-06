@@ -1,22 +1,11 @@
 package com.us.ld31.game;
 
 import com.badlogic.gdx.Gdx;
-<<<<<<< Updated upstream
-=======
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
->>>>>>> Stashed changes
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
 import com.us.ld31.utils.Astar;
-<<<<<<< Updated upstream
-import com.us.ld31.utils.Log;
-=======
 import com.us.ld31.utils.SpriteActor;
->>>>>>> Stashed changes
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;

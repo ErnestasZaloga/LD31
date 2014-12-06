@@ -47,7 +47,7 @@ public class GameWorld extends Group {
 			@Override
 			public boolean isValid(int x, int y) {
 				// TODO Auto-generated method stub
-				return true;
+				return worldMap.isWalkable(x, y);
 			}
 		});
 		

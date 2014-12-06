@@ -57,9 +57,7 @@ public class Foe extends SpriteActor{
 			travelTo(playerX, playerY);
 			lastPlayerX = playerX;
 			lastPlayerY = playerY;
-			//Log.trace("if");
 		} else {
-			//Log.trace("else");
 			playerX = (int)(character.getX() / tileSize);
 			playerY = (int)(character.getY() / tileSize);
 		}
@@ -71,10 +69,9 @@ public class Foe extends SpriteActor{
 			} else {
 				foeTileX = path.get(pathIndex);
 				foeTileY = path.get(pathIndex + 1);
-				Log.trace(pathIndex);
+				
 				time += delta;
 				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
-				//Log.trace(div);
 				
 				float x = MathUtils.lerp(tmpX, foeTileX * tileSize, div);
 				float y = MathUtils.lerp(tmpY, foeTileY * tileSize, div);
@@ -104,8 +101,6 @@ public class Foe extends SpriteActor{
 	 * */
 	public void travelTo(int x, int y) {
 		tileSize = world.getWorldMap().getTileSize();
-		//tmpX = getX();
-		//tmpY = getY();
 		path = astar.getPath(x, 
 							 y, 
 							 (int)(getX() / tileSize), 
@@ -113,13 +108,8 @@ public class Foe extends SpriteActor{
 		if(path.size >= 2) {
 			path.removeRange(0, 1);
 		}
-		
 		if(path.size == 0) return;
 		
-		/*path = astar.getPath((int)(getX() / world.getWorldMap().getTileSize()), 
-							 (int)(getY() / world.getWorldMap().getTileSize()), 
-							 x, 
-							 y);*/
 		foeTileX = path.get(0);
 		foeTileY = path.get(1);
 		shouldTravel = true;

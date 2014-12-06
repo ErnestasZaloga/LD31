@@ -1,17 +1,20 @@
 package com.us.ld31.game;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.utils.Astar;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
 	
-	private float movementSpeed = 10;
+	private float tilesPerSecond = 20;
+	private float secondsPerTile = 1f/tilesPerSecond;
 	private boolean shouldTravel;
 	
 	private final GameWorld world;
-	private final Astar astar;
+	private Astar astar;
 	
 	private IntArray path;
 	private int pathIndex = 0;
@@ -25,6 +28,8 @@ public class Foe extends SpriteActor{
 		//tileSize = world
 	}
 	
+	private float time = 0;
+	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
@@ -34,20 +39,50 @@ public class Foe extends SpriteActor{
 				shouldTravel = false;
 				pathIndex = 0;
 			} else {
-				this.setPosition(path.get(pathIndex++) * world.getWorldMap().getTileSize(), 
-								 path.get(pathIndex++) * world.getWorldMap().getTileSize());
+				time += delta;
+				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
+				Log.trace(delta, time, div);
+				
+				float x = MathUtils.lerp(tmpX, path.get(pathIndex) * tileSize, div);
+				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 1) * tileSize, div);
+				
+				this.setPosition(x, y);
+				
+				if(time >= secondsPerTile) {
+					pathIndex += 2;
+					time = 0;
+					tmpX = x;
+					tmpY = y;
+				}
 			}
 		}
 	}
 	
-	public void travelTo(float x, float y) {
-		//path = astar.getPath((int)getX(), (int)getY(), (int)x, (int)y);
-		path = astar.getPath((int)x - 1, 
-							 (int)y - 1, 
+	private float tmpX = 0, tmpY = 0;
+	
+	/**
+	 * coordinates in tile system
+	 * */
+	public void travelTo(int x, int y) {
+		tileSize = world.getWorldMap().getTileSize();
+		tmpX = getX();
+		tmpY = getY();
+		path = astar.getPath(x, 
+							 y, 
 							 (int)(getX() / world.getWorldMap().getTileSize()), 
 							 (int)(getY() / world.getWorldMap().getTileSize()));
+		
+		/*path = astar.getPath((int)(getX() / world.getWorldMap().getTileSize()), 
+							 (int)(getY() / world.getWorldMap().getTileSize()), 
+							 x, 
+							 y);*/
+		
 		shouldTravel = true;
 		pathIndex = 0;
+	}
+	
+	public void setAstar(Astar astar) {
+		this.astar = astar;
 	}
 	
 }

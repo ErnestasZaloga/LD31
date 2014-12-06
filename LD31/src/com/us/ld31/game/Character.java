@@ -149,7 +149,6 @@ public class Character extends SpriteActor {
 		
 		for(int yi = yStart, yn = yEnd; yi <= yn; yi += 1) {
 			for(int xi = xStart, xn = xEnd; xi <= xn; xi += 1) {
-				//tiles.add(mergeCoords(xi, yi));
 				tiles.add(worldMap.mergeCoords(xi, yi));
 			}
 		}

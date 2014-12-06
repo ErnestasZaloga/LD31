@@ -7,10 +7,6 @@ import com.badlogic.gdx.utils.Pools;
 
 public class PooledSpriteActor extends SpriteActor implements Poolable {
 
-	public static void clearPools() {
-		Pools.get(PooledSpriteActor.class).clear();
-	}
-	
 	@Override
 	protected void setParent(final Group parent) {
 		super.setParent(parent);

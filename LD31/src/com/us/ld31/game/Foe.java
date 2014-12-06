@@ -1,5 +1,6 @@
 package com.us.ld31.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.IntArray;
@@ -50,7 +51,7 @@ public class Foe extends SpriteActor{
 				
 				if(time >= secondsPerTile) {
 					pathIndex += 2;
-					time -= secondsPerTile;
+					time %= secondsPerTile;
 					tmpX = x;
 					tmpY = y;
 				}

@@ -2,6 +2,7 @@ package com.us.ld31.game;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.steps.Steps;
 import com.us.ld31.utils.steps.scene.ActorSteps;
@@ -39,15 +40,22 @@ public class Character extends SpriteActor {
 		}
 	}
 
+	private float tileSize;
+	private int mapTilesX;
+	private int mapTilesY;
+	
 	private final WorldMap worldMap;
 	private final Action[] movementActions = new Action[4];
+	private final IntArray tiles = new IntArray();
 	
 	public Character(final WorldMap worldMap) {
 		this.worldMap = worldMap;
 	}
 	
 	public void begin() {
-		
+		tileSize = worldMap.getTileSize();
+		mapTilesX = worldMap.getTilesX();
+		mapTilesY = worldMap.getTilesY();
 	}
 	
 	public void attack() {
@@ -68,7 +76,7 @@ public class Character extends SpriteActor {
 		else {
 			movementActions[direction.index] = Steps.action(
 					Steps.repeat(
-							ActorSteps.moveBy(worldMap.getTileSize() * direction.hMul, worldMap.getTileSize() * direction.vMul, 0.5f)));
+							ActorSteps.moveBy(worldMap.getTileSize() * direction.hMul, worldMap.getTileSize() * direction.vMul, 0.1f)));
 			addAction(movementActions[direction.index]);
 		}
 	}
@@ -94,26 +102,94 @@ public class Character extends SpriteActor {
 			setY(getParent().getHeight() - getHeight());
 		}
 
-		if(!checkWalkable(0.5f, 0f) ||
-		   !checkWalkable(0.5f, 1f) ||
-		   !checkWalkable(0f, 0.5f) ||
-		   !checkWalkable(1f, 0.5f) ||
-		   !checkWalkable(0f, 0f) ||
-		   !checkWalkable(0f, 1f) ||
-		   !checkWalkable(1f, 0f) ||
-		   !checkWalkable(1f, 1f)) {
-			
+		final float newX = getX();
+		final float newY = getY();
+
+		setPosition(newX, y);
+		collectTileBounds();
+		final boolean xAffectsCollision = isCollision();
+		
+		setPosition(x, newY);
+		collectTileBounds();
+		final boolean yAffectsCollision = isCollision();
+		
+		if(!xAffectsCollision && !yAffectsCollision) {
+			setPosition(newX, newY);
+			collectTileBounds();
+			if(isCollision()) {
+				setPosition(x, y);
+			}
+		}
+		else {
 			setPosition(x, y);
+			
+			if(!xAffectsCollision) {
+				setX(newX);
+			}
+			else if(!yAffectsCollision) {
+				setY(newY);
+			}
+		}
+		
+		collectTileBounds();
+	}
+	
+	private void collectTileBounds() {
+		tiles.clear();
+
+		final int bottomLeft = getLocalTile(0f, 0f);
+		final int bottomRight = getLocalTile(1f, 0f);
+		final int topLeft = getLocalTile(0f, 1f);
+		final int topRight = getLocalTile(1f, 1f);
+		
+		tiles.add(bottomLeft);
+		tiles.add(bottomRight);
+		tiles.add(topLeft);
+		tiles.add(topRight);
+		
+		final int xStart = getTileX(bottomLeft);
+		final int xEnd = getTileX(topRight);
+		final int yStart = getTileY(bottomLeft);
+		final int yEnd = getTileY(topRight);
+		
+		for(int yi = yStart, yn = yEnd; yi < yn; yi += 1) {
+			for(int xi = xStart, xn = xEnd; xi < xn; xi += 1) {
+				tiles.add(mergeCoords(xi, yi));
+			}
 		}
 	}
 	
-	private boolean checkWalkable(final float xScale, final float yScale) {
-		final float tileSize = worldMap.getTileSize();
+	private int getLocalTile(final float xScale, final float yScale) {
+		return getTile(getX() + getWidth() * xScale, getY() + getHeight() * yScale);
+	}
+	
+	private int getTileX(final int tile) {
+		return tile % mapTilesX;
+	}
+	
+	private int getTileY(final int tile) {
+		return tile / mapTilesX;
+	}
+	
+	private int mergeCoords(final int tileX, final int tileY) {
+		return tileY * mapTilesX + tileX;
+	}
+	
+	private int getTile(final float x, final float y) {
+		final int tileX = (int)(x / tileSize);
+		final int tileY = (int)(y / tileSize);
 		
-		final int tileX = (int)((getX() + getWidth() * xScale) / tileSize);
-		final int tileY = (int)((getY() + getHeight() * yScale) / tileSize);
-		
-		return worldMap.isWalkable(tileX, tileY);
+		return mergeCoords(tileX, tileY);
+	}
+	
+	private boolean isCollision() {
+		for(int i = 0, n = tiles.size; i < n; i += 1) {
+			final int tile = tiles.get(i);
+			if(!worldMap.isWalkable(getTileX(tile), getTileY(tile))) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

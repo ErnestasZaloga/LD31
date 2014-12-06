@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.utils.Astar;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
@@ -14,10 +15,16 @@ public class Foe extends SpriteActor{
 	
 	private final GameWorld world;
 	private Astar astar;
+	private Character character;
 	
 	private IntArray path;
 	private int pathIndex = 0;
 	private float tileSize;
+	
+	private int playerX;
+	private int playerY;
+	private int lastPlayerX;
+	private int lastPlayerY;
 	
 	
 	public Foe(TextureRegion region, final GameWorld world) {
@@ -28,13 +35,33 @@ public class Foe extends SpriteActor{
 	}
 	
 	private float time = 0;
+	private boolean firstAct = true;
 	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 		
+		if(firstAct) {
+			tileSize = world.getWorldMap().getTileSize();
+			character = world.getCharacter();
+			
+			playerX = lastPlayerX = (int)(character.getX() / tileSize);
+			playerY = lastPlayerY = (int)(character.getY() / tileSize);
+			travelTo(lastPlayerX, lastPlayerY);
+			firstAct = false;
+		}
+		
+		playerX = (int)(character.getX() / tileSize);
+		playerY = (int)(character.getY() / tileSize);
+		
+		if(playerX != lastPlayerX || playerY != lastPlayerY) {
+			travelTo(playerX, playerY);
+			lastPlayerX = playerX;
+			lastPlayerY = playerY;
+		}
+		
 		if(shouldTravel) {
-			if(pathIndex >= path.size) {
+			if(pathIndex >= path.size - 2) {
 				shouldTravel = false;
 				pathIndex = 0;
 			} else {
@@ -42,8 +69,8 @@ public class Foe extends SpriteActor{
 				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				//Log.trace(delta, time, div);
 				
-				float x = MathUtils.lerp(tmpX, path.get(pathIndex) * tileSize, div);
-				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 1) * tileSize, div);
+				float x = MathUtils.lerp(tmpX, path.get(pathIndex +2) * tileSize, div);
+				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 3) * tileSize, div);
 				
 				this.setPosition(x, y);
 				
@@ -68,8 +95,8 @@ public class Foe extends SpriteActor{
 		tmpY = getY();
 		path = astar.getPath(x, 
 							 y, 
-							 (int)(getX() / world.getWorldMap().getTileSize()), 
-							 (int)(getY() / world.getWorldMap().getTileSize()));
+							 (int)(getX() / tileSize), 
+							 (int)(getY() / tileSize));
 		
 		/*path = astar.getPath((int)(getX() / world.getWorldMap().getTileSize()), 
 							 (int)(getY() / world.getWorldMap().getTileSize()), 

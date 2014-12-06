@@ -41,9 +41,7 @@ public class GameWorld extends Group {
 		
 		foe = new Foe(app.assets.tileHouse, this);
 		foe.setSize(32, 32);
-		addActor(foe);
-		
-		addListener(new TouchListener() {
+		/*addListener(new TouchListener() {
 			@Override
 			public boolean touchDown(final InputEvent event, 
 								  	 final float x, 
@@ -57,7 +55,7 @@ public class GameWorld extends Group {
 				
 				return true;
 			}
-		});
+		});*/
 		
 		
 	}
@@ -68,6 +66,8 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
+		addActor(foe);
+		
 	}
 	
 	@Override
@@ -111,6 +111,10 @@ public class GameWorld extends Group {
 	
 	public WorldMap getWorldMap() {
 		return worldMap;
+	}
+	
+	public Character getCharacter() {
+		return character;
 	}
 	
 }

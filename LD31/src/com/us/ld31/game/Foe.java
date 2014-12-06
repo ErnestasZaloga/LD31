@@ -26,6 +26,9 @@ public class Foe extends SpriteActor{
 	private int lastPlayerX;
 	private int lastPlayerY;
 	
+	private int foeTileX;
+	private int foeTileY;
+	
 	
 	public Foe(TextureRegion region, final GameWorld world) {
 		super(region);
@@ -50,39 +53,50 @@ public class Foe extends SpriteActor{
 			firstAct = false;
 		}
 		
-		playerX = (int)(character.getX() / tileSize);
-		playerY = (int)(character.getY() / tileSize);
-		
-		if(playerX != lastPlayerX || playerY != lastPlayerY) {
+		if((playerX != lastPlayerX || playerY != lastPlayerY) && allowNextTravel) {
 			travelTo(playerX, playerY);
 			lastPlayerX = playerX;
 			lastPlayerY = playerY;
+			//Log.trace("if");
+		} else {
+			//Log.trace("else");
+			playerX = (int)(character.getX() / tileSize);
+			playerY = (int)(character.getY() / tileSize);
 		}
 		
 		if(shouldTravel) {
-			if(pathIndex >= path.size - 0) {
+			if(pathIndex >= path.size) {
 				shouldTravel = false;
 				pathIndex = 0;
 			} else {
+				foeTileX = path.get(pathIndex);
+				foeTileY = path.get(pathIndex + 1);
+				Log.trace(pathIndex);
 				time += delta;
 				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
-				//Log.trace(delta, time, div);
+				//Log.trace(div);
 				
-				float x = MathUtils.lerp(tmpX, path.get(pathIndex + 0) * tileSize, div);
-				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 1) * tileSize, div);
+				float x = MathUtils.lerp(tmpX, foeTileX * tileSize, div);
+				float y = MathUtils.lerp(tmpY, foeTileY * tileSize, div);
+				
+				allowNextTravel = false;
 				
 				this.setPosition(x, y);
+				//Log.trace(tmpX, tmpY);
 				
 				if(time >= secondsPerTile) {
 					pathIndex += 2;
 					time %= secondsPerTile;
-					tmpX = x;
-					tmpY = y;
+					tmpX = foeTileX * tileSize;
+					tmpY = foeTileY * tileSize;
+					this.setPosition(tmpX, tmpY);
+					allowNextTravel = true;
 				}
 			}
 		}
 	}
 	
+	private boolean allowNextTravel;
 	private float tmpX = 0, tmpY = 0;
 	
 	/**
@@ -90,19 +104,26 @@ public class Foe extends SpriteActor{
 	 * */
 	public void travelTo(int x, int y) {
 		tileSize = world.getWorldMap().getTileSize();
-		tmpX = getX();
-		tmpY = getY();
+		//tmpX = getX();
+		//tmpY = getY();
 		path = astar.getPath(x, 
 							 y, 
 							 (int)(getX() / tileSize), 
 							 (int)(getY() / tileSize));
+		if(path.size >= 2) {
+			path.removeRange(0, 1);
+		}
+		
+		if(path.size == 0) return;
 		
 		/*path = astar.getPath((int)(getX() / world.getWorldMap().getTileSize()), 
 							 (int)(getY() / world.getWorldMap().getTileSize()), 
 							 x, 
 							 y);*/
-		
+		foeTileX = path.get(0);
+		foeTileY = path.get(1);
 		shouldTravel = true;
+		allowNextTravel = false;
 		pathIndex = 0;
 	}
 	

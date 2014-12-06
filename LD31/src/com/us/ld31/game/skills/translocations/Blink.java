@@ -25,9 +25,17 @@ public class Blink implements Skill {
 			dx = randomRange*MathUtils.cosDeg(randomDir)*gameWorld.getWorldMap().getTileSize();
 			dy = randomRange*MathUtils.sinDeg(randomDir)*gameWorld.getWorldMap().getTileSize();
 			int t = gameWorld.getWorldMap().getTile(gameWorld.getCharacter().getX()+dx, gameWorld.getCharacter().getY()+dy);
-			if(t < gameWorld.getWorldMap().getChildren().size && t >= 0) {
-				if(((Tile)gameWorld.getWorldMap().getChildren().get(t)).isWalkable()) {
-					canLand = true;
+			if(t < 0 || t >= gameWorld.getWorldMap().getChildren().size) {
+				continue;
+			}
+			
+			int indexX = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexX();
+			int indexY = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexY();
+			if(gameWorld.getWorldMap().isWalkable(indexX, indexY)) {
+				if(t < gameWorld.getWorldMap().getChildren().size && t >= 0) {
+					if(((Tile)gameWorld.getWorldMap().getChildren().get(t)).isWalkable()) {
+						canLand = true;
+					}
 				}
 			}
 		}

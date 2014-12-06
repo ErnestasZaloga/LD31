@@ -87,6 +87,7 @@ public class WorldGenerator {
 				//((Tile)getChildren().get(indexX * tilesY + indexY)).isWalkable()
 					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setWalkable(true);
 					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setRegion(app.assets.tileRoad);
+					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setSize(tileWH, tileWH);
 				}
 			}
 		}

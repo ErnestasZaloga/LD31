@@ -1,6 +1,7 @@
 package com.us.ld31;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -30,6 +31,8 @@ public class Assets implements Disposable {
 		uiArrowUp = atlas.findRegion("arrow");
 		uiArrowDown = new TextureRegion(uiArrowUp);
 		uiArrowDown.flip(false, true);
+
+		uiBlock.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		
 		tileGrass = atlas.findRegion("grass");
 		tileHouse = atlas.findRegion("house");

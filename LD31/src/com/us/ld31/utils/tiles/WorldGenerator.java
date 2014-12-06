@@ -8,7 +8,6 @@ public class WorldGenerator {
 	public static Group generateWorld(LD31 app, Group worldMap) {
 		TileFactory tileFactory = new TileFactory(app);
 		
-		
 		return new Group();
 	}
 	

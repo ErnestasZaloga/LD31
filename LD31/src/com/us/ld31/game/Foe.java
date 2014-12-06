@@ -4,12 +4,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.utils.Astar;
-import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
 	
-	private float tilesPerSecond = 20;
+	private float tilesPerSecond = 5;
 	private float secondsPerTile = 1f/tilesPerSecond;
 	private boolean shouldTravel;
 	
@@ -41,7 +40,7 @@ public class Foe extends SpriteActor{
 			} else {
 				time += delta;
 				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
-				Log.trace(delta, time, div);
+				//Log.trace(delta, time, div);
 				
 				float x = MathUtils.lerp(tmpX, path.get(pathIndex) * tileSize, div);
 				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 1) * tileSize, div);
@@ -50,7 +49,7 @@ public class Foe extends SpriteActor{
 				
 				if(time >= secondsPerTile) {
 					pathIndex += 2;
-					time = 0;
+					time %= secondsPerTile;
 					tmpX = x;
 					tmpY = y;
 				}

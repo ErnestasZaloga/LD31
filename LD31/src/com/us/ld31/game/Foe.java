@@ -1,16 +1,14 @@
 package com.us.ld31.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.utils.Astar;
-import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
 	
-	private float tilesPerSecond = 20;
+	private float tilesPerSecond = 5;
 	private float secondsPerTile = 1f/tilesPerSecond;
 	private boolean shouldTravel;
 	

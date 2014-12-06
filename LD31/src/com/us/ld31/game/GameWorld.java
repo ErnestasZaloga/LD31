@@ -1,15 +1,11 @@
 package com.us.ld31.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
 import com.us.ld31.utils.Astar;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;
@@ -39,15 +35,10 @@ public class GameWorld extends Group {
 		character.setRegion(app.assets.tileTree);
 		character.setSize(32, 32);
 		
-		Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
-		pixmap.setColor(Color.GREEN);
-		pixmap.fillCircle(5, 5, 5);
-		
 		astar = new Astar(worldMap.getTilesX(), worldMap.getTilesY(), new Astar.Listener() {
 			
 			@Override
 			public boolean isValid(int x, int y) {
-				// TODO Auto-generated method stub
 				return worldMap.isWalkable(x, y);
 			}
 		});
@@ -59,15 +50,16 @@ public class GameWorld extends Group {
 								  	 final float y, 
 								  	 final int pointer, 
 								  	 final int button) {
-				foe.travelTo(x / worldMap.getTileSize(), y / worldMap.getTileSize());
 				
-				
+				//Log.trace(location);
+				//foe.travelTo(x / worldMap.getTileSize(), y / worldMap.getTileSize());
 				
 				return true;
 			}
 		});
 		
-		foe = new Foe(new TextureRegion(new Texture(pixmap)), this);
+		foe = new Foe(app.assets.tileHouse, this);
+		foe.setSize(32, 32);
 		addActor(foe);
 	}
 	

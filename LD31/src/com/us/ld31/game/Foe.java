@@ -42,8 +42,8 @@ public class Foe extends SpriteActor{
 	
 	public void travelTo(float x, float y) {
 		//path = astar.getPath((int)getX(), (int)getY(), (int)x, (int)y);
-		path = astar.getPath((int)x, 
-							 (int)y, 
+		path = astar.getPath((int)x - 1, 
+							 (int)y - 1, 
 							 (int)(getX() / world.getWorldMap().getTileSize()), 
 							 (int)(getY() / world.getWorldMap().getTileSize()));
 		shouldTravel = true;

@@ -5,16 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
 import com.us.ld31.utils.Astar;
-<<<<<<< HEAD
-=======
 import com.us.ld31.utils.Log;
->>>>>>> d4b9a1e86091192f50816c39cbd4343baf7124ba
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;
-
-
 
 public class GameWorld extends Group {
 

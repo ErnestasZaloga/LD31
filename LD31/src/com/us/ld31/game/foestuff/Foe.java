@@ -1,5 +1,6 @@
 package com.us.ld31.game.foestuff;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntArray;
@@ -73,6 +74,7 @@ public class Foe extends SpriteActor{
 			playerY = (int)(character.getY() / tileSize);
 		}
 		
+		//Log.trace(Vector2.dst(character.getX(), character.getY(), getX(), getY()));
 		if(shouldTravel && Vector2.dst(character.getX(), character.getY(), getX(), getY()) > distance * tileSize) {
 			if(pathIndex >= path.size) {
 				shouldTravel = false;
@@ -84,12 +86,12 @@ public class Foe extends SpriteActor{
 				time += delta;
 				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				/*float x = MathUtils.lerp(tmpX, foeTileX * tileSize, div);
-				float y = MathUtils.lerp(tmpY, foeTileY * tileSize, div);*/
+				float x = MathUtils.lerp(tmpX, foeTileX * tileSize, div);
+				float y = MathUtils.lerp(tmpY, foeTileY * tileSize, div);
 				
-				float x = foeTileX * tileSize;
+				/*float x = foeTileX * tileSize;
 				float y = foeTileY * tileSize;
-				
+				*/
 				allowNextTravel = false;
 				
 				this.setPosition(x, y);
@@ -122,7 +124,8 @@ public class Foe extends SpriteActor{
 					 (int)(getX() / tileSize), 
 					 (int)(getY() / tileSize),
 					 path);
-		Log.trace(path);
+		tmpX = getX();
+		tmpY = getY();
 		if(path.size >= 2) {
 			path.removeRange(0, 1);
 		}

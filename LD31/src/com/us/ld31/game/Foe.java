@@ -60,7 +60,7 @@ public class Foe extends SpriteActor{
 		}
 		
 		if(shouldTravel) {
-			if(pathIndex >= path.size - 2) {
+			if(pathIndex >= path.size - 0) {
 				shouldTravel = false;
 				pathIndex = 0;
 			} else {
@@ -68,8 +68,8 @@ public class Foe extends SpriteActor{
 				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				//Log.trace(delta, time, div);
 				
-				float x = MathUtils.lerp(tmpX, path.get(pathIndex +2) * tileSize, div);
-				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 3) * tileSize, div);
+				float x = MathUtils.lerp(tmpX, path.get(pathIndex + 0) * tileSize, div);
+				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 1) * tileSize, div);
 				
 				this.setPosition(x, y);
 				

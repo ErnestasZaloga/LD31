@@ -1,9 +1,11 @@
 package com.us.ld31.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
+import com.us.ld31.game.skills.translocations.Blink;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;
@@ -73,6 +75,11 @@ public class GameWorld extends Group {
 	@Override
 	public void act(final float delta) {
 		super.act(delta);
+		
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			Blink b = new Blink();
+			b.activate(character, this, 1);
+		}
 		
 		if(isTouchable()) {
 			for(int i = 0; i < Character.MovementDirection.list.length; i += 1) {

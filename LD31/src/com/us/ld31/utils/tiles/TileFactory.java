@@ -44,10 +44,18 @@ public class TileFactory {
 		return t;
 	}
 	
+	public Tile createShopTile(float x, float y) {
+		Tile t = new Tile(x, y);
+		t.setRegion(app.assets.tileHouse);
+		t.setSize(tileWH*4, tileWH*2);
+		t.setWalkable(false);
+		return t;
+	}
+	
 	public Tile createHouseTile(float x, float y) {
 		Tile t = new Tile(x, y);
 		t.setRegion(app.assets.tileHouse);
-		t.setSize(tileWH*3, tileWH*2);
+		t.setSize(tileWH*2, tileWH*2);
 		t.setWalkable(false);
 		return t;
 	}

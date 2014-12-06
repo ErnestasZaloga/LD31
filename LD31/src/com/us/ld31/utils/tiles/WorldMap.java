@@ -36,6 +36,17 @@ public class WorldMap extends Group {
 		return ((Tile)getChildren().get(indexX * tilesY + indexY)).isWalkable();
 	}
 	
+	public int getTile(final float x, final float y) {
+		final int tileX = (int)(x / tileWH);
+		final int tileY = (int)(y / tileWH);
+		
+		return mergeCoords(tileX, tileY);
+	}
+	
+	public int mergeCoords(final int tileX, final int tileY) {
+		return tileY * tilesX + tileX;
+	}
+	
 	public int getTilesX() {
 		return tilesX;
 	}

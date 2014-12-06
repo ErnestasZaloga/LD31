@@ -66,6 +66,8 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
+		
+		foe.setPosition(500, 100);
 		addActor(foe);
 		
 	}

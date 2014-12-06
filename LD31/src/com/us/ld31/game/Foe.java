@@ -2,9 +2,9 @@ package com.us.ld31.game;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.utils.Astar;
-import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
@@ -29,6 +29,7 @@ public class Foe extends SpriteActor{
 	private int foeTileX;
 	private int foeTileY;
 	
+	private int distance = 10;
 	
 	public Foe(TextureRegion region, final GameWorld world) {
 		super(region);
@@ -44,6 +45,8 @@ public class Foe extends SpriteActor{
 		super.act(delta);
 		
 		if(firstAct) {
+			tmpX = getX();
+			tmpY = getY();
 			tileSize = world.getWorldMap().getTileSize();
 			character = world.getCharacter();
 			
@@ -108,6 +111,12 @@ public class Foe extends SpriteActor{
 		if(path.size >= 2) {
 			path.removeRange(0, 1);
 		}
+		int ps = path.size;
+		if(ps >= 2 * distance) {
+			path.removeRange(ps - distance * 2, ps - 1);
+		} else {
+			path.clear();
+		}
 		if(path.size == 0) return;
 		
 		foeTileX = path.get(0);
@@ -117,8 +126,26 @@ public class Foe extends SpriteActor{
 		pathIndex = 0;
 	}
 	
+	@Override
+	public void setParent(Group parent) {
+		super.setParent(parent);
+		
+		if(parent != null) {
+			firstAct = false;
+		}
+	}
+	
 	public void setAstar(Astar astar) {
 		this.astar = astar;
+	}
+	
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+	
+	public void setSpeed(float speedInTilesPerSecond) {
+		this.tilesPerSecond = speedInTilesPerSecond;
+		this.secondsPerTile = 1f / speedInTilesPerSecond;
 	}
 	
 }

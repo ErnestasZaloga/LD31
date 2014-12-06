@@ -56,20 +56,12 @@ public class Stats {
 			stats.setIntelligence(stats.getIntelligence() - intelligence);
 		}
 	}
-
-	private int level;
-	private int freePoints;
-	private int experience;
 	
 	private final Array<Upgrade> upgrades = new Array<Upgrade>();
 	
 	private int strength;
 	private int dextirity;
 	private int intelligence;
-	
-	public void spendFreePoints() {
-		freePoints = 0;
-	}
 	
 	public void setStrength(final int strength) {
 		this.strength = strength;
@@ -93,40 +85,6 @@ public class Stats {
 	
 	public int getIntelligence() {
 		return intelligence;
-	}
-	
-	public boolean addExperience(final int exp) {
-		experience += exp;
-		
-		boolean levelUp = false;
-		while(experience > level * 100) {
-			levelUp = true;
-			experience -= level * 100;
-			level += 1;
-			freePoints += 3;
-		}
-		
-		return levelUp;
-	}
-	
-	public int getLevel() {
-		return level;
-	}
-	
-	public int getFreePoints() {
-		return freePoints;
-	}
-	
-	public int getExperience() {
-		return experience;
-	}
-	
-	public int getLevelUpRequirement() {
-		return level * 100;
-	}
-	
-	public int getExperienceLeft() {
-		return level * 100 - experience;
 	}
 	
 	public void addUpgrade(final Upgrade upgrade) {

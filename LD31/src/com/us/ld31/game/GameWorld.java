@@ -58,7 +58,7 @@ public class GameWorld extends Group {
 								  	 final float y, 
 								  	 final int pointer, 
 								  	 final int button) {
-				foe.travelTo(x, y);
+				foe.travelTo(x / worldMap.getTileSize(), y / worldMap.getTileSize());
 				
 				
 				
@@ -103,6 +103,10 @@ public class GameWorld extends Group {
 	
 	public Astar getAstar() {
 		return astar;
+	}
+	
+	public WorldMap getWorldMap() {
+		return worldMap;
 	}
 	
 }

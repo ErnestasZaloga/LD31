@@ -11,23 +11,27 @@ import com.us.ld31.game.MenuOverlay;
 
 public class LD31 implements ApplicationListener {
 	
-	private Stage stage;
-	private PolygonSpriteBatch batch;
+	public Stage stage;
+	public PolygonSpriteBatch batch;
 	
 	private boolean initialized;
-	private GameWorld gameWorld;
-	private MenuOverlay menuOverlay;
+	
+	public GameWorld gameWorld;
+	public MenuOverlay menuOverlay;
+	public Assets assets;
 	
 	@Override
 	public void create() {
 		batch = new PolygonSpriteBatch(1000);
 		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Gdx.input.setInputProcessor(stage);
+		assets = new Assets();
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
+		assets.dispose();
 	}
 
 	@Override
@@ -70,19 +74,4 @@ public class LD31 implements ApplicationListener {
 	public void resume() {
 	}
 	
-	public GameWorld getGameWorld() {
-		return gameWorld;
-	}
-	
-	public MenuOverlay getMenuOverlay() {
-		return menuOverlay;
-	}
-	
-	public Stage getStage() {
-		return stage;
-	}
-	
-	public PolygonSpriteBatch getBatch() {
-		return batch;
-	}
 }

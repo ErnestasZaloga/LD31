@@ -15,7 +15,7 @@ public class MenuOverlay extends Group {
 			@Override
 			public void touched() {
 				MenuOverlay.this.remove();
-				app.getGameWorld().begin();
+				app.gameWorld.begin();
 			}
 		});
 	}

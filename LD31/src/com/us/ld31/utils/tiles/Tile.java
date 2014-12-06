@@ -6,12 +6,11 @@ public class Tile extends SpriteActor {
 
 	private boolean walkable;
 	private int indexX;
-	private int indexy;
+	private int indexY;
 	
 	public Tile(float x, float y) {
 		this.setX(x);
 		this.setY(y);
-		//TODO calculate indexX and indexY...
 	}
 
 	public boolean isWalkable() {
@@ -20,6 +19,13 @@ public class Tile extends SpriteActor {
 
 	public void setWalkable(boolean walkable) {
 		this.walkable = walkable;
+	}
+	
+	@Override
+	public void setSize(float width, float height) {
+		super.setSize(width, height);
+		indexX = (int) Math.floor(getX()/getWidth());
+		indexY = (int) Math.floor(getY()/getHeight());
 	}
 
 	public int getIndexX() {
@@ -30,12 +36,12 @@ public class Tile extends SpriteActor {
 		this.indexX = indexX;
 	}
 
-	public int getIndexy() {
-		return indexy;
+	public int getIndexY() {
+		return indexY;
 	}
 
-	public void setIndexy(int indexy) {
-		this.indexy = indexy;
+	public void setIndexy(int indexY) {
+		this.indexY = indexY;
 	}
 	
 }

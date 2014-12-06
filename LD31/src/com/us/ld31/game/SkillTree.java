@@ -2,6 +2,7 @@ package com.us.ld31.game;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import com.us.ld31.game.skills.Skill;
 
 public class SkillTree {
 
@@ -32,7 +33,7 @@ public class SkillTree {
 		}
 		
 		public void activate(final GameWorld gameWorld) {
-			cooldown = skill.activate(skillTree.owner, gameWorld);
+			cooldown = skill.activate(skillTree.owner, gameWorld, 1);  //XXX: THIS IS HARDCODED!!!!!!!!!!!!!!!!!!
 		}
 		
 		public void enable() {

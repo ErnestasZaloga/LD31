@@ -1,4 +1,4 @@
-package com.us.ld31.game;
+package com.us.ld31.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.us.ld31.LD31;

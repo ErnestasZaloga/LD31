@@ -11,7 +11,7 @@ public class WorldGenerator {
 	private static char rock = 'O';
 	private static char road = '=';
 	private static char house = '#';
-//	private static char grass = '.';
+	private static char shop = '$';
 //	private static char grass = '.';
 	
 	public static WorldMap generateWorld(LD31 app, WorldMap worldMap) {
@@ -38,9 +38,6 @@ public class WorldGenerator {
 		int cityY = (int) Math.ceil(worldMap.getTilesY()/2);
 		drawRoad(map, cityX, cityY);
 		
-		//Then buildings
-		//drawBuildings(map, cityX, cityY);
-		
 		//Convert chars to actual actors
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {
@@ -59,7 +56,17 @@ public class WorldGenerator {
 		
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {
-				if(map[x][y] == house) {
+				if(map[x][y] == shop) {
+					Tile t = tileFactory.createShopTile(x*tileWH, y*tileWH);
+					int width = (int) (t.getWidth()/tileWH);
+					int height = (int) (t.getHeight()/tileWH);
+					for(int dx=0; dx<width; dx++) {
+						for(int dy=0; dy<height; dy++) {
+							worldMap.occupiedIndexes.add(new Vector2(x+dx, y+dy));
+						}
+					}
+					worldMap.addActor(t);
+				} else if(map[x][y] == house) {
 					Tile t = tileFactory.createHouseTile(x*tileWH, y*tileWH);
 					int width = (int) (t.getWidth()/tileWH);
 					int height = (int) (t.getHeight()/tileWH);
@@ -73,14 +80,103 @@ public class WorldGenerator {
 			}
 		}
 		
+		//Convert tiles that should be roads to small houses
+		for(int x=0; x<map.length; x++) {
+			for(int y=0; y<map[0].length; y++) {
+				if(map[x][y] == '=') {
+				//((Tile)getChildren().get(indexX * tilesY + indexY)).isWalkable()
+					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setWalkable(true);
+					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setRegion(app.assets.tileRoad);
+				}
+			}
+		}
+		
 		return worldMap;
 	}
 	
 	private static void drawBuildings(char[][] map, int cityX, int cityY) {
-		map[cityX+radius][cityY+2] = house;
-		map[cityX-radius][cityY+2] = house;
-		map[cityX+2][cityY+radius] = house;
-		map[cityX+2][cityY-radius] = house;
+		//Place shops
+		map[cityX+radius][cityY+2] = shop;
+		map[cityX-radius][cityY+2] = shop;
+		map[cityX+2][cityY+radius] = shop;
+		map[cityX+2][cityY-radius] = shop;
+		//Place houses
+		int houseCount = 0;
+		while(houseCount < 10) {
+			int randX = MathUtils.random(1, map.length-2);
+			int randY = MathUtils.random(1, map[0].length-2);
+			if(map[randX][randY] != road && map[randX][randY] != shop) {
+				houseCount++;
+				map[randX][randY] = house;
+				/* Determine in which quandrant of the map the house is:
+				 * 1|2
+				 * -O-
+				 * 4|3
+				 */
+				if(randX < cityX && randY > cityY) {
+					if(MathUtils.randomBoolean()) {
+						map[randX][randY-1] = 'V';
+					} else {
+						map[randX][randY-1] = '>';
+					}
+				} else if(randX > cityX && randY > cityY) {
+					if(MathUtils.randomBoolean()) {
+						map[randX][randY-1] = '<';
+					} else {
+						map[randX][randY-1] = 'V';
+					}
+				} else if(randX > cityX && randY < cityY) {
+					if(MathUtils.randomBoolean()) {
+						map[randX-1][randY] = '^';
+					} else {
+						map[randX][randY-1] = '<';
+					}
+				} else if(randX < cityX && randY < cityY) {
+					if(MathUtils.randomBoolean()) {
+						map[randX][randY-1] = '>';
+					} else {
+						map[randX-1][randY] = '^';
+					}
+				}
+			}
+		}
+		for(int x=0; x<map.length; x++) {
+			for(int y=0; y<map[0].length; y++) {
+				if(map[x][y] == '>') {
+					char target = '>';
+					int currentPos = x;
+					while(target != '=') {
+						map[currentPos][y] = '=';
+						currentPos++;
+						target = map[currentPos][y];
+					}
+				} else if(map[x][y] == 'V') {
+					char target = 'V';
+					int currentPos = y;
+					while(target != '=') {
+						map[x][currentPos] = '=';
+						currentPos--;
+						target = map[x][currentPos];
+					}
+				} else if(map[x][y] == '<') {
+					char target = '<';
+					int currentPos = x;
+					while(target != '=') {
+						map[currentPos][y] = '=';
+						currentPos--;
+						target = map[currentPos][y];
+					}
+				} else if(map[x][y] == '^') {
+					char target = '^';
+					int currentPos = y;
+					while(target != '=') {
+						map[x][currentPos] = '=';
+						currentPos++;
+						target = map[x][currentPos];
+					}
+				}
+			}
+		}
 	}
 	
 	private static void drawRoad(char[][] map, int cityX, int cityY) {

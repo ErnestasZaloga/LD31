@@ -20,6 +20,7 @@ public class LD31 implements ApplicationListener {
 	
 	@Override
 	public void create() {
+		batch = new PolygonSpriteBatch(1000);
 		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Gdx.input.setInputProcessor(stage);
 	}

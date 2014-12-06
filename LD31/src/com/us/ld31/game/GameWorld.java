@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
 import com.us.ld31.game.foestuff.Foe;
+import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;
@@ -18,7 +19,8 @@ public class GameWorld extends Group {
 	private final LD31 app;
 	private final Character character;
 	private Astar astar;
-	private Foe foe;
+	//private Foe foe;
+	private FoeManager foeManager;
 	private final WorldMap worldMap;
 	
 	public GameWorld(final LD31 app) {
@@ -38,27 +40,19 @@ public class GameWorld extends Group {
 		character.setRegion(app.assets.tileTree);
 		character.setSize(32, 32);
 		
-		Log.trace(worldMap.getTilesX());
+		foeManager = new FoeManager(this);
 		
-		foe = new Foe(app.assets.tileHouse, this);
-		foe.setSize(32, 32);
-		/*addListener(new TouchListener() {
+		addListener(new TouchListener() {
 			@Override
-			public boolean touchDown(final InputEvent event, 
-								  	 final float x, 
-								  	 final float y, 
-								  	 final int pointer, 
-								  	 final int button) {
+			public void touched() {
+				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
+				foe.setSize(32, 32);
 				
-				//Log.trace(worldMap.getTileSize(), worldMap.getTilesX(), worldMap.getTilesY());
-				foe.travelTo((int)(x / worldMap.getTileSize()), 
-							 (int)(y / worldMap.getTileSize()));
+				foe.setPosition(getX(), getY());
 				
-				return true;
+				addActor(foe);
 			}
-		});*/
-		
-		
+		});
 	}
 	
 	public void begin() {
@@ -68,8 +62,8 @@ public class GameWorld extends Group {
 		
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
 		
-		foe.setPosition(500, 100);
-		addActor(foe);
+		//foe.setPosition(500, 100);
+		//addActor(foe);
 		
 	}
 	
@@ -105,7 +99,6 @@ public class GameWorld extends Group {
 			}
 		});
 		
-		foe.setAstar(astar);
 	}
 	
 	public Astar getAstar() {

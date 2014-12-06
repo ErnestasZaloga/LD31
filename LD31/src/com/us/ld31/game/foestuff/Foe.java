@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.Character;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.utils.Astar;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
@@ -19,7 +20,7 @@ public class Foe extends SpriteActor{
 	private Astar astar;
 	private Character character;
 	
-	private IntArray path;
+	private IntArray path = new IntArray();
 	private int pathIndex = 0;
 	private float tileSize;
 	
@@ -33,11 +34,15 @@ public class Foe extends SpriteActor{
 	
 	private int distance = 10;
 	
-	public Foe(TextureRegion region, final GameWorld world) {
-		super(region);
+	public Foe(final GameWorld world) {
+		//super();
 		this.world = world;
 		this.astar = world.getAstar();
 	}
+	
+	//public void setRegion(TextureRegion region) {
+	//	super.setRegion(region);
+	//}
 	
 	private float time = 0;
 	private boolean firstAct = true;
@@ -106,10 +111,11 @@ public class Foe extends SpriteActor{
 	 * */
 	public void travelTo(int x, int y) {
 		tileSize = world.getWorldMap().getTileSize();
-		path = astar.getPath(x, 
-							 y, 
-							 (int)(getX() / tileSize), 
-							 (int)(getY() / tileSize));
+		astar.getPath(x, 
+					 y, 
+					 (int)(getX() / tileSize), 
+					 (int)(getY() / tileSize),
+					 path);
 		if(path.size >= 2) {
 			path.removeRange(0, 1);
 		}
@@ -133,7 +139,8 @@ public class Foe extends SpriteActor{
 		super.setParent(parent);
 		
 		if(parent != null) {
-			firstAct = false;
+			firstAct = true;
+			allowNextTravel = true;
 		}
 	}
 	

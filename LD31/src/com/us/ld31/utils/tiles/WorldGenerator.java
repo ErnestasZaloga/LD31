@@ -1,9 +1,11 @@
 package com.us.ld31.utils.tiles;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.us.ld31.LD31;
 
 public class WorldGenerator {
+	private static int radius = 8;
 	
 	private static char grass = '.';
 	private static char rock = 'O';
@@ -37,7 +39,7 @@ public class WorldGenerator {
 		drawRoad(map, cityX, cityY);
 		
 		//Then buildings
-		drawBuildings(map, cityX, cityY);
+		//drawBuildings(map, cityX, cityY);
 		
 		//Convert chars to actual actors
 		for(int x=0; x<map.length; x++) {
@@ -48,25 +50,37 @@ public class WorldGenerator {
 					worldMap.addActor(tileFactory.createRockTile(x*tileWH, y*tileWH));
 				} else if(map[x][y] == road) {
 					worldMap.addActor(tileFactory.createRoadTile(x*tileWH, y*tileWH));
-				}/* else if(map[x][y] == house) {
-					worldMap.addActor(tileFactory.createHouseTile(x*tileWH, y*tileWH));
-				}*/
+				}
 			}
 		}
 		
-//		for(int x=0; x<map.length; x++) {
-//			for(int y=0; y<map[0].length; y++) {
-//				if(map[x][y] == house) {
-//					worldMap.addActor(tileFactory.createHouseTile(x*tileWH, y*tileWH));
-//				}
-//			}
-//		}
+		//Then generate buildings
+		drawBuildings(map, cityX, cityY);
+		
+		for(int x=0; x<map.length; x++) {
+			for(int y=0; y<map[0].length; y++) {
+				if(map[x][y] == house) {
+					Tile t = tileFactory.createHouseTile(x*tileWH, y*tileWH);
+					int width = (int) (t.getWidth()/tileWH);
+					int height = (int) (t.getHeight()/tileWH);
+					for(int dx=0; dx<width; dx++) {
+						for(int dy=0; dy<height; dy++) {
+							worldMap.occupiedIndexes.add(new Vector2(x+dx, y+dy));
+						}
+					}
+					worldMap.addActor(t);
+				}
+			}
+		}
 		
 		return worldMap;
 	}
 	
 	private static void drawBuildings(char[][] map, int cityX, int cityY) {
-		map[10][10] = house;
+		map[cityX+radius][cityY+2] = house;
+		map[cityX-radius][cityY+2] = house;
+		map[cityX+2][cityY+radius] = house;
+		map[cityX+2][cityY-radius] = house;
 	}
 	
 	private static void drawRoad(char[][] map, int cityX, int cityY) {
@@ -96,7 +110,6 @@ public class WorldGenerator {
 			map[cityX+1][i] = road;
 		}
 		//center
-		int radius = 8;
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {
 				int dX = cityX - x;

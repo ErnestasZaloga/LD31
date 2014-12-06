@@ -1,7 +1,5 @@
 package com.us.ld31.utils.tiles;
 
-import sun.java2d.jules.TileWorker;
-
 import com.us.ld31.utils.SpriteActor;
 
 public class Tile extends SpriteActor {

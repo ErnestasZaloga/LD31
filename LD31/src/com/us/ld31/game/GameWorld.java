@@ -2,6 +2,7 @@ package com.us.ld31.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.us.ld31.LD31;
 import com.us.ld31.game.foestuff.Foe;
@@ -13,6 +14,8 @@ import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;
+
+
 
 
 
@@ -59,7 +62,8 @@ public class GameWorld extends Group {
 				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
 				foe.setSize(32, 32);
 				
-				foe.setPosition(getX(), getY());
+				Vector2 pos = foeManager.getRandomSpawnPoint();
+				foe.setPosition(pos.x, pos.y);
 				
 				addActor(foe);
 			}
@@ -121,6 +125,8 @@ public class GameWorld extends Group {
 				return worldMap.isWalkable(x, y);
 			}
 		});
+		
+		foeManager.setupSpawnPositions();
 		
 	}
 	

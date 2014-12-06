@@ -1,13 +1,11 @@
 package com.us.ld31.game.foestuff;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.Character;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.utils.Astar;
-import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
@@ -33,6 +31,7 @@ public class Foe extends SpriteActor{
 	private int foeTileY;
 	
 	private int distance = 10;
+	private int difficulity;
 	
 	public Foe(final GameWorld world) {
 		//super();

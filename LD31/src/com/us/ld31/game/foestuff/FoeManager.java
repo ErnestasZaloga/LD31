@@ -1,6 +1,8 @@
 package com.us.ld31.game.foestuff;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.us.ld31.game.GameWorld;
@@ -12,6 +14,10 @@ public class FoeManager {
 	private Pool<Foe> foePool;
 	private Array<Foe> foes;
 	
+	private Vector2 spawnPos = new Vector2();
+	
+	private int[] spawnPositions = new int[8];
+	
 	public FoeManager(final GameWorld world) {
 		this.world = world;
 		
@@ -21,6 +27,7 @@ public class FoeManager {
 				return new Foe(world);
 			}
 		};
+		
 	}
 	
 	public Foe makeFoe(TextureRegion region, int distance, int speed) {
@@ -31,5 +38,24 @@ public class FoeManager {
 		foe.setSpeed(speed);
 		
 		return foe;
+	}
+	
+	public Vector2 getRandomSpawnPoint() {
+		int rnd = MathUtils.random(3) * 2;
+		
+		spawnPos.set(spawnPositions[rnd], spawnPositions[rnd + 1]);
+		
+		return spawnPos;
+	}
+	
+	public void setupSpawnPositions() {
+		spawnPositions[0] = (int) (0);
+		spawnPositions[1] = (int) (world.getHeight() / 2);
+		spawnPositions[2] = (int) (world.getWidth() / 2);
+		spawnPositions[3] = (int) (world.getHeight()) - 1;
+		spawnPositions[4] = (int) (world.getWidth());
+		spawnPositions[5] = (int) (world.getHeight() / 2);
+		spawnPositions[6] = (int) (world.getWidth() / 2);
+		spawnPositions[7] = (int) (0);
 	}
 }

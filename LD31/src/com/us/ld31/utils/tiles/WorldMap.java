@@ -1,5 +1,6 @@
 package com.us.ld31.utils.tiles;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class WorldMap extends Group {
@@ -23,8 +24,8 @@ public class WorldMap extends Group {
 		tilesX = Math.round(width/tileWH)+1;
 	}
 
-	public boolean isWalkable(final int x, final int y) {
-		return !(x == 1 && y == 1);
+	public boolean isWalkable(final int indexX, final int indexY) {
+		return ((Tile)getChildren().get(indexY+(indexX-1)*tilesY)).isWalkable();
 	}
 	
 	public int getTilesX() {

@@ -36,7 +36,7 @@ public class GameWorld extends Group {
 			}
 		});
 		
-		character.setRegion(app.assets.tileGrass);
+		character.setRegion(app.assets.tileTree);
 		character.setSize(32, 32);
 		
 		Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);

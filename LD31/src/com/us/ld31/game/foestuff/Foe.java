@@ -1,6 +1,5 @@
 package com.us.ld31.game.foestuff;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntArray;
@@ -85,8 +84,11 @@ public class Foe extends SpriteActor{
 				time += delta;
 				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = MathUtils.lerp(tmpX, foeTileX * tileSize, div);
-				float y = MathUtils.lerp(tmpY, foeTileY * tileSize, div);
+				/*float x = MathUtils.lerp(tmpX, foeTileX * tileSize, div);
+				float y = MathUtils.lerp(tmpY, foeTileY * tileSize, div);*/
+				
+				float x = foeTileX * tileSize;
+				float y = foeTileY * tileSize;
 				
 				allowNextTravel = false;
 				

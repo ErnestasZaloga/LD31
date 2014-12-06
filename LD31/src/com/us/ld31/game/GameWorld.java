@@ -42,7 +42,7 @@ public class GameWorld extends Group {
 		pixmap.setColor(Color.GREEN);
 		pixmap.fillCircle(5, 5, 5);
 		
-		astar = new Astar(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Astar.Listener() {
+		astar = new Astar(worldMap.getTilesX(), worldMap.getTilesY(), new Astar.Listener() {
 			
 			@Override
 			public boolean isValid(int x, int y) {

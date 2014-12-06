@@ -5,15 +5,18 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
 import com.us.ld31.utils.Astar;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;
+
+
 
 public class GameWorld extends Group {
 
 	private final LD31 app;
 	private final Character character;
-	private final Astar astar;
+	private Astar astar;
 	private Foe foe;
 	private final WorldMap worldMap;
 	
@@ -34,13 +37,11 @@ public class GameWorld extends Group {
 		character.setRegion(app.assets.tileTree);
 		character.setSize(32, 32);
 		
-		astar = new Astar(worldMap.getTilesX(), worldMap.getTilesY(), new Astar.Listener() {
-			
-			@Override
-			public boolean isValid(int x, int y) {
-				return worldMap.isWalkable(x, y);
-			}
-		});
+		Log.trace(worldMap.getTilesX());
+		
+		foe = new Foe(app.assets.tileHouse, this);
+		foe.setSize(32, 32);
+		addActor(foe);
 		
 		addListener(new TouchListener() {
 			@Override
@@ -50,16 +51,15 @@ public class GameWorld extends Group {
 								  	 final int pointer, 
 								  	 final int button) {
 				
-				//Log.trace(location);
-				//foe.travelTo(x / worldMap.getTileSize(), y / worldMap.getTileSize());
+				//Log.trace(worldMap.getTileSize(), worldMap.getTilesX(), worldMap.getTilesY());
+				foe.travelTo((int)(x / worldMap.getTileSize()), 
+							 (int)(y / worldMap.getTileSize()));
 				
 				return true;
 			}
 		});
 		
-		foe = new Foe(app.assets.tileHouse, this);
-		foe.setSize(32, 32);
-		addActor(foe);
+		
 	}
 	
 	public void begin() {
@@ -93,6 +93,16 @@ public class GameWorld extends Group {
 		
 		super.setSize(width, height);
 		worldMap.setSize(width, height);
+		
+		astar = new Astar(worldMap.getTilesX(), worldMap.getTilesY(), new Astar.Listener() {
+			
+			@Override
+			public boolean isValid(int x, int y) {
+				return worldMap.isWalkable(x, y);
+			}
+		});
+		
+		foe.setAstar(astar);
 	}
 	
 	public Astar getAstar() {

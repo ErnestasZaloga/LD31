@@ -31,7 +31,6 @@ public class Foe extends SpriteActor{
 		super(region);
 		this.world = world;
 		this.astar = world.getAstar();
-		//tileSize = world
 	}
 	
 	private float time = 0;

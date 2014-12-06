@@ -33,6 +33,12 @@ public class Astar {
 			open = new BinaryHeap(width * 4, false);
 			nodes = new PathNode[width * height];
 		}
+		
+		public IntArray getPath (int startX, int startY, int targetX, int targetY, IntArray userObject) {
+			userObject.clear();
+			userObject.addAll(getPath (startX, startY, targetX, targetY));
+			return userObject;
+		}
  
 		/** Returns x,y pairs that are the path from the target to the start. */
 		public IntArray getPath (int startX, int startY, int targetX, int targetY) {
@@ -86,7 +92,7 @@ public class Astar {
 				if (y > 0) addNode(node, x, y - 1, 10);
 				i++;
 			}
-			return path;
+			return new IntArray(path);
 		}
  
 		private void addNode (PathNode parent, int x, int y, int cost) {

@@ -3,9 +3,11 @@ package com.us.ld31.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
+import com.us.ld31.game.foestuff.Foe;
+import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.translocations.Blink;
+import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;
@@ -19,8 +21,10 @@ public class GameWorld extends Group {
 	private final LD31 app;
 	private final Character character;
 	private Astar astar;
-	private Foe foe;
+	//private Foe foe;
+	private FoeManager foeManager;
 	private final WorldMap worldMap;
+	private final GameUi gameUi;
 	
 	public GameWorld(final LD31 app) {
 		this.app = app;
@@ -32,6 +36,11 @@ public class GameWorld extends Group {
 		addListener(new TouchListener() {
 			@Override
 			public void touched() {
+				gameUi.getTopBar().getStrWidget().setEditable(true);
+				gameUi.getTopBar().getDexWidget().setEditable(true);
+				gameUi.getTopBar().getIntWidget().setEditable(true);
+				gameUi.getTopBar().getPtWidget().setVisible(true);
+				
 				character.attack();
 			}
 		});
@@ -39,27 +48,22 @@ public class GameWorld extends Group {
 		character.setRegion(app.assets.tileTree);
 		character.setSize(32, 32);
 		
+		foeManager = new FoeManager(this);
+		gameUi = new GameUi(app);
+		
 		Log.trace(worldMap.getTilesX());
 		
-		foe = new Foe(app.assets.tileHouse, this);
-		foe.setSize(32, 32);
-		/*addListener(new TouchListener() {
+		addListener(new TouchListener() {
 			@Override
-			public boolean touchDown(final InputEvent event, 
-								  	 final float x, 
-								  	 final float y, 
-								  	 final int pointer, 
-								  	 final int button) {
+			public void touched() {
+				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
+				foe.setSize(32, 32);
 				
-				//Log.trace(worldMap.getTileSize(), worldMap.getTilesX(), worldMap.getTilesY());
-				foe.travelTo((int)(x / worldMap.getTileSize()), 
-							 (int)(y / worldMap.getTileSize()));
+				foe.setPosition(getX(), getY());
 				
-				return true;
+				addActor(foe);
 			}
-		});*/
-		
-		
+		});
 	}
 	
 	public void begin() {
@@ -68,8 +72,14 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
-		addActor(foe);
 		
+		//foe.setPosition(500, 100);
+		//addActor(foe);
+		
+		// Sitas turi buti paskutinis pridetas aktorius
+		addActor(gameUi);
+		
+		gameUi.begin();
 	}
 	
 	@Override
@@ -96,10 +106,13 @@ public class GameWorld extends Group {
 	
 	@Override
 	public void setSize(final float width, 
-						final float height) {
+						float height) {
 		
+		height -= gameUi.getTopBar().getHeight();
 		super.setSize(width, height);
+		
 		worldMap.setSize(width, height);
+		gameUi.setSize(width, height + gameUi.getTopBar().getHeight());
 		
 		astar = new Astar(worldMap.getTilesX(), worldMap.getTilesY(), new Astar.Listener() {
 			
@@ -109,7 +122,6 @@ public class GameWorld extends Group {
 			}
 		});
 		
-		foe.setAstar(astar);
 	}
 	
 	public Astar getAstar() {

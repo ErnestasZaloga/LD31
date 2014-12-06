@@ -14,22 +14,27 @@ public class Blink implements Skill {
 
 	@Override
 	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
-		//Choose random direction
-		int randomDir = MathUtils.random(360);
-		//Choose random range
-		int randomRange = MathUtils.random(1, rangeInTiles)*skillLevel;
-		//Set target tile
-		int t = gameWorld.getWorldMap().getTile(gameWorld.getCharacter().getX()+60, gameWorld.getCharacter().getY()+50);
-		int targetIndexX = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexX();
-		int targetIndexY = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexY();
+		float dx = 0;
+		float dy = 0;
 		
 		//Check if the target tile is free to land on
-		boolean canLand = true;
-		
+		boolean canLand = false;
+		while(!canLand) {
+			int randomDir = MathUtils.random(360);
+			int randomRange = MathUtils.random(1, rangeInTiles)*skillLevel;
+			dx = randomRange*MathUtils.cosDeg(randomDir)*gameWorld.getWorldMap().getTileSize();
+			dy = randomRange*MathUtils.sinDeg(randomDir)*gameWorld.getWorldMap().getTileSize();
+			int t = gameWorld.getWorldMap().getTile(gameWorld.getCharacter().getX()+dx, gameWorld.getCharacter().getY()+dy);
+			if(t < gameWorld.getWorldMap().getChildren().size && t >= 0) {
+				if(((Tile)gameWorld.getWorldMap().getChildren().get(t)).isWalkable()) {
+					canLand = true;
+				}
+			}
+		}
 		
 		if(canLand) {
-			gameWorld.getCharacter().setX(targetIndexX*gameWorld.getWorldMap().getTileSize());
-			gameWorld.getCharacter().setY(targetIndexY*gameWorld.getWorldMap().getTileSize());
+			gameWorld.getCharacter().setX(gameWorld.getCharacter().getX()+dx);
+			gameWorld.getCharacter().setY(gameWorld.getCharacter().getY()+dy);
 		} else {
 			//TODO: Print some kind of warning, make some warning sound
 		}

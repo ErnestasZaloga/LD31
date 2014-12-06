@@ -80,11 +80,10 @@ public class WorldGenerator {
 			}
 		}
 		
-		//Convert tiles that should be roads to small houses
+		//Convert tiles that should be roads which lead to small houses
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {
 				if(map[x][y] == '=') {
-				//((Tile)getChildren().get(indexX * tilesY + indexY)).isWalkable()
 					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setWalkable(true);
 					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setRegion(app.assets.tileRoad);
 					((Tile)worldMap.getChildren().get(x * worldMap.getTilesY() + y)).setSize(tileWH, tileWH);

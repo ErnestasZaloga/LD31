@@ -1,14 +1,16 @@
 package com.us.ld31.utils.tiles;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.us.ld31.LD31;
 
 public class WorldGenerator {
+	private static int radius = 8;
 	
 	private static char grass = '.';
 	private static char rock = 'O';
 	private static char road = '=';
-//	private static char grass = '.';
+	private static char house = '#';
 //	private static char grass = '.';
 //	private static char grass = '.';
 	
@@ -36,6 +38,9 @@ public class WorldGenerator {
 		int cityY = (int) Math.ceil(worldMap.getTilesY()/2);
 		drawRoad(map, cityX, cityY);
 		
+		//Then buildings
+		//drawBuildings(map, cityX, cityY);
+		
 		//Convert chars to actual actors
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {
@@ -49,43 +54,68 @@ public class WorldGenerator {
 			}
 		}
 		
+		//Then generate buildings
+		drawBuildings(map, cityX, cityY);
+		
+		for(int x=0; x<map.length; x++) {
+			for(int y=0; y<map[0].length; y++) {
+				if(map[x][y] == house) {
+					Tile t = tileFactory.createHouseTile(x*tileWH, y*tileWH);
+					int width = (int) (t.getWidth()/tileWH);
+					int height = (int) (t.getHeight()/tileWH);
+					for(int dx=0; dx<width; dx++) {
+						for(int dy=0; dy<height; dy++) {
+							worldMap.occupiedIndexes.add(new Vector2(x+dx, y+dy));
+						}
+					}
+					worldMap.addActor(t);
+				}
+			}
+		}
+		
 		return worldMap;
+	}
+	
+	private static void drawBuildings(char[][] map, int cityX, int cityY) {
+		map[cityX+radius][cityY+2] = house;
+		map[cityX-radius][cityY+2] = house;
+		map[cityX+2][cityY+radius] = house;
+		map[cityX+2][cityY-radius] = house;
 	}
 	
 	private static void drawRoad(char[][] map, int cityX, int cityY) {
 		map[cityX][cityY] = road;
 		//left
 		for(int i=cityX; i>=0; i--) {
-			map[i][cityY-1] = '=';
-			map[i][cityY] = '=';
-			map[i][cityY+1] = '=';
+			map[i][cityY-1] = road;
+			map[i][cityY] = road;
+			map[i][cityY+1] = road;
 		}
 		//right
 		for(int i=cityX; i<map.length; i++) {
-			map[i][cityY-1] = '=';
-			map[i][cityY] = '=';
-			map[i][cityY+1] = '=';
+			map[i][cityY-1] = road;
+			map[i][cityY] = road;
+			map[i][cityY+1] = road;
 		}
 		//up
 		for(int i=cityY; i<map[0].length; i++) {
-			map[cityX-1][i] = '=';
-			map[cityX][i] = '=';
-			map[cityX+1][i] = '=';
+			map[cityX-1][i] = road;
+			map[cityX][i] = road;
+			map[cityX+1][i] = road;
 		}
 		//down
 		for(int i=cityY; i>=0; i--) {
-			map[cityX-1][i] = '=';
-			map[cityX][i] = '=';
-			map[cityX+1][i] = '=';
+			map[cityX-1][i] = road;
+			map[cityX][i] = road;
+			map[cityX+1][i] = road;
 		}
 		//center
-		int radius = 8;
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {
 				int dX = cityX - x;
 				int dY = cityY - y;
 				if(Math.sqrt(dX*dX+dY*dY) <= radius) {
-					map[x][y] = '=';
+					map[x][y] = road;
 				}
 			}
 		}

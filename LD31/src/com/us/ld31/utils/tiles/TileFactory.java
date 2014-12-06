@@ -47,7 +47,7 @@ public class TileFactory {
 	public Tile createHouseTile(float x, float y) {
 		Tile t = new Tile(x, y);
 		t.setRegion(app.assets.tileHouse);
-		t.setSize(tileWH, tileWH);
+		t.setSize(tileWH*3, tileWH*2);
 		t.setWalkable(false);
 		return t;
 	}

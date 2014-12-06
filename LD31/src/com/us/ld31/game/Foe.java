@@ -25,7 +25,6 @@ public class Foe extends SpriteActor{
 		super(region);
 		this.world = world;
 		this.astar = world.getAstar();
-		//tileSize = world
 	}
 	
 	private float time = 0;
@@ -40,8 +39,8 @@ public class Foe extends SpriteActor{
 				pathIndex = 0;
 			} else {
 				time += delta;
-				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
-				Log.trace(delta, time, div);
+				
+				float div = time / secondsPerTile > 1f ? 1f : time / secondsPerTile;
 				
 				float x = MathUtils.lerp(tmpX, path.get(pathIndex) * tileSize, div);
 				float y = MathUtils.lerp(tmpY, path.get(pathIndex + 1) * tileSize, div);
@@ -50,7 +49,7 @@ public class Foe extends SpriteActor{
 				
 				if(time >= secondsPerTile) {
 					pathIndex += 2;
-					time = 0;
+					time %= secondsPerTile;
 					tmpX = x;
 					tmpY = y;
 				}

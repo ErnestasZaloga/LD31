@@ -1,11 +1,13 @@
 package com.us.ld31.game.foestuff;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.Character;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.utils.Astar;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
@@ -72,7 +74,7 @@ public class Foe extends SpriteActor{
 			playerY = (int)(character.getY() / tileSize);
 		}
 		
-		if(shouldTravel) {
+		if(shouldTravel && Vector2.dst(character.getX(), character.getY(), getX(), getY()) > distance * tileSize) {
 			if(pathIndex >= path.size) {
 				shouldTravel = false;
 				pathIndex = 0;
@@ -100,6 +102,8 @@ public class Foe extends SpriteActor{
 					allowNextTravel = true;
 				}
 			}
+		} else {
+			allowNextTravel = true;
 		}
 	}
 	
@@ -112,26 +116,32 @@ public class Foe extends SpriteActor{
 	public void travelTo(int x, int y) {
 		tileSize = world.getWorldMap().getTileSize();
 		astar.getPath(x, 
-					 y, 
+					  y, 
 					 (int)(getX() / tileSize), 
 					 (int)(getY() / tileSize),
 					 path);
+		Log.trace(path);
 		if(path.size >= 2) {
 			path.removeRange(0, 1);
 		}
-		int ps = path.size;
+		//
+		/*int ps = path.size;
 		if(ps >= 2 * distance) {
 			path.removeRange(ps - distance * 2, ps - 1);
 		} else {
 			path.clear();
+		}*/
+		if(path.size == 0) {
+			moveBy(0, 1);
+			Log.trace(0);
+			return;
 		}
-		if(path.size == 0) return;
-		
+		pathIndex = 0;
 		foeTileX = path.get(0);
 		foeTileY = path.get(1);
 		shouldTravel = true;
 		allowNextTravel = false;
-		pathIndex = 0;
+		time = 0;
 	}
 	
 	@Override

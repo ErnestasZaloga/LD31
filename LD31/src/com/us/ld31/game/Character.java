@@ -149,13 +149,13 @@ public class Character extends SpriteActor {
 		
 		for(int yi = yStart, yn = yEnd; yi <= yn; yi += 1) {
 			for(int xi = xStart, xn = xEnd; xi <= xn; xi += 1) {
-				tiles.add(worldMap.mergeCoords(xi, yi));
+				tiles.add(mergeCoords(xi, yi));
 			}
 		}
 	}
 	
 	private int getLocalTile(final float xScale, final float yScale) {
-		return worldMap.getTile(getX() + getWidth() * xScale, getY() + getHeight() * yScale);
+		return getTile(getX() + getWidth() * xScale, getY() + getHeight() * yScale);
 	}
 	
 	private int getTileX(final int tile) {
@@ -166,16 +166,16 @@ public class Character extends SpriteActor {
 		return tile / mapTilesX;
 	}
 	
-	/*private int mergeCoords(final int tileX, final int tileY) {
+	private int mergeCoords(final int tileX, final int tileY) {
 		return tileY * mapTilesX + tileX;
-	}*/
+	}
 	
-	/*private int getTile(final float x, final float y) {
+	private int getTile(final float x, final float y) {
 		final int tileX = (int)(x / tileSize);
 		final int tileY = (int)(y / tileSize);
 		
 		return mergeCoords(tileX, tileY);
-	}*/
+	}
 	
 	private boolean isCollision() {
 		for(int i = 0, n = tiles.size; i < n; i += 1) {

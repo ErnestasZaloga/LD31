@@ -8,6 +8,7 @@ import com.us.ld31.LD31;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.translocations.Blink;
+import com.us.ld31.game.skills.translocations.ControlledBlink;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
@@ -88,8 +89,9 @@ public class GameWorld extends Group {
 		super.act(delta);
 		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			Blink b = new Blink();
-			b.activate(character, this, 1);
+//			Blink skill = new Blink();
+			ControlledBlink skill = new ControlledBlink();
+			skill.activate(character, this, 1);
 		}
 		
 		if(isTouchable()) {

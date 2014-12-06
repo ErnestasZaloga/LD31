@@ -44,7 +44,8 @@ public class WorldMap extends Group {
 	}
 	
 	public int mergeCoords(final int tileX, final int tileY) {
-		return tileY * tilesX + tileX;
+//		return tileY * tilesX + tileX;
+		return tileX * tilesY + tileY;
 	}
 	
 	public int getTilesX() {

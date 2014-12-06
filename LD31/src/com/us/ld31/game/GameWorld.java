@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
+import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;

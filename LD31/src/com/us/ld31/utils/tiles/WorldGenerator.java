@@ -6,6 +6,7 @@ public class WorldGenerator {
 	
 	public static WorldMap generateWorld(LD31 app, WorldMap worldMap) {
 		float tileWH = worldMap.getTileSize();
+		System.out.println(tileWH);
 		TileFactory tileFactory = new TileFactory(app, tileWH);
 		char[][] map = new char[worldMap.getTilesX()][worldMap.getTilesY()];
 		//Fill map with grass

@@ -28,7 +28,7 @@ public class GameWorld extends Group {
 		worldMap = new WorldMap();
 		addActor(worldMap);
 		
-		character = new Character();
+		character = new Character(worldMap);
 		addListener(new TouchListener() {
 			@Override
 			public void touched() {
@@ -36,8 +36,8 @@ public class GameWorld extends Group {
 			}
 		});
 		
-		character.setTileSize(128);
 		character.setRegion(app.assets.tileGrass);
+		character.setSize(32, 32);
 		
 		Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
 		pixmap.setColor(Color.GREEN);
@@ -75,6 +75,7 @@ public class GameWorld extends Group {
 		WorldGenerator.generateWorld(app, worldMap);
 		addActor(character);
 		character.begin();
+		
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
 	}
 	

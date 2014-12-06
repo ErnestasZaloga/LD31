@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.steps.Steps;
 import com.us.ld31.utils.steps.scene.ActorSteps;
+import com.us.ld31.utils.tiles.WorldMap;
 
 public class Character extends SpriteActor {
 
@@ -37,20 +38,12 @@ public class Character extends SpriteActor {
 			this.key = key;
 		}
 	}
-	
-	private float tileSize;
-	
+
+	private final WorldMap worldMap;
 	private final Action[] movementActions = new Action[4];
 	
-	public Character() {
-	}
-	
-	public void setTileSize(final float tileSize) {
-		this.tileSize = tileSize;
-	}
-	
-	public float getTileSize() {
-		return tileSize;
+	public Character(final WorldMap worldMap) {
+		this.worldMap = worldMap;
 	}
 	
 	public void begin() {
@@ -75,13 +68,16 @@ public class Character extends SpriteActor {
 		else {
 			movementActions[direction.index] = Steps.action(
 					Steps.repeat(
-							ActorSteps.moveBy(tileSize * direction.hMul, tileSize * direction.vMul, 1f)));
+							ActorSteps.moveBy(worldMap.getTileSize() * direction.hMul, worldMap.getTileSize() * direction.vMul, 0.5f)));
 			addAction(movementActions[direction.index]);
 		}
 	}
 	
 	@Override
 	public void act(final float delta) {
+		final float x = getX();
+		final float y = getY();
+		
 		super.act(delta);
 		
 		if(getX() < 0) {
@@ -97,6 +93,27 @@ public class Character extends SpriteActor {
 		else if(getY() > getParent().getHeight() - getHeight()) {
 			setY(getParent().getHeight() - getHeight());
 		}
+
+		if(!checkWalkable(0.5f, 0f) ||
+		   !checkWalkable(0.5f, 1f) ||
+		   !checkWalkable(0f, 0.5f) ||
+		   !checkWalkable(1f, 0.5f) ||
+		   !checkWalkable(0f, 0f) ||
+		   !checkWalkable(0f, 1f) ||
+		   !checkWalkable(1f, 0f) ||
+		   !checkWalkable(1f, 1f)) {
+			
+			setPosition(x, y);
+		}
+	}
+	
+	private boolean checkWalkable(final float xScale, final float yScale) {
+		final float tileSize = worldMap.getTileSize();
+		
+		final int tileX = (int)((getX() + getWidth() * xScale) / tileSize);
+		final int tileY = (int)((getY() + getHeight() * yScale) / tileSize);
+		
+		return worldMap.isWalkable(tileX, tileY);
 	}
 	
 }

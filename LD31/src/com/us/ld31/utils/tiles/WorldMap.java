@@ -24,7 +24,7 @@ public class WorldMap extends Group {
 	}
 
 	public boolean isWalkable(final int x, final int y) {
-		return true;
+		return !(x == 1 && y == 1);
 	}
 	
 	public int getTilesX() {

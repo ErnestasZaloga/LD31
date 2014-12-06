@@ -6,10 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.us.ld31.LD31;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
-import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;
+
+
 
 public class GameWorld extends Group {
 
@@ -67,12 +68,6 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
-		
-		final SpriteActor test = new SpriteActor(app.assets.tileRock);
-		addActor(test);
-		test.setSize(worldMap.getTileSize(), worldMap.getTileSize());
-		
-		test.setPosition(worldMap.getTileSize(), worldMap.getTileSize());
 	}
 	
 	@Override

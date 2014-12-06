@@ -24,7 +24,7 @@ public class WorldMap extends Group {
 	}
 
 	public boolean isWalkable(final int indexX, final int indexY) {
-		return ((Tile)getChildren().get(indexY+(indexX - 1)*tilesY)).isWalkable();
+		return ((Tile)getChildren().get(indexX * tilesY + indexY)).isWalkable();
 	}
 	
 	public int getTilesX() {

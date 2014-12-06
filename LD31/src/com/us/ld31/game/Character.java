@@ -11,10 +11,10 @@ import com.us.ld31.utils.tiles.WorldMap;
 public class Character extends SpriteActor {
 
 	public static enum MovementDirection {
-		Up(0, 0, 1, Keys.W),
-		Down(1, 0, -1, Keys.S),
-		Left(2, -1, 0, Keys.A),
-		Right(3, 1, 0, Keys.D);
+		Up(0, 0, 4, Keys.W),
+		Down(1, 0, -4, Keys.S),
+		Left(2, -4, 0, Keys.A),
+		Right(3, 4, 0, Keys.D);
 		
 		public static final MovementDirection[] list = new MovementDirection[] {
 			Up,
@@ -76,7 +76,7 @@ public class Character extends SpriteActor {
 		else {
 			movementActions[direction.index] = Steps.action(
 					Steps.repeat(
-							ActorSteps.moveBy(worldMap.getTileSize() * direction.hMul, worldMap.getTileSize() * direction.vMul, 0.1f)));
+							ActorSteps.moveBy(worldMap.getTileSize() * direction.hMul, worldMap.getTileSize() * direction.vMul, 0.5f)));
 			addAction(movementActions[direction.index]);
 		}
 	}
@@ -142,18 +142,13 @@ public class Character extends SpriteActor {
 		final int topLeft = getLocalTile(0f, 1f);
 		final int topRight = getLocalTile(1f, 1f);
 		
-		tiles.add(bottomLeft);
-		tiles.add(bottomRight);
-		tiles.add(topLeft);
-		tiles.add(topRight);
-		
 		final int xStart = getTileX(bottomLeft);
 		final int xEnd = getTileX(topRight);
 		final int yStart = getTileY(bottomLeft);
 		final int yEnd = getTileY(topRight);
 		
-		for(int yi = yStart, yn = yEnd; yi < yn; yi += 1) {
-			for(int xi = xStart, xn = xEnd; xi < xn; xi += 1) {
+		for(int yi = yStart, yn = yEnd; yi <= yn; yi += 1) {
+			for(int xi = xStart, xn = xEnd; xi <= xn; xi += 1) {
 				tiles.add(mergeCoords(xi, yi));
 			}
 		}

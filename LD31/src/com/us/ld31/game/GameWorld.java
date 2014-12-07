@@ -11,7 +11,10 @@ import com.us.ld31.LD31;
 import com.us.ld31.game.Character.SkillSlot;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
+import com.us.ld31.game.skills.translocations.Blink;
 import com.us.ld31.game.skills.translocations.BlinkAwayOther;
+import com.us.ld31.game.skills.translocations.BlinkOther;
+import com.us.ld31.game.skills.translocations.ControlledBlink;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.utils.Astar;
@@ -173,4 +176,9 @@ public class GameWorld extends Group {
 	public FoeManager getFoeManager() {
 		return foeManager;
 	}
+
+	public GameUi getGameUi() {
+		return gameUi;
+	}
+	
 }

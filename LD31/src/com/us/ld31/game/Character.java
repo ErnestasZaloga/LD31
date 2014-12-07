@@ -2,10 +2,12 @@ package com.us.ld31.game;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.steps.Steps;
 import com.us.ld31.utils.steps.scene.ActorSteps;
+import com.us.ld31.utils.tiles.Tile;
 import com.us.ld31.utils.tiles.WorldMap;
 
 public class Character extends SpriteActor {
@@ -190,6 +192,19 @@ public class Character extends SpriteActor {
 			}
 		}
 		return false;
+	}
+	
+	public Array<Tile> getTilesInRange(int range) {
+		Array<Tile> result = new Array<Tile>();
+		for(int i=0; i<worldMap.getChildren().size; i++) {
+			Tile t = (Tile) worldMap.getChildren().get(i);
+			float dx = getX()-t.getX();
+			float dy = getY()-t.getY();
+			if(Math.sqrt(dx*dx+dy*dy) <= range*worldMap.getTileSize()) {
+				result.add(t);
+			}
+		}
+		return result;
 	}
 	
 }

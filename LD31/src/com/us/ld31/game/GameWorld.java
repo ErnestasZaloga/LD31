@@ -13,6 +13,7 @@ import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.translocations.BlinkAwayOther;
+import com.us.ld31.game.skills.translocations.Portal;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;
@@ -129,7 +130,8 @@ public class GameWorld extends Group {
 //			Blink skill = new Blink(); 
 //			ControlledBlink skill = new ControlledBlink();
 //			BlinkOther skill = new BlinkOther();
-			BlinkAwayOther skill = new BlinkAwayOther();
+//			BlinkAwayOther skill = new BlinkAwayOther();
+			Portal skill = new Portal();
 			skill.activate(character, this, 1);
 		}
 			

@@ -61,6 +61,9 @@ public class Character extends SpriteActor {
 	private CharacterStats stats;
 	private SkillState secondarySkill;
 	
+	public float portalX = -1;
+	public float portalY = -1;
+	
 	public Character(final GameWorld gameWorld) {
 		this.gameWorld = gameWorld;
 		this.worldMap = gameWorld.getWorldMap();

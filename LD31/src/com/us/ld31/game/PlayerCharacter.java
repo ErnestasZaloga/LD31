@@ -68,6 +68,8 @@ public class PlayerCharacter extends SpriteActor {
 	public float portalX = -1;
 	public float portalY = -1;
 	
+	private float primarySkillCooldownLeft;
+	
 	public PlayerCharacter(final GameWorld gameWorld) {
 		this.gameWorld = gameWorld;
 		this.worldMap = gameWorld.getWorldMap();
@@ -109,7 +111,12 @@ public class PlayerCharacter extends SpriteActor {
 			}
 		}
 		else if(slot == SkillSlot.Primary && primarySkill != null) {
-			primarySkill.activate(this, gameWorld, 1);
+			if(primarySkillCooldownLeft == 0) {
+				primarySkillCooldownLeft = primarySkill.activate(this, gameWorld, 1);
+			}
+			else {
+				Log.trace(this, "Still in cooldown");
+			}
 		}
 	}
 	
@@ -140,6 +147,11 @@ public class PlayerCharacter extends SpriteActor {
 	
 	@Override
 	public void act(final float delta) {
+		primarySkillCooldownLeft -= delta;
+		if(primarySkillCooldownLeft < 0f) {
+			primarySkillCooldownLeft = 0f;
+		}
+		
 		for(int i = 0; i < stats.getSkills().length; i += 1) {
 			final SkillTree skillTree = stats.getSkills()[i];
 			skillTree.updateCooldowns(delta);

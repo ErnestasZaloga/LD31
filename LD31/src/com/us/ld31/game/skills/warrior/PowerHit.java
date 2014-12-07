@@ -13,7 +13,7 @@ public class PowerHit implements Skill{
 	private float cooldown = 6f;
 	private float rangeInTiles = 0.3f;
 	private float range;
-
+	
 	@Override
 	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
 		float mouseX = Gdx.input.getX();
@@ -37,6 +37,7 @@ public class PowerHit implements Skill{
 				if(Vector2.dst(target.getX(), target.getY(), playerX, playerY) <= trueRange) {
 					//TODO success
 					gameWorld.getGameUi().getMessages().showWarning("damage");
+					gameWorld.getProjectileFactory().createPowerAttack(playerX, playerY, 0);
 				} else {
 					gameWorld.getGameUi().getMessages().showWarning("target not in range");
 				}
@@ -54,6 +55,7 @@ public class PowerHit implements Skill{
 			if(Vector2.dst(user.getX(), user.getY(), playerX, playerY) <= trueRange) {
 				//TODO success
 				gameWorld.getGameUi().getMessages().showWarning("damage");
+				gameWorld.getProjectileFactory().createPowerAttack(user.getX(), user.getY(), 0);
 			} else {
 				//gameWorld.getGameUi().getMessages().showWarning("target not in range");
 			}

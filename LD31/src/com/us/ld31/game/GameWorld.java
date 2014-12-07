@@ -15,6 +15,7 @@ import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
+import com.us.ld31.game.skills.warrior.Charge;
 import com.us.ld31.game.skills.warrior.PowerHit;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
@@ -171,7 +172,8 @@ public class GameWorld extends Group {
 			skill.activate(character, this, 1);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.F)) {
-			PowerHit skill = new PowerHit();
+			//Charge skill = new Charge();
+			Charge skill = new Charge();
 			skill.activate(character, this, 1);
 		}
 			

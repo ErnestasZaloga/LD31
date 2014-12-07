@@ -8,12 +8,15 @@ public class SkillTree {
 		public SkillTree create();
 	}
 	
+	public final String name;
 	public final Source source;
 	public final Array<SkillState> states;
 	
-	public SkillTree(final Source source, 
+	public SkillTree(final String name,
+					 final Source source, 
 					 final Array<SkillState> states) {
 		
+		this.name = name;
 		this.source = source;
 		this.states = states;
 	}

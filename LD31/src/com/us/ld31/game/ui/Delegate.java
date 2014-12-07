@@ -20,7 +20,6 @@ public class Delegate {
 	}
 	
 	public void onLevelUp(final SkillIcon skillIcon) {
-		skillIcon.updateLevel();
 	}
 	
 }

@@ -124,7 +124,8 @@ public class GameWorld extends Group {
 		addActor(gameUi);
 		
 		gameUi.begin();
-		gameUi.getSkillBar().markForLevelUp();
+		gameUi.getSkillbook().setSkillTree(character.getStats().getSkills());
+		gameUi.getSkillbook().setSkillPoints(character.getStats().getSkillPoints());
 	}
 	
 	@Override

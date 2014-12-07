@@ -5,154 +5,140 @@ filter: Linear,Linear
 repeat: none
 Block
   rotate: false
-  xy: 1053, 339
+  xy: 1053, 508
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 FontBig
   rotate: false
-  xy: 1, 145
+  xy: 1, 10
   size: 512, 256
   orig: 512, 256
   offset: 0, 0
   index: -1
 FontSmall
   rotate: false
-  xy: 515, 145
+  xy: 1029, 10
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 RangedArrow
   rotate: false
-  xy: 2597, 659
-  size: 5, 20
-  orig: 5, 20
+  xy: 1825, 613
+  size: 20, 5
+  orig: 20, 5
   offset: 0, 0
   index: -1
 Sword
   rotate: false
-  xy: 2321, 979
-  size: 7, 24
-  orig: 7, 24
+  xy: 1, 1
+  size: 24, 7
+  orig: 24, 7
   offset: 0, 0
   index: -1
 arrow
   rotate: false
-  xy: 2255, 917
+  xy: 1053, 420
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 dex
   rotate: false
-  xy: 2255, 939
+  xy: 1859, 956
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 773, 145
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-grass1
-  rotate: false
-  xy: 1567, 337
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-grass2
-  rotate: false
-  xy: 1825, 337
-  size: 256, 256
-  orig: 256, 256
+  xy: 1053, 442
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 house
   rotate: false
-  xy: 1567, 595
+  xy: 515, 10
   size: 512, 256
   orig: 512, 256
   offset: 0, 0
   index: -1
 hp
   rotate: false
-  xy: 1031, 1
+  xy: 1825, 620
   size: 15, 400
   orig: 15, 400
   offset: 0, 0
   index: -1
 int
   rotate: false
-  xy: 2597, 681
+  xy: 1287, 184
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 kazkas
   rotate: false
-  xy: 2083, 193
+  xy: 1842, 620
   size: 15, 400
   orig: 15, 400
   offset: 0, 0
   index: -1
 missing
   rotate: false
-  xy: 2855, 939
+  xy: 1545, 442
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 road
   rotate: false
-  xy: 2081, 595
-  size: 256, 256
-  orig: 256, 256
+  xy: 1859, 890
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 2597, 747
+  xy: 1287, 250
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 skillbg
   rotate: false
-  xy: 1, 403
+  xy: 1, 420
   size: 1050, 600
   orig: 1050, 600
   offset: 0, 0
   index: -1
 skillicon
   rotate: false
-  xy: 1, 79
+  xy: 1925, 956
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 str
   rotate: false
-  xy: 2100, 529
+  xy: 1119, 442
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tree
   rotate: false
-  xy: 2339, 491
+  xy: 1567, 508
   size: 256, 512
   orig: 256, 512
   offset: 0, 0
   index: -1
 ui
   rotate: false
-  xy: 1053, 853
+  xy: 1, 268
   size: 1200, 150
   orig: 1200, 150
   offset: 0, 0

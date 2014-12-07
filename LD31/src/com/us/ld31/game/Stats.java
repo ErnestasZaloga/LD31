@@ -66,8 +66,8 @@ public class Stats {
 
 	// Strength: melee damage, hp
 	// Dextirity: attack rating, defense rating, critical chance, ranged damage
-	// Intelligence: magic damage, magic resistance, cooldown reduction
-	
+	// Intelligence: magic damage bonus, magic resistance, cooldown reduction
+
 	public boolean isDead() {
 		return hitPoints == 0;
 	}

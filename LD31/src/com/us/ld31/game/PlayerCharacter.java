@@ -199,8 +199,8 @@ public class PlayerCharacter extends SpriteActor {
 
 		final int bottomLeft = getLocalTile(0f, 0f);
 		final int bottomRight = getLocalTile(1f, 0f);
-		final int topLeft = getLocalTile(0f, 1f);
-		final int topRight = getLocalTile(1f, 1f);
+		final int topLeft = getTile(getX(), getY() + worldMap.getTileSize());
+		final int topRight = getTile(getRight(), getY() + worldMap.getTileSize());
 		
 		final int xStart = getTileX(bottomLeft);
 		final int xEnd = getTileX(topRight);

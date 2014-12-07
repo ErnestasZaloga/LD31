@@ -59,9 +59,30 @@ public class Stats {
 	
 	private final Array<Upgrade> upgrades = new Array<Upgrade>();
 	
+	private int hitPoints;
 	private int strength;
 	private int dextirity;
 	private int intelligence;
+
+	// Strength: melee damage, hp
+	// Dextirity: attack rating, defense rating, critical chance, ranged damage
+	// Intelligence: magic damage, magic resistance, cooldown reduction
+	
+	public boolean isDead() {
+		return hitPoints == 0;
+	}
+	
+	public void setHitPoints(final int hitPoints) {
+		if(hitPoints < 0) {
+			this.hitPoints = 0;
+			return;
+		}
+		this.hitPoints = hitPoints;
+	}
+	
+	public int getHitPoints() {
+		return hitPoints;
+	}
 	
 	public void setStrength(final int strength) {
 		this.strength = strength;

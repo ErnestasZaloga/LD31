@@ -30,4 +30,14 @@ public class ProjectileFactory {
 		p.setSpeed(15);
 		projectileGroup.addActor(p);
 	}
+	
+	public void createPowerAttack(float startX, float startY, float dir) {
+		Projectile p = new Projectile(startX, startY);
+		p.setDir(dir);
+		p.setRegion(app.assets.uiArrowDown);
+		p.setDamage(-5);
+		p.setSpeed(15);
+		projectileGroup.addActor(p);
+		System.out.println("added");
+	}
 }

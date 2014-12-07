@@ -4,17 +4,12 @@ import com.us.ld31.game.skills.SkillTree;
 
 public class CharacterStats extends Stats {
 
-	private int hitPoints = 100;
 	private int level = 1;
 	private int freePoints;
-	private int skillPoints = 1;
+	private int skillPoints = 5;
 	private int experience;
 	private int gold;
 	private final SkillTree[] skills = new SkillTree[3];
-	
-	public int getHitPoints() {
-		return hitPoints;
-	}
 	
 	public SkillTree[] getSkills() {
 		return skills;

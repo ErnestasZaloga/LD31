@@ -15,6 +15,7 @@ import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
+import com.us.ld31.game.skills.warrior.Charge;
 import com.us.ld31.game.skills.warrior.PowerHit;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
@@ -109,7 +110,7 @@ public class GameWorld extends Group {
 			}
 		});
 		
-		foeGroup.addListener(new TouchListener() {
+		/*characterController.addListener(new TouchListener() {
 			@Override
 			public void touched() {
 				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
@@ -120,7 +121,9 @@ public class GameWorld extends Group {
 				
 				foeGroup.addActor(foe);
 			}
-		});
+		});*/
+		
+		
 	}
 	
 	public LD31 getApp() {
@@ -170,7 +173,8 @@ public class GameWorld extends Group {
 			skill.activate(character, this, 1);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.F)) {
-			PowerHit skill = new PowerHit();
+			//Charge skill = new Charge();
+			Charge skill = new Charge();
 			skill.activate(character, this, 1);
 		}
 			
@@ -179,6 +183,18 @@ public class GameWorld extends Group {
 		}
 		else {
 			super.act(delta);
+			
+			foeManager.update(delta);
+			if(foeManager.canSpawn()) {
+				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
+				foe.setSize(32, 32);
+				
+				Vector2 pos = foeManager.getRandomSpawnPoint();
+				foe.setPosition(pos.x, pos.y);
+				
+				foeGroup.addActor(foe);
+			}
+			
 			
 			for(int i = 0; i < PlayerCharacter.MovementDirection.list.length; i += 1) {
 				final PlayerCharacter.MovementDirection direction = PlayerCharacter.MovementDirection.list[i];

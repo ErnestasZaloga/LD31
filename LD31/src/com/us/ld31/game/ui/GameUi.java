@@ -46,8 +46,8 @@ public class GameUi extends Group {
 		final float barWidth = app.space.vertical(2);
 		final float barHeight = app.space.horizontal(25);
 		
-		expBar.setPercent(0.7f);
-		healthBar.setPercent(0.35f);
+		expBar.setPercent(0.7f, true);
+		healthBar.setPercent(0.35f, true);
 		
 		healthBar.setSize(barWidth, barHeight);
 		expBar.setSize(barWidth, barHeight);

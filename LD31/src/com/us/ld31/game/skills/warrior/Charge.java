@@ -7,13 +7,15 @@ import com.us.ld31.game.GameWorld;
 import com.us.ld31.game.PlayerCharacter;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.skills.Skill;
+import com.us.ld31.utils.steps.scene.ActorSteps;
+import com.us.ld31.utils.steps.scene.StepAction;
 
-public class PowerHit implements Skill{
+public class Charge implements Skill {
 	
-	private float cooldown = 6f;
-	private float rangeInTiles = 0.3f;
+	private float cooldown = 15f;
+	private float rangeInTiles = 10f;
 	private float range;
-	
+
 	@Override
 	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
 		float mouseX = Gdx.input.getX();
@@ -35,9 +37,11 @@ public class PowerHit implements Skill{
 						   					(player.getWidth() + player.getHeight()) / 4;
 				
 				if(Vector2.dst(target.getX(), target.getY(), playerX, playerY) <= trueRange) {
-					//TODO success
-					gameWorld.getGameUi().getMessages().showWarning("damage");
-					gameWorld.getProjectileFactory().createPowerAttack(playerX, playerY, 0);
+					//
+					//Charge!!!!!
+					//
+					gameWorld.getGameUi().getMessages().showWarning("charge!!!");
+					player.addAction(StepAction.obtain(ActorSteps.moveTo(target.getX(), target.getY(), 0.2f)));
 				} else {
 					gameWorld.getGameUi().getMessages().showWarning("target not in range");
 				}
@@ -54,7 +58,7 @@ public class PowerHit implements Skill{
 
 			if(Vector2.dst(user.getX(), user.getY(), playerX, playerY) <= trueRange) {
 				//TODO success
-				gameWorld.getGameUi().getMessages().showWarning("damage");
+				gameWorld.getGameUi().getMessages().showWarning("charge");
 				gameWorld.getProjectileFactory().createPowerAttack(user.getX(), user.getY(), 0);
 			} else {
 				//gameWorld.getGameUi().getMessages().showWarning("target not in range");
@@ -62,5 +66,5 @@ public class PowerHit implements Skill{
 		} 
 		return cooldown;
 	}
-	
+
 }

@@ -1,5 +1,6 @@
 package com.us.ld31.utils.tiles;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
@@ -54,6 +55,13 @@ public class WorldMap extends Group {
 	
 	public int getTilesY() {
 		return tilesY;
+	}
+	
+	@Override
+	public void draw(final Batch batch, final float parentAlpha) {
+		final long a = System.currentTimeMillis();
+		super.draw(batch, parentAlpha);
+		//System.out.println("Takes: " + (System.currentTimeMillis() - a));
 	}
 	
 }

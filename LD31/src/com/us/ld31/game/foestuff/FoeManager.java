@@ -66,4 +66,13 @@ public class FoeManager {
 	public Array<Foe> getAllFoes() {
 		return foes;
 	}
+	
+	public Foe getFoeByCoords(float x, float y) {
+		for(Foe f : foes) {
+			if(f.getX() <= x && x <= f.getX()+f.getWidth() && f.getY() <= y && y <= f.getY()+f.getHeight()) {
+				return f;
+			}
+		}
+		return null;
+	}
 }

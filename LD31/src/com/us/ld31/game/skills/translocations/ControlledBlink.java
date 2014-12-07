@@ -16,22 +16,15 @@ public class ControlledBlink implements Skill {
 	
 	@Override
 	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
-//		float dx = 0;
-//		float dy = 0;
-//		
-//		//Check if the target tile is free to land on
+		//Check if the target tile is free to land on
 		boolean canLand = false;
-//		int dir = MathUtils.random(360);
-//		int range = MathUtils.random(1, rangeInTiles)*skillLevel;
-		
-//		dx = range*MathUtils.cosDeg(dir)*gameWorld.getWorldMap().getTileSize();
-//		dy = range*MathUtils.sinDeg(dir)*gameWorld.getWorldMap().getTileSize();
-//		int t = gameWorld.getWorldMap().getTile(gameWorld.getCharacter().getX()+dx, gameWorld.getCharacter().getY()+dy);
 		float mouseX = Gdx.input.getX();
 		float mouseY = Gdx.graphics.getHeight()-Gdx.input.getY();
 		
-		float dx = mouseX - gameWorld.getCharacter().getX();
-		float dy = mouseY - gameWorld.getCharacter().getY();
+//		float dx = mouseX - gameWorld.getCharacter().getX();
+//		float dy = mouseY - gameWorld.getCharacter().getY();
+		float dx = mouseX - user.getX();
+		float dy = mouseY - user.getY();
 		//Check if teleport coordinates are within range or not
 		if(Math.sqrt(dx*dx+dy*dy) <= rangeInTiles*gameWorld.getWorldMap().getTileSize()) {
 			int t = gameWorld.getWorldMap().getTile(mouseX, mouseY);
@@ -47,11 +40,14 @@ public class ControlledBlink implements Skill {
 				}
 			}
 		} else {
-			float dir = (new Vector2(mouseX-gameWorld.getCharacter().getX(), mouseY-gameWorld.getCharacter().getY())).angle();
+//			float dir = (new Vector2(mouseX-gameWorld.getCharacter().getX(), mouseY-gameWorld.getCharacter().getY())).angle();
+			float dir = (new Vector2(mouseX-user.getX(), mouseY-user.getY())).angle();
 			float range = rangeInTiles*gameWorld.getWorldMap().getTileSize();
 			
-			float targetX = gameWorld.getCharacter().getX() + range*MathUtils.cosDeg(dir);
-			float targetY = gameWorld.getCharacter().getY() + range*MathUtils.sinDeg(dir);
+//			float targetX = gameWorld.getCharacter().getX() + range*MathUtils.cosDeg(dir);
+//			float targetY = gameWorld.getCharacter().getY() + range*MathUtils.sinDeg(dir);
+			float targetX = user.getX() + range*MathUtils.cosDeg(dir);
+			float targetY = user.getY() + range*MathUtils.sinDeg(dir);
 			int t = gameWorld.getWorldMap().getTile(targetX, targetY);
 			int indexX = (int) Math.floor(targetX / gameWorld.getWorldMap().getTileSize());
 			int indexY = (int) Math.floor(targetY / gameWorld.getWorldMap().getTileSize());
@@ -67,8 +63,10 @@ public class ControlledBlink implements Skill {
 		}
 		
 		if(canLand) {
-			gameWorld.getCharacter().setX(mouseX);
-			gameWorld.getCharacter().setY(mouseY);
+//			gameWorld.getCharacter().setX(mouseX);
+//			gameWorld.getCharacter().setY(mouseY);
+			user.setX(mouseX);
+			user.setY(mouseY);
 		} else {
 			//TODO: Print some kind of warning, make some warning sound
 		}

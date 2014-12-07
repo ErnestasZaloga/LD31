@@ -24,13 +24,15 @@ public class Blink implements Skill {
 			int randomRange = MathUtils.random(1, rangeInTiles)*skillLevel;
 			dx = randomRange*MathUtils.cosDeg(randomDir)*gameWorld.getWorldMap().getTileSize();
 			dy = randomRange*MathUtils.sinDeg(randomDir)*gameWorld.getWorldMap().getTileSize();
-			int t = gameWorld.getWorldMap().getTile(gameWorld.getCharacter().getX()+dx, gameWorld.getCharacter().getY()+dy);
+//			int t = gameWorld.getWorldMap().getTile(gameWorld.getCharacter().getX()+dx, gameWorld.getCharacter().getY()+dy);
+			int t = gameWorld.getWorldMap().getTile(user.getX()+dx, user.getY()+dy);
 			if(t < 0 || t >= gameWorld.getWorldMap().getChildren().size) {
 				continue;
 			}
 			
 			int indexX = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexX();
 			int indexY = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexY();
+			if(t < gameWorld.getWorldMap().getChildren().size && t >= 0) {
 			if(gameWorld.getWorldMap().isWalkable(indexX, indexY)) {
 				if(t < gameWorld.getWorldMap().getChildren().size && t >= 0) {
 					if(((Tile)gameWorld.getWorldMap().getChildren().get(t)).isWalkable()) {
@@ -38,11 +40,12 @@ public class Blink implements Skill {
 					}
 				}
 			}
+			}
 		}
 		
 		if(canLand) {
-			gameWorld.getCharacter().setX(gameWorld.getCharacter().getX()+dx);
-			gameWorld.getCharacter().setY(gameWorld.getCharacter().getY()+dy);
+			user.setX(gameWorld.getCharacter().getX()+dx);
+			user.setY(gameWorld.getCharacter().getY()+dy);
 		} else {
 			//TODO: Print some kind of warning, make some warning sound
 		}

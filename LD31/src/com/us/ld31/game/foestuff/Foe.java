@@ -148,7 +148,7 @@ public class Foe extends SpriteActor{
 		}*/
 		if(path.size == 0) {
 			moveBy(0, 1);
-			Log.trace(0);
+			//Log.trace(0);
 			return;
 		}
 		

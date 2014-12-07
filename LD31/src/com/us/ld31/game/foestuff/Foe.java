@@ -92,25 +92,14 @@ public class Foe extends SpriteActor{
 				int tileXCh = 0;
 				int tileYCh = 0;
 				
-				//if(moved) {
-					tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
-					tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
-					//moved = false;
-				//}
+				tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
+				tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
 				
 				time += delta;
 				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				Log.trace(/*tileXCh, tileYCh, foeTileX,*/ getX());
-				
 				float x = (float)(lerpX + ((tileSize * tileXCh)/* * div*/));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
 				float y = (float)(lerpY + ((tileSize * tileYCh)/* * div*/)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
-				
-				//float x = foeTileX * tileSize;
-				//float y = foeTileY * tileSize;
-				
-				///this.setPosition(x, y);
-				//Log.trace(tmpX, tmpY);
 				
 				if(time > secondsPerTile) {
 					//moved = true;
@@ -177,7 +166,7 @@ public class Foe extends SpriteActor{
 			return;
 		}
 		
-		for(int i =0; i < path.size; i += 2) {
+		for(int i=0; i < path.size; i += 2) {
 			final SpriteActor tile = new SpriteActor(world.getApp().assets.uiBlock);
 			tile.setSize(world.getWorldMap().getTileSize(), world.getWorldMap().getTileSize());
 			tile.setPosition(path.get(i) * world.getWorldMap().getTileSize(), path.get(i + 1) * world.getWorldMap().getTileSize());

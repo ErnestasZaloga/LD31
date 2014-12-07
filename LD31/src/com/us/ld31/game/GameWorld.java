@@ -12,8 +12,6 @@ import com.us.ld31.game.Character.SkillSlot;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
-import com.us.ld31.game.skills.translocations.BlinkAwayOther;
-import com.us.ld31.game.skills.translocations.Portal;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;
@@ -30,6 +28,7 @@ public class GameWorld extends Group {
 	private FoeManager foeManager;
 	private final WorldMap worldMap;
 	private final GameUi gameUi;
+	private final Group foeGroup;
 	private final Actor characterController = new Actor();
 	
 	private boolean paused;
@@ -60,6 +59,8 @@ public class GameWorld extends Group {
 		character.setSize(32, 32);
 		
 		foeManager = new FoeManager(this);
+		foeGroup = new Group();
+		
 		gameUi = new GameUi(app);
 		gameUi.setDelegate(new Delegate() {
 			@Override
@@ -84,7 +85,7 @@ public class GameWorld extends Group {
 			
 		});
 		
-		addListener(new TouchListener() {
+		foeGroup.addListener(new TouchListener() {
 			@Override
 			public void touched() {
 				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
@@ -93,7 +94,7 @@ public class GameWorld extends Group {
 				Vector2 pos = foeManager.getRandomSpawnPoint();
 				foe.setPosition(pos.x, pos.y);
 				
-				addActor(foe);
+				foeGroup.addActor(foe);
 			}
 		});
 	}
@@ -116,6 +117,7 @@ public class GameWorld extends Group {
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
 
 		addActor(characterController);
+		addActor(foeGroup);
 		
 		// Sitas turi buti paskutinis pridetas aktorius
 		addActor(gameUi);
@@ -131,8 +133,8 @@ public class GameWorld extends Group {
 //			ControlledBlink skill = new ControlledBlink();
 //			BlinkOther skill = new BlinkOther();
 //			BlinkAwayOther skill = new BlinkAwayOther();
-			Portal skill = new Portal();
-			skill.activate(character, this, 1);
+			//Portal skill = new Portal();
+			//skill.activate(character, this, 1);
 		}
 			
 		if(paused) {
@@ -164,6 +166,7 @@ public class GameWorld extends Group {
 		
 		worldMap.setSize(width, height);
 		gameUi.setSize(width, height + gameUi.getTopBar().getHeight());
+		foeGroup.setSize(width, height);
 		
 		astar = new Astar(worldMap.getTilesX(), worldMap.getTilesY(), new Astar.Listener() {
 			

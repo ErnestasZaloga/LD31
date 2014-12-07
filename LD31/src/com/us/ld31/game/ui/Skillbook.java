@@ -2,19 +2,24 @@ package com.us.ld31.game.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.us.ld31.game.skills.SkillState;
 import com.us.ld31.game.skills.SkillTree;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.TouchListener;
 
 public class Skillbook extends Group {
 
-	private static final int ICON_SIZE = 48;
+	private static final int ICON_SIZE = 32;
 	
 	public static class SkillIcon extends Group {
 		private final GameUi gameUi;
@@ -43,6 +48,8 @@ public class Skillbook extends Group {
 			levelUpButton.setRegion(gameUi.getApp().assets.uiMissing);
 			
 			setSize(icon.getWidth(), icon.getHeight());
+			levelUpButton.setSize(icon.getWidth() / 2f, icon.getHeight() / 2f);
+			levelUpButton.setX(getWidth() - levelUpButton.getWidth());
 			
 			addActor(icon);
 			addActor(iconOverlay);
@@ -62,23 +69,41 @@ public class Skillbook extends Group {
 					}
 				}
 			});
+			
+			addListener(new InputListener() {
+				@Override
+				public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+					gameUi.getSkillbook().showInfo(skill.getSkillInfo().name, skill.getSkillInfo().description);
+				}
+				
+				@Override
+				public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+					gameUi.getSkillbook().hideInfo();
+				}
+			});
 		}
 		
 		public void enableForLevelUp() {
+			boolean available = false || skill.getParents().size == 0;
+			for(int i = 0; i < skill.getParents().size; i += 1) {
+				if(skill.getParents().get(0).getLevel() > 0) {
+					available = true;
+				}
+			}
+			
+			if(available) {
+				label.setVisible(skill.getLevel() > 0);
+				levelUpButton.setVisible(skill.getLevel() < 2);
+			}
+			
+			label.setText("" + skill.getLevel());
+			label.pack();
 			label.setVisible(skill.getLevel() > 0);
-			levelUpButton.setVisible(skill.getLevel() < 2);
+			iconOverlay.setVisible(skill.getLevel() == 0);
 		}
 		
 		public void disableForLevelUp() {
 			levelUpButton.setVisible(false);
-		}
-		
-		public void updateLevel() {
-			iconOverlay.setVisible(skill.getLevel() == 0);
-			levelUpButton.setVisible(skill.getLevel() < 2);
-			label.setText("" + skill.getLevel());
-			label.pack();
-			label.setVisible(true);
 		}
 		
 		public SkillState getSkillState() {
@@ -91,13 +116,18 @@ public class Skillbook extends Group {
 		private final Array<SkillIcon> skillIcons = new Array<SkillIcon>();
 		private final Group highlighters = new Group();
 		private final Group icons = new Group();
+		private final Label title;
 		
 		public SkillTreeUi(final GameUi gameUi) {
 			this.gameUi = gameUi;
 			setTransform(false);
 			
+			title = new Label("Title", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.GREEN));
+			title.setFontScale(0.8f);
+			
 			addActor(highlighters);
 			addActor(icons);
+			addActor(title);
 			
 			icons.setTransform(false);
 			highlighters.setTransform(false);
@@ -114,6 +144,7 @@ public class Skillbook extends Group {
 			if(nodes.size == 1) {
 				final SkillIcon icon = createSkillIcon(nodes.get(0));
 				icon.setX(getWidth() / 2f - icon.getWidth() / 2f);
+				icon.setY(-icon.getHeight());
 				layoutNode(icon);
 			}
 			else {
@@ -126,10 +157,37 @@ public class Skillbook extends Group {
 				for(int i = 1; i < nodes.size - 1; i += 1) {
 					final SkillIcon icon = createSkillIcon(nodes.get(i));
 					icon.setX(div * i - icon.getWidth() / 2f);
+					icon.setY(-icon.getHeight());
 					layoutNode(icon);
 				}
 			}
 			
+			float minY = Float.MAX_VALUE;
+			final Array<Actor> iconsChildren = icons.getChildren();
+			for(int i = 0; i < iconsChildren.size; i += 1) {
+				if(iconsChildren.get(i).getY() < minY) {
+					minY = iconsChildren.get(i).getY();
+				}
+			}
+			
+			for(int i = 0; i < iconsChildren.size; i += 1) {
+				iconsChildren.get(i).moveBy(0f, -minY);
+			}
+			
+			final Array<Actor> highlightsChildren = highlighters.getChildren();
+			for(int i = 0; i < highlightsChildren.size; i += 1) {
+				highlightsChildren.get(i).moveBy(0, -minY);
+			}
+
+			title.setText(skillTree.name);
+			title.pack();
+			title.setPosition(getWidth() / 2f - title.getWidth() / 2f, getHeight() - title.getHeight());
+			
+			highlighters.setHeight(-minY);
+			icons.setHeight(-minY);
+			
+			highlighters.setY(getHeight() - icons.getHeight() - title.getHeight() - gameUi.getApp().space.vertical(1f));
+			icons.setY(getHeight() - icons.getHeight() - title.getHeight() - gameUi.getApp().space.vertical(1f));
 		}
 		
 		private SkillIcon createSkillIcon(final SkillState state) {
@@ -146,7 +204,7 @@ public class Skillbook extends Group {
 				return;
 			}
 			
-			final float space = parent.getWidth();
+			final float space = parent.getWidth() * 1.5f;
 			
 			if(sub.size == 1) {
 				final SkillIcon icon = createSkillIcon(sub.get(0));
@@ -154,11 +212,13 @@ public class Skillbook extends Group {
 				icon.setY(parent.getY() - space - icon.getHeight());
 				
 				makeHighlighter(parent, icon);
+				
+				layoutNode(icon);
 			}
 			else {
 				
 				final float width = (space * (sub.size - 1)) + sub.size * parent.getWidth();
-				float x = parent.getX() - width / 2f;
+				float x = parent.getX() + parent.getWidth() / 2f - width / 2f;
 				
 				for(int i = 0; i < sub.size; i += 1) {
 					final SkillIcon icon = createSkillIcon(sub.get(i));
@@ -168,7 +228,8 @@ public class Skillbook extends Group {
 					makeHighlighter(parent, icon);
 					
 					x += icon.getWidth() + space;
-					
+
+					layoutNode(icon);
 				}
 			}
 		}
@@ -185,22 +246,28 @@ public class Skillbook extends Group {
 			
 			final SpriteActor highlight = new SpriteActor();
 			highlight.setRegion(gameUi.getApp().assets.uiBlock);
-			highlight.setSize(3, length);
+			highlight.setSize(1, length);
+			highlight.setColor(Color.GREEN);
+			highlight.getColor().a = 0.5f;
 			
 			highlight.setOrigin(highlight.getWidth() / 2f, highlight.getHeight());
-			highlight.setRotation(angle);
+			highlight.setRotation(angle + 90f);
 			
-			highlight.setPosition(from.getX() + from.getWidth() / 2f, from.getY() + from.getHeight() / 2f);
+			highlight.setPosition(from.getX() + from.getWidth() / 2f - highlight.getWidth() / 2f, from.getY() + from.getHeight() / 2f - highlight.getHeight());
 		
 			highlighters.addActor(highlight);
 		}
 		
 		public void enableForLevelUp() {
-			
+			for(int i = 0; i < skillIcons.size; i += 1) {
+				skillIcons.get(i).enableForLevelUp();
+			}
 		}
 		
 		public void disableForLevelUp() {
-			
+			for(int i = 0; i < skillIcons.size; i += 1) {
+				skillIcons.get(i).disableForLevelUp();
+			}
 		}
 	}
 	
@@ -213,10 +280,44 @@ public class Skillbook extends Group {
 	private final SpriteActor cancel = new SpriteActor();
 	
 	private final SkillTreeUi[] skillTrees = new SkillTreeUi[3];
+	private final SpriteActor sep1 = new SpriteActor();
+	private final SpriteActor sep2 = new SpriteActor();
+	private final SpriteActor sep3 = new SpriteActor();
+	
+	private final Label points;
+	
+	private final Label infoTitle;
+	private final Label infoText;
 	
 	public Skillbook(final GameUi gameUi) {
 		setTransform(false);
 		this.gameUi = gameUi;
+		
+		points = new Label("Skill Points: 0", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.YELLOW));
+		
+		infoTitle = new Label("Title", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.YELLOW));
+		infoText = new Label("Text", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.WHITE));
+		
+		infoTitle.setAlignment(Align.center, Align.center);
+		infoTitle.setEllipse(true);
+		
+		infoText.setFontScale(0.8f);
+		infoText.setAlignment(Align.top, Align.center);
+		infoText.setWrap(true);
+		
+		sep1.setRegion(gameUi.getApp().assets.uiBlock);
+		sep2.setRegion(gameUi.getApp().assets.uiBlock);
+		sep3.setRegion(gameUi.getApp().assets.uiBlock);
+		
+		sep1.setColor(Color.GREEN);
+		sep2.setColor(Color.GREEN);
+
+		sep1.getColor().a = 0.5f;
+		sep2.getColor().a = 0.5f;
+		
+		sep1.setWidth(1f);
+		sep2.setWidth(1f);
+		sep3.setWidth(1f);
 		
 		title = new Label("Skill Book", new LabelStyle(gameUi.getApp().assets.fontSmall, new Color(1f, 1f, 1f, 1f)));
 		title.pack();
@@ -227,6 +328,18 @@ public class Skillbook extends Group {
 		tableBackground.setRegion(gameUi.getApp().assets.uiBlock);
 		tableBackground.setColor(Color.BLACK);
 
+		table.addActor(sep1);
+		table.addActor(sep2);
+		table.addActor(sep3);
+
+		table.addActor(points);
+		
+		table.addActor(infoTitle);
+		table.addActor(infoText);
+		
+		infoTitle.setVisible(false);
+		infoText.setVisible(false);
+		
 		for(int i = 0; i < skillTrees.length; i += 1) {
 			skillTrees[i] = new SkillTreeUi(gameUi);
 			table.addActor(skillTrees[i]);
@@ -237,11 +350,31 @@ public class Skillbook extends Group {
 		addActor(table);
 	}
 	
-	public void enableForLevelUp() {}
-	public void disableForLevelUp() {}
+	public void setSkillPoints(final int skillPoints) {
+		points.setText("Skill Points: " + skillPoints);
+		points.pack();
+		
+		points.setPosition(table.getWidth() - points.getWidth() - gameUi.getApp().space.horizontal(1f), title.getY());
+	}
+	
+	public void enableForLevelUp() {
+		for(int i = 0; i < skillTrees.length; i += 1) {
+			skillTrees[i].enableForLevelUp();
+		}
+	}
+	
+	public void disableForLevelUp() {
+		for(int i = 0; i < skillTrees.length; i += 1) {
+			skillTrees[i].disableForLevelUp();
+		}
+	}
 	
 	public void setSkillTree(final SkillTree[] skillTrees) {
+		for(int i = 0; i < skillTrees.length; i += 1) {
+			this.skillTrees[i].setSkillTree(skillTrees[i]);
+		}
 		
+		enableForLevelUp();
 	}
 	
 	public void begin() {
@@ -252,12 +385,27 @@ public class Skillbook extends Group {
 		remove();
 	}
 	
+	private void hideInfo() {
+		infoTitle.setVisible(false);
+		infoText.setVisible(false);
+	}
+	
+	private void showInfo(final String title, 
+						  final String text) {
+
+		infoTitle.setText(title);
+		infoText.setText(text);
+		
+		infoTitle.setVisible(true);
+		infoText.setVisible(true);
+	}
+	
 	@Override
 	public void setSize(final float width, 
 						final float height) {
 		
 		super.setSize(width, height);
-		table.setWidth(width * 0.8f);
+		table.setWidth(width * 0.9f);
 		table.setHeight(height * 0.6f);
 		tableBackground.setSize(table.getWidth(), table.getHeight());
 		
@@ -269,12 +417,32 @@ public class Skillbook extends Group {
 				table.getWidth() / 2f - title.getWidth() / 2f,
 				table.getHeight() - title.getHeight());
 		
-		final float skillTreeWidth = width / 4f;
+		final float skillTreeWidth = table.getWidth() / 4f;
+		final float skillTreeHeight = title.getY() - title.getHeight() / 2f;
+		
 		float skillTreeX = 0f;
 		for(int i = 0; i < skillTrees.length; i += 1) {
 			skillTrees[i].setX(skillTreeX);
+			skillTrees[i].setSize(skillTreeWidth, skillTreeHeight);
 			skillTreeX += skillTrees[i].getWidth();
 		}
+		
+		sep1.setHeight(skillTrees[0].getHeight() * 0.9f);
+		sep2.setHeight(sep1.getHeight());
+		sep3.setHeight(sep1.getHeight());
+		
+		sep1.setPosition(skillTrees[0].getRight(), skillTrees[0].getHeight() / 2f - sep1.getHeight() / 2f);
+		sep2.setPosition(skillTrees[1].getRight(), skillTrees[1].getHeight() / 2f - sep2.getHeight() / 2f);
+		sep3.setPosition(skillTrees[2].getRight(), skillTrees[2].getHeight() / 2f - sep3.getHeight() / 2f);
+		
+		infoTitle.setWidth(skillTreeWidth);
+		infoTitle.setY(skillTreeHeight - infoTitle.getHeight());
+		infoText.setSize(skillTreeWidth * 0.9f, skillTreeHeight - infoTitle.getHeight());
+		
+		infoTitle.setX(skillTrees[2].getRight());
+		infoText.setX(skillTrees[2].getRight() + skillTreeWidth * 0.1f);
+		
+		points.setPosition(table.getWidth() - points.getWidth() - gameUi.getApp().space.horizontal(1f), title.getY());
 	}
 	
 }

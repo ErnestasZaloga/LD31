@@ -50,7 +50,9 @@ public class DebugSkillTree implements SkillTree.Source {
 		skillRow2Column2.addChild(skillRow3Column2);
 		skillRow2Column2.addChild(skillRow3Column3);
 		
-		return new SkillTree(this, states);
+		states.add(skillRow1Column1);
+		
+		return new SkillTree("Debug Skill Tree", this, states);
 	}
 
 }

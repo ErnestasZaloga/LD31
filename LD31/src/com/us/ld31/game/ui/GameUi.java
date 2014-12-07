@@ -80,6 +80,10 @@ public class GameUi extends Group {
 		return skillBar;
 	}
 	
+	public Skillbook getSkillbook() {
+		return skillbook;
+	}
+	
 	public void setDelegate(final Delegate delegate) {
 		this.delegate = delegate;
 	}

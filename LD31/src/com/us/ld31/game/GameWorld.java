@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.us.ld31.LD31;
 import com.us.ld31.game.PlayerCharacter.SkillSlot;
+import com.us.ld31.game.combat.Projectile;
+import com.us.ld31.game.combat.ProjectileFactory;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
@@ -33,10 +35,16 @@ public class GameWorld extends Group {
 	private final Group foeGroup;
 	private final Actor characterController = new Actor();
 	
+	private Group projectiles;
+	private ProjectileFactory projectileFactory;
+	
 	private boolean paused;
 	
 	public GameWorld(final LD31 app) {
 		this.app = app;
+		
+		projectiles = new Group();
+		projectileFactory = new ProjectileFactory(app, projectiles);
 		
 		setTouchable(Touchable.childrenOnly);
 		
@@ -49,6 +57,8 @@ public class GameWorld extends Group {
 			@Override
 			public void touched() {
 				if(getButton() == Input.Buttons.LEFT) {
+					System.out.println("left");
+					projectileFactory.createMeleeAttack(character.getX(), character.getY(), 0);
 					character.performSkill(SkillSlot.Primary);
 				}
 				else if(getButton() == Input.Buttons.RIGHT) {
@@ -132,8 +142,9 @@ public class GameWorld extends Group {
 		character.setStats(stats);
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
 
-		addActor(characterController);
 		addActor(foeGroup);
+		addActor(characterController);
+		addActor(projectiles);
 		
 		// Sitas turi buti paskutinis pridetas aktorius
 		addActor(gameUi);
@@ -175,6 +186,11 @@ public class GameWorld extends Group {
 				else if(!Gdx.input.isKeyPressed(direction.key) && character.isMoving(direction)) {
 					character.movement(direction, false);
 				}
+			}
+			//Update projectiles
+			for(int i=0; i<projectiles.getChildren().size; i++) {
+				Projectile p = (Projectile) projectiles.getChildren().get(i);
+				p.update(delta);
 			}
 		}
 	}
@@ -222,6 +238,10 @@ public class GameWorld extends Group {
 
 	public GameUi getGameUi() {
 		return gameUi;
+	}
+
+	public ProjectileFactory getProjectileFactory() {
+		return projectileFactory;
 	}
 	
 }

@@ -65,8 +65,9 @@ public class BlinkAwayOther implements Skill {
 			System.out.println(t);
 			System.out.println(availableTargetTiles.get(t).getX() + " " + availableTargetTiles.get(t).getY());
 			availableTargetTiles.get(t).getColor().a = 0.5f;
-			targetActor.setX(availableTargetTiles.get(t).getX());
-			targetActor.setY(availableTargetTiles.get(t).getY());
+			//targetActor.setX(availableTargetTiles.get(t).getX());
+			//targetActor.setY(availableTargetTiles.get(t).getY());
+			targetActor.translocate(availableTargetTiles.get(t).getX(), availableTargetTiles.get(t).getY());
 		} else {
 			gameWorld.getGameUi().getMessages().showWarning("Invalid target!");
 		}

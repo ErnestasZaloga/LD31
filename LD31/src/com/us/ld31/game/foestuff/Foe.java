@@ -125,6 +125,9 @@ public class Foe extends SpriteActor{
 		lerpX = x;
 		lerpY = y;
 		this.setPosition(x, y);
+		playerX = lastPlayerX = (int)(character.getX() / tileSize);
+		playerY = lastPlayerY = (int)(character.getY() / tileSize);
+		travelTo(lastPlayerX, lastPlayerY);
 	}
 	
 	private boolean allowNextTravel;

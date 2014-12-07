@@ -29,7 +29,7 @@ public class WarriorSkillTree implements SkillTree.Source{
 					+ "\nof your damage"
 					+ "\n with 15% chance to stun "
 					+ "\nyour opponent for"
-					+ "\n(0 / 0 / 1 / 3) seconds")
+					+ "\n(0 / 0 / 1 / 2) seconds.")
 			.icon(app.assets.tileRoad)
 			.skill(powerHit)
 			.levelCap(4)
@@ -41,16 +41,38 @@ public class WarriorSkillTree implements SkillTree.Source{
 				.name("Charge")
 				.descrption("Charge in your mouse direction. If you collide with an enemy, it takes"
 						+ "(125 / 135 / 150) % of your damage. If not - cooldown is reduced by 50%"
-						+ "further ranks reduce cooldown to (16 / 12) sec")
+						+ "further ranks reduce cooldown to (16 / 12) sec.")
 				.icon(app.assets.tileRoad)
 				.skill(charge)
+				.levelCap(3)
+			.build();
+		
+		final HeadSlam headSlam = new HeadSlam();
+		
+		final SkillInfo headSlamInfo = infoBuilder
+				.name("Head Slam")
+				.descrption("Slams your opponent's head and stuns him for (2 / 3 / 5) seconds.")
+				.icon(app.assets.tileRoad)
+				.skill(headSlam)
+				.levelCap(3)
+			.build();
+		
+		final BattleFocus focus = new BattleFocus();
+		
+		final SkillInfo swordFocusInfo = infoBuilder
+				.name("Battle Focus")
+				.descrption("Warrior gains battle focus which deflects (3 / 6 / 10) incomming attacks "
+						+ "and increases attack rating by (10 / 20 / 30) % "
+						+ "while not all attacks are deflected.")
+				.icon(app.assets.tileRoad)
+				.skill(focus)
 				.levelCap(3)
 			.build();
 
 		final SkillState skillRow1Column1 = new SkillState(powerHitInfo);
 		final SkillState skillRow2Column3 = new SkillState(chargeInfo);
-		final SkillState skillRow2Column1 = new SkillState(powerHitInfo);
-		final SkillState skillRow2Column2 = new SkillState(powerHitInfo);
+		final SkillState skillRow2Column1 = new SkillState(headSlamInfo);
+		final SkillState skillRow2Column2 = new SkillState(swordFocusInfo);
 		final SkillState skillRow3Column1 = new SkillState(powerHitInfo);
 		final SkillState skillRow3Column2 = new SkillState(powerHitInfo);
 		final SkillState skillRow3Column3 = new SkillState(powerHitInfo);

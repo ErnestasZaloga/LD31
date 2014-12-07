@@ -227,7 +227,7 @@ public class SkillBar extends Group {
 							Steps.sequence(
 									ActorSteps.alphaTo(0f, 1f, Interpolation.linear),
 									ActorSteps.alphaTo(1f, 0.3f, Interpolation.circleOut)))));
-		skillbookIcon.setRegion(gameUi.getApp().assets.uiMissing);
+		skillbookIcon.setRegion(gameUi.getApp().assets.uiSkillbookIcon);
 		
 		holder.setRegion(gameUi.getApp().assets.uiBlock);
 		holder.setColor(Color.BLACK);

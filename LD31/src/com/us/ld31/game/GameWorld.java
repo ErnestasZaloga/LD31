@@ -123,6 +123,8 @@ public class GameWorld extends Group {
 				foeGroup.addActor(foe);
 			}
 		});*/
+		
+		
 	}
 	
 	public LD31 getApp() {

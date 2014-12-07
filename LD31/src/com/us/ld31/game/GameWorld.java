@@ -1,47 +1,56 @@
 package com.us.ld31.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.us.ld31.LD31;
+import com.us.ld31.game.Character.SkillSlot;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.translocations.BlinkAwayOther;
+import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.utils.Astar;
-import com.us.ld31.utils.Log;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
 import com.us.ld31.utils.tiles.WorldMap;
-
 
 public class GameWorld extends Group {
 
 	private final LD31 app;
 	private final Character character;
 	private Astar astar;
-	//private Foe foe;
 	private FoeManager foeManager;
 	private final WorldMap worldMap;
 	private final GameUi gameUi;
+	private final Actor characterController = new Actor();
+	
+	private boolean paused;
 	
 	public GameWorld(final LD31 app) {
 		this.app = app;
 		
+		setTouchable(Touchable.childrenOnly);
+		
 		worldMap = new WorldMap();
 		addActor(worldMap);
 		
-		character = new Character(worldMap);
-		addListener(new TouchListener() {
+		// Svarbu kad butu sukurtas PO worldMap
+		character = new Character(this);
+		characterController.addListener(new TouchListener() {
 			@Override
 			public void touched() {
-				gameUi.getTopBar().getStrWidget().setEditable(true);
-				gameUi.getTopBar().getDexWidget().setEditable(true);
-				gameUi.getTopBar().getIntWidget().setEditable(true);
-				gameUi.getTopBar().getPtWidget().setVisible(true);
-				
-				character.attack();
+				if(getButton() == Input.Buttons.LEFT) {
+					character.performSkill(SkillSlot.Primary);
+					gameUi.getSkillBar().markForLevelUp();
+				}
+				else if(getButton() == Input.Buttons.RIGHT) {
+					character.performSkill(SkillSlot.Secondary);
+				}
 			}
 		});
 		
@@ -50,8 +59,19 @@ public class GameWorld extends Group {
 		
 		foeManager = new FoeManager(this);
 		gameUi = new GameUi(app);
-		
-		Log.trace(worldMap.getTilesX());
+		gameUi.setDelegate(new Delegate() {
+			@Override
+			public void onPauseStateChanged() {
+				if(!paused) {
+					paused = true;
+					gameUi.showPauseUi();
+				}
+				else {
+					gameUi.hidePauseUi();
+					paused = false;
+				}
+			}
+		});
 		
 		addListener(new TouchListener() {
 			@Override
@@ -73,9 +93,8 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
-		
-		//foe.setPosition(500, 100);
-		//addActor(foe);
+
+		addActor(characterController);
 		
 		// Sitas turi buti paskutinis pridetas aktorius
 		addActor(gameUi);
@@ -94,8 +113,13 @@ public class GameWorld extends Group {
 			BlinkAwayOther skill = new BlinkAwayOther();
 			skill.activate(character, this, 1);
 		}
-		
-		if(isTouchable()) {
+			
+		if(paused) {
+			gameUi.act(delta);
+		}
+		else {
+			super.act(delta);
+			
 			for(int i = 0; i < Character.MovementDirection.list.length; i += 1) {
 				final Character.MovementDirection direction = Character.MovementDirection.list[i];
 				if(Gdx.input.isKeyJustPressed(direction.key)) {
@@ -114,6 +138,8 @@ public class GameWorld extends Group {
 		
 		height -= gameUi.getTopBar().getHeight();
 		super.setSize(width, height);
+		
+		characterController.setSize(width, height);
 		
 		worldMap.setSize(width, height);
 		gameUi.setSize(width, height + gameUi.getTopBar().getHeight());

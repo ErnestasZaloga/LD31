@@ -16,6 +16,7 @@ public class DebugSkillTree implements SkillTree.Source {
 	@Override
 	public SkillTree create() {
 		final Array<SkillState> states = new Array<SkillState>();
+		
 		final Skill debugSkill = new Skill() {
 			@Override
 			public float activate(final Actor owner, 
@@ -32,6 +33,7 @@ public class DebugSkillTree implements SkillTree.Source {
 			.descrption("Something something blablabla")
 			.icon(app.assets.tileRoad)
 			.skill(debugSkill)
+			.levelCap(1)
 		.build();
 		
 		final SkillState skillRow1Column1 = new SkillState(blink);

@@ -165,7 +165,7 @@ public class Skillbook extends Group {
 			}
 			
 			if(available) {
-				levelUpButton.setVisible(skill.getLevel() < 2);
+				levelUpButton.setVisible(skill.getLevel() < skill.getSkillInfo().levelCap);
 			}
 			
 			label.setText("" + skill.getLevel());

@@ -104,8 +104,6 @@ public class GameWorld extends Group {
 	
 	@Override
 	public void act(final float delta) {
-		super.act(delta);
-		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 //			Blink skill = new Blink(); 
 //			ControlledBlink skill = new ControlledBlink();

@@ -17,11 +17,8 @@ import com.us.ld31.game.pawn.PlayerCharacter.SkillSlot;
 import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.MeleeAttack;
 import com.us.ld31.game.skills.warrior.Charge;
-<<<<<<< Updated upstream
 import com.us.ld31.game.skills.warrior.WarriorSkillTree;
-=======
 import com.us.ld31.game.stats.CharacterStats;
->>>>>>> Stashed changes
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;

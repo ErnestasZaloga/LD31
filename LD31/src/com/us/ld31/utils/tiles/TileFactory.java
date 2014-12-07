@@ -31,7 +31,7 @@ public class TileFactory {
 	public Tile createTreeTile(float x, float y) {
 		Tile t = new Tile(x, y);
 		t.setRegion(app.assets.tileTree);
-		t.setSize(tileWH, tileWH);
+		t.setSize(tileWH, tileWH*2);
 		t.setWalkable(false);
 		return t;
 	}

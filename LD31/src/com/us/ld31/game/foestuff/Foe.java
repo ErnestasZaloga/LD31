@@ -96,10 +96,10 @@ public class Foe extends SpriteActor{
 				tileYChange = MathUtils.clamp(nextTileY - getTileY(), -1, 1);
 				
 				time += delta;
-				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
+				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = (float)(lerpX + ((tileSize * tileXChange) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
-				float y = (float)(lerpY + ((tileSize * tileYChange) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
+				float x = (lerpX + ((tileSize * tileXChange) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
+				float y = (lerpY + ((tileSize * tileYChange) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
 				
 				this.setPosition(x, y);
 				
@@ -147,10 +147,10 @@ public class Foe extends SpriteActor{
 	public void travelTo(int x, int y) {
 		shouldTravel = false;
 		
-		for(int i =0; i < tiles.size; i += 1) {
+		/*for(int i =0; i < tiles.size; i += 1) {
 			tiles.get(i).remove();
 		}
-		tiles.clear();
+		tiles.clear();*/
 		
 		tileSize = world.getWorldMap().getTileSize();
 		astar.getPath(x, 
@@ -179,14 +179,14 @@ public class Foe extends SpriteActor{
 			return;
 		}
 		
-		for(int i=0; i < path.size; i += 2) {
+		/*for(int i=0; i < path.size; i += 2) {
 			final SpriteActor tile = new SpriteActor(world.getApp().assets.uiBlock);
 			tile.setSize(world.getWorldMap().getTileSize(), world.getWorldMap().getTileSize());
 			tile.setPosition(path.get(i) * world.getWorldMap().getTileSize(), path.get(i + 1) * world.getWorldMap().getTileSize());
 			
 			getParent().addActor(tile);
 			tiles.add(tile);
-		}
+		}*/
 		
 		shouldTravel = true;
 		time = 0;

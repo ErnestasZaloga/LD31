@@ -13,6 +13,7 @@ import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
+import com.us.ld31.game.skills.warrior.PowerHit;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;
@@ -158,6 +159,10 @@ public class GameWorld extends Group {
 //			BlinkOthersAway skill = new BlinkOthersAway();
 //			BlinkOtherCloser skill = new BlinkOtherCloser();
 			BlinkOthersCloser skill = new BlinkOthersCloser();
+			skill.activate(character, this, 1);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.F)) {
+			PowerHit skill = new PowerHit();
 			skill.activate(character, this, 1);
 		}
 			

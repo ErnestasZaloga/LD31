@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.skills.SkillState;
+import com.us.ld31.game.skills.SkillTree;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.steps.Steps;
@@ -83,7 +84,7 @@ public class PlayerCharacter extends SpriteActor {
 	}
 	
 	public void performSkill(final SkillSlot slot) {
-		if(slot == SkillSlot.Secondary) {
+		if(slot == SkillSlot.Secondary && secondarySkill != null) {
 			if(secondarySkill.getCooldownLeft() == 0) {
 				final float cooldown = secondarySkill.getSkillInfo().skill.activate(this, gameWorld, secondarySkill.getLevel());
 				secondarySkill.setCooldown(cooldown);
@@ -122,6 +123,11 @@ public class PlayerCharacter extends SpriteActor {
 	
 	@Override
 	public void act(final float delta) {
+		for(int i = 0; i < stats.getSkills().length; i += 1) {
+			final SkillTree skillTree = stats.getSkills()[i];
+			skillTree.updateCooldowns(delta);
+		}
+		
 		final float x = getX();
 		final float y = getY();
 		

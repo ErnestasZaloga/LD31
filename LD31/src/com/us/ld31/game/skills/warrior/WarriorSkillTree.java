@@ -20,7 +20,9 @@ public class WarriorSkillTree implements SkillTree.Source{
 		
 		final PowerHit powerHit = new PowerHit();
 		
-		final SkillInfo powerHitInfo = new SkillInfo.Builder()
+		final SkillInfo.Builder infoBuilder = new SkillInfo.Builder();
+		
+		final SkillInfo powerHitInfo = infoBuilder
 			.name("Power Hit")
 			.descrption("Melee atack that deals "
 					+ "\n(150 / 175 / 225 / 275) % "
@@ -32,8 +34,21 @@ public class WarriorSkillTree implements SkillTree.Source{
 			.skill(powerHit)
 			.levelCap(4)
 		.build();
+		
+		final Charge charge = new Charge();
+		
+		final SkillInfo chargeInfo = infoBuilder
+				.name("Charge")
+				.descrption("Charge in your mouse direction. If you collide with an enemy, it takes"
+						+ "(125 / 135 / 150) % of your damage. If not - cooldown is reduced by 50%"
+						+ "further ranks reduce cooldown to (16 / 12) sec")
+				.icon(app.assets.tileRoad)
+				.skill(charge)
+				.levelCap(3)
+			.build();
 
 		final SkillState skillRow1Column1 = new SkillState(powerHitInfo);
+		final SkillState skillRow2Column3 = new SkillState(chargeInfo);
 		final SkillState skillRow2Column1 = new SkillState(powerHitInfo);
 		final SkillState skillRow2Column2 = new SkillState(powerHitInfo);
 		final SkillState skillRow3Column1 = new SkillState(powerHitInfo);
@@ -42,6 +57,8 @@ public class WarriorSkillTree implements SkillTree.Source{
 
 		skillRow1Column1.addChild(skillRow2Column1);
 		skillRow1Column1.addChild(skillRow2Column2);
+		skillRow1Column1.addChild(skillRow2Column3);
+		
 		
 		skillRow2Column1.addChild(skillRow3Column1);
 		
@@ -49,6 +66,7 @@ public class WarriorSkillTree implements SkillTree.Source{
 		skillRow2Column2.addChild(skillRow3Column3);
 		
 		states.add(skillRow1Column1);
+		//states.add(skillRow1Column2);
 		
 		return new SkillTree("Debug Skill Tree", this, states);
 	}

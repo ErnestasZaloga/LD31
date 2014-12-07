@@ -32,7 +32,7 @@ public class FoeManager {
 		
 	}
 	
-	float time = 0;
+	float time = 10;
 	float spawnInterval = 10;
 	private boolean canSpawn = true;
 	

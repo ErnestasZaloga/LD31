@@ -17,7 +17,7 @@ import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.MeleeAttack;
 import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
 import com.us.ld31.game.skills.warrior.Charge;
-import com.us.ld31.game.skills.warrior.PowerHit;
+import com.us.ld31.game.skills.warrior.WarriorSkillTree;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;
@@ -138,8 +138,12 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		final CharacterStats stats = new CharacterStats();
-		stats.getSkills()[0] = new DebugSkillTree(app).create();
+		/*stats.getSkills()[0] = new DebugSkillTree(app).create();
 		stats.getSkills()[1] = new DebugSkillTree(app).create();
+		stats.getSkills()[2] = new DebugSkillTree(app).create();*/
+		
+		stats.getSkills()[0] = new WarriorSkillTree(app).create();
+		stats.getSkills()[1] = new WarriorSkillTree(app).create();
 		stats.getSkills()[2] = new DebugSkillTree(app).create();
 
 		character.setStats(stats);

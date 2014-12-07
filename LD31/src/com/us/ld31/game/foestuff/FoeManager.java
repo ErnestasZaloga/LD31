@@ -56,7 +56,7 @@ public class FoeManager {
 		spawnPositions[0] = (int) (0);
 		spawnPositions[1] = (int) (world.getHeight() / 2);
 		spawnPositions[2] = (int) (world.getWidth() / 2);
-		spawnPositions[3] = (int) (world.getHeight()) - 1;
+		spawnPositions[3] = (int) (world.getHeight()) - 1;//XXX omg hack!
 		spawnPositions[4] = (int) (world.getWidth());
 		spawnPositions[5] = (int) (world.getHeight() / 2);
 		spawnPositions[6] = (int) (world.getWidth() / 2);

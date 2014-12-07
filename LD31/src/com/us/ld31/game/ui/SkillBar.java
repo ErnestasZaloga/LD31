@@ -24,6 +24,8 @@ import com.us.ld31.utils.steps.scene.ActorSteps;
 public class SkillBar extends Group {
 
 	public static class SkillButton extends Group {
+		private final GameUi gameUi;
+		
 		private final SpriteActor border = new SpriteActor();
 		private final SpriteActor icon = new SpriteActor();
 		private final SpriteActor cooldownOverlay = new SpriteActor();
@@ -35,6 +37,8 @@ public class SkillBar extends Group {
 		public SkillButton(final SkillBar bar, 
 						   final GameUi gameUi, 
 						   final int mappingCode) {
+			
+			this.gameUi = gameUi;
 			
 			border.setRegion(gameUi.getApp().assets.uiBlock);
 			border.setColor(Color.BLACK);
@@ -79,7 +83,7 @@ public class SkillBar extends Group {
 		public void act(final float delta) {
 			super.act(delta);
 			
-			if(state != null) {
+			if(state != null && !gameUi.isPauseUiVisible()) {
 				final float totalCooldown = state.getCooldown();
 				
 				if(totalCooldown > 0f) {
@@ -221,9 +225,6 @@ public class SkillBar extends Group {
 				return 0f;
 			}
 		}).build()));
-		
-		buttons.get(0).getState().setCooldown(5f);
-		buttons.get(0).getState().setCooldownLeft(5f);
 	}
 	
 	public void markForLevelUp() {

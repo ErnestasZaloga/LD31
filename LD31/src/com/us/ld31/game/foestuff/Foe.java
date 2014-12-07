@@ -62,15 +62,15 @@ public class Foe extends SpriteActor{
 			lerpY = getY();
 			tileSize = world.getWorldMap().getTileSize();
 			character = world.getCharacter();
-			
 			playerX = lastPlayerX = (int)(character.getX() / tileSize);
 			playerY = lastPlayerY = (int)(character.getY() / tileSize);
 			travelTo(lastPlayerX, lastPlayerY);
 			firstAct = false;
 		}
 		
-		if((playerX != lastPlayerX || playerY != lastPlayerY)) {
+		if((playerX != lastPlayerX || playerY != lastPlayerY) && allowNextTravel && Vector2.dst(character.getX(), character.getY(), getX(), getY()) > distance * tileSize) {
 			travelTo(playerX, playerY);
+			allowNextTravel = false;
 			lastPlayerX = playerX;
 			lastPlayerY = playerY;
 		} else {
@@ -83,18 +83,24 @@ public class Foe extends SpriteActor{
 			if(pathIndex >= path.size) {
 				//shouldTravel = false;
 				//pathIndex = 0;
+				allowNextTravel = true;
 			} else {
+				allowNextTravel = false;
 				foeTileX = path.get(pathIndex);
 				foeTileY = path.get(pathIndex + 1);
 				
-				final int tileXCh = foeTileX - (int)(getX() / tileSize);
-				final int tileYCh = foeTileY - (int)(getY() / tileSize);
+				final int tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
+				final int tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
+				
+				Log.trace(tileSize);
 				
 				time += delta;
 				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = (float)(lerpX + (tileSize * tileXCh) * div);//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
-				float y = (float)(lerpY + (tileSize * tileYCh) * div); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
+				float x = (float)(lerpX + ((tileSize * tileXCh) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
+				float y = (float)(lerpY + ((tileSize * tileYCh) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
+				
+				Log.trace(x, y);
 				
 				//float x = foeTileX * tileSize;
 				//float y = foeTileY * tileSize;
@@ -104,15 +110,27 @@ public class Foe extends SpriteActor{
 				
 				if(time > secondsPerTile) {
 					pathIndex += 2;
-					time = 0;//%= secondsPerTile;
-					lerpX = getX();//foeTileX * tileSize;
-					lerpY = getY();//foeTileY * tileSize;
+					time %= secondsPerTile;
+					Log.trace(lerpX, lerpY, getX(), getY());
+					lerpX = x;//foeTileX * tileSize;
+					lerpY = y;//foeTileY * tileSize;
 					//this.setPosition(lerpX, lerpY);
+					allowNextTravel = true;
 				}
 			}
-		} 
+		}
 	}
 	
+	public void translocate(float x, float y) {
+		lerpX = x;
+		lerpY = y;
+		this.setPosition(x, y);
+		playerX = lastPlayerX = (int)(character.getX() / tileSize);
+		playerY = lastPlayerY = (int)(character.getY() / tileSize);
+		travelTo(lastPlayerX, lastPlayerY);
+	}
+	
+	private boolean allowNextTravel;
 	private float lerpX = 0, lerpY = 0;
 	
 	/**

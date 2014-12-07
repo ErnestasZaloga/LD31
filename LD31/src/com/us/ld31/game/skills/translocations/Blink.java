@@ -33,6 +33,10 @@ public class Blink implements Skill {
 		
 		int t = MathUtils.random(tiles.size-1);
 		
+		if(user instanceof Foe) {
+			((Foe) user).translocate(tiles.get(t).getX(), tiles.get(t).getY());
+			return cooldown;
+		}
 		user.setX(tiles.get(t).getX());
 		user.setY(tiles.get(t).getY());
 		

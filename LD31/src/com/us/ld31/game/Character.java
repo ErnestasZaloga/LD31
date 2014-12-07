@@ -10,6 +10,11 @@ import com.us.ld31.utils.tiles.WorldMap;
 
 public class Character extends SpriteActor {
 
+	public static enum SkillSlot {
+		Primary,
+		Secondary;
+	}
+	
 	public static enum MovementDirection {
 		Up(0, 0, 4, Keys.W),
 		Down(1, 0, -4, Keys.S),
@@ -44,12 +49,18 @@ public class Character extends SpriteActor {
 	private int mapTilesX;
 	private int mapTilesY;
 	
+	private final GameWorld gameWorld;
 	private final WorldMap worldMap;
 	private final Action[] movementActions = new Action[4];
 	private final IntArray tiles = new IntArray();
 	
-	public Character(final WorldMap worldMap) {
-		this.worldMap = worldMap;
+	public Character(final GameWorld gameWorld) {
+		this.gameWorld = gameWorld;
+		this.worldMap = gameWorld.getWorldMap();
+	}
+	
+	public void performSkill(final SkillSlot slot) {
+		
 	}
 	
 	public void begin() {
@@ -58,10 +69,6 @@ public class Character extends SpriteActor {
 		mapTilesY = worldMap.getTilesY();
 	}
 	
-	public void attack() {
-		
-	}
-
 	public boolean isMoving(final MovementDirection direction) {
 		return movementActions[direction.index] != null;
 	}
@@ -130,8 +137,6 @@ public class Character extends SpriteActor {
 				setY(newY);
 			}
 		}
-		
-		collectTileBounds();
 	}
 	
 	private void collectTileBounds() {

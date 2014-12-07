@@ -20,6 +20,7 @@ public class BlinkOther implements Skill {
 			b.activate(targetActor, gameWorld, skillLevel);
 		} else {
 			//TODO: Warning msg and sound
+			gameWorld.getGameUi().getMessages().showWarning("Invalid target!");
 		}
 		
 		return cooldown;

@@ -1,6 +1,8 @@
 package com.us.ld31.game.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -13,9 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.us.ld31.game.skills.SkillState;
 import com.us.ld31.game.skills.SkillTree;
+import com.us.ld31.game.ui.SkillBar.SkillButton;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.TouchListener;
+import com.us.ld31.utils.steps.Steps;
+import com.us.ld31.utils.steps.scene.ActorSteps;
 
 public class Skillbook extends Group {
 
@@ -71,6 +76,65 @@ public class Skillbook extends Group {
 					}
 				}
 			});
+
+			addListener(new TouchListener() {
+				private int touchX;
+				private int touchY;
+				private float startX;
+				private float startY;
+				private boolean dragged;
+				
+				@Override
+				public void touched() {
+					touchX = Gdx.input.getX();
+					touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
+				
+					startX = SkillIcon.this.getX();
+					startY = SkillIcon.this.getY();
+					
+					toFront();
+					dragged = false;
+				}
+				
+				@Override
+				public void dragged() {
+					if(skill.getLevel() > 0) {
+						dragged = true;
+						final int currentMouseX = Gdx.input.getX();
+						final int currentMouseY = (Gdx.graphics.getHeight() - Gdx.input.getY());
+						
+						final int deltaX = currentMouseX - touchX;
+						final int deltaY = currentMouseY - touchY;
+					
+						setPosition(startX + deltaX, startY + deltaY);
+						
+						final SkillButton button = gameUi.getSkillBar().findButtonInCoords(currentMouseX, currentMouseY, false);
+						if(button != null) {
+							gameUi.getSkillBar().changeActiveButton(button);
+						}
+					}
+				}
+				
+				@Override
+				public void untouched() {
+					if(dragged && skill.getLevel() > 0) {
+						final int mouseX = Gdx.input.getX();
+						final int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+					
+						if(gameUi.getSkillBar().addSkill(getSkillState(), mouseX, mouseY)) {
+							setPosition(startX, startY);
+						}
+						else {
+							setTouchable(Touchable.disabled);
+							addAction(
+									Steps.action(
+											Steps.sequence(
+												ActorSteps.moveTo(startX, startY, 0.1f, Interpolation.circleOut),
+												ActorSteps.touchable(Touchable.enabled))));
+						}
+					}
+				}
+			});
 			
 			addListener(new InputListener() {
 				@Override
@@ -94,7 +158,6 @@ public class Skillbook extends Group {
 			}
 			
 			if(available) {
-				label.setVisible(skill.getLevel() > 0);
 				levelUpButton.setVisible(skill.getLevel() < 2);
 			}
 			

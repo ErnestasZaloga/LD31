@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.us.ld31.LD31;
 import com.us.ld31.game.GameWorld;
-import com.us.ld31.utils.Log;
 
 public class DebugSkillTree implements SkillTree.Source {
 
@@ -23,7 +22,7 @@ public class DebugSkillTree implements SkillTree.Source {
 								  final GameWorld gameWorld, 
 								  final int skillLevel) {
 				
-				Log.trace(this, "I am casting a skill of level:", skillLevel);
+				System.out.println("I am casting a skill of level: " + skillLevel);
 				return 1f;
 			}
 		};
@@ -31,7 +30,7 @@ public class DebugSkillTree implements SkillTree.Source {
 		final SkillInfo blink = new SkillInfo.Builder()
 			.name("Blink")
 			.descrption("Something something blablabla")
-			.icon(app.assets.uiMissing)
+			.icon(app.assets.tileRoad)
 			.skill(debugSkill)
 		.build();
 		

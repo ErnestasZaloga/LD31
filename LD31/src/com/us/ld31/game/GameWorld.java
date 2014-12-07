@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.us.ld31.LD31;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
-import com.us.ld31.game.skills.translocations.BlinkOther;
+import com.us.ld31.game.skills.translocations.BlinkAwayOther;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
@@ -88,9 +88,10 @@ public class GameWorld extends Group {
 		super.act(delta);
 		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-//			Blink skill = new Blink();
+//			Blink skill = new Blink(); 
 //			ControlledBlink skill = new ControlledBlink();
-			BlinkOther skill = new BlinkOther();
+//			BlinkOther skill = new BlinkOther();
+			BlinkAwayOther skill = new BlinkAwayOther();
 			skill.activate(character, this, 1);
 		}
 		

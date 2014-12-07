@@ -32,12 +32,14 @@ public class Blink implements Skill {
 			
 			int indexX = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexX();
 			int indexY = ((Tile)gameWorld.getWorldMap().getChildren().get(t)).getIndexY();
+			if(t < gameWorld.getWorldMap().getChildren().size && t >= 0) {
 			if(gameWorld.getWorldMap().isWalkable(indexX, indexY)) {
 				if(t < gameWorld.getWorldMap().getChildren().size && t >= 0) {
 					if(((Tile)gameWorld.getWorldMap().getChildren().get(t)).isWalkable()) {
 						canLand = true;
 					}
 				}
+			}
 			}
 		}
 		

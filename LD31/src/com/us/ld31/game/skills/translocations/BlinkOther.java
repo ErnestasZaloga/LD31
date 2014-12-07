@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.game.skills.Skill;
 
-public class BlinkOther implements Skill{
+public class BlinkOther implements Skill {
 
 	private float cooldown = 35;
 	

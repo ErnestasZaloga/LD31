@@ -13,11 +13,11 @@ public class SideBar extends Group {
 	
 	private final int originalFillHeight;
 	
-	public SideBar(final GameUi gameUi, final Color fillColor) {
+	public SideBar(final GameUi gameUi, final Color fillColor, final TextureRegion fillRegion) {
 		setTransform(false);
 		
 		barBackground.setRegion(gameUi.getApp().assets.uiBlock);
-		barFill.setRegion(new TextureRegion(gameUi.getApp().assets.uiBlock));
+		barFill.setRegion(new TextureRegion(fillRegion));
 		
 		originalFillHeight = barFill.getRegion().getRegionHeight();
 		
@@ -29,6 +29,15 @@ public class SideBar extends Group {
 		
 		addActor(barBackground);
 		addActor(barFill);
+	}
+	
+	@Override
+	public void act(final float delta) {
+		super.act(delta);
+		percent += delta;
+		percent %= 1;
+		
+		setPercent(percent);
 	}
 	
 	@Override

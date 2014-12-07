@@ -5,85 +5,141 @@ filter: Linear,Linear
 repeat: none
 Block
   rotate: false
-  xy: 1, 325
+  xy: 1, 349
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 FontBig
   rotate: false
-  xy: 1, 67
+  xy: 1, 91
   size: 512, 256
   orig: 512, 256
   offset: 0, 0
   index: -1
 FontSmall
   rotate: false
-  xy: 1029, 581
+  xy: 773, 347
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
+RangedArrow
+  rotate: false
+  xy: 1203, 927
+  size: 5, 20
+  orig: 5, 20
+  offset: 0, 0
+  index: -1
+Sword
+  rotate: false
+  xy: 67, 65
+  size: 7, 24
+  orig: 7, 24
+  offset: 0, 0
+  index: -1
 arrow
   rotate: false
-  xy: 773, 299
+  xy: 1, 1
   size: 26, 22
   orig: 26, 22
   offset: 0, 0
   index: -1
+dex
+  rotate: false
+  xy: 1, 25
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 grass
   rotate: false
-  xy: 773, 323
+  xy: 773, 89
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 grass1
   rotate: false
-  xy: 1287, 581
+  xy: 1029, 605
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 grass2
   rotate: false
-  xy: 1031, 323
+  xy: 1031, 347
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 house
   rotate: false
-  xy: 515, 581
+  xy: 515, 605
   size: 512, 256
   orig: 512, 256
   offset: 0, 0
   index: -1
+hp
+  rotate: false
+  xy: 1545, 613
+  size: 15, 400
+  orig: 15, 400
+  offset: 0, 0
+  index: -1
+int
+  rotate: false
+  xy: 1203, 949
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+kazkas
+  rotate: false
+  xy: 1562, 613
+  size: 15, 400
+  orig: 15, 400
+  offset: 0, 0
+  index: -1
 missing
   rotate: false
-  xy: 1, 1
+  xy: 1287, 691
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 road
   rotate: false
-  xy: 1545, 581
+  xy: 1031, 89
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 1289, 323
+  xy: 1287, 757
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
+str
+  rotate: false
+  xy: 1579, 949
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 tree
   rotate: false
-  xy: 515, 67
+  xy: 515, 91
   size: 256, 512
   orig: 256, 512
+  offset: 0, 0
+  index: -1
+ui
+  rotate: false
+  xy: 1, 863
+  size: 1200, 150
+  orig: 1200, 150
   offset: 0, 0
   index: -1

@@ -15,6 +15,7 @@ import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.MeleeAttack;
+import com.us.ld31.game.skills.TranslocationsSkillTree;
 import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
 import com.us.ld31.game.skills.warrior.Charge;
 import com.us.ld31.game.ui.Delegate;
@@ -137,7 +138,7 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		final CharacterStats stats = new CharacterStats();
-		stats.getSkills()[0] = new DebugSkillTree(app).create();
+		stats.getSkills()[0] = new TranslocationsSkillTree(app).create();
 		stats.getSkills()[1] = new DebugSkillTree(app).create();
 		stats.getSkills()[2] = new DebugSkillTree(app).create();
 
@@ -162,17 +163,6 @@ public class GameWorld extends Group {
 	
 	@Override
 	public void act(final float delta) {
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-//			Blink skill = new Blink(); 
-//			ControlledBlink skill = new ControlledBlink();
-//			BlinkOther skill = new BlinkOther();
-//			BlinkAwayOther skill = new BlinkAwayOther();
-//			Portal skill = new Portal();
-//			BlinkOthersAway skill = new BlinkOthersAway();
-//			BlinkOtherCloser skill = new BlinkOtherCloser();
-			BlinkOthersCloser skill = new BlinkOthersCloser();
-			skill.activate(character, this, 1);
-		}
 		if(Gdx.input.isKeyJustPressed(Keys.F)) {
 			//Charge skill = new Charge();
 			Charge skill = new Charge();

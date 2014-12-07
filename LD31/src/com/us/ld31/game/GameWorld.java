@@ -132,8 +132,8 @@ public class GameWorld extends Group {
 		character.setStats(stats);
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
 
-		addActor(characterController);
 		addActor(foeGroup);
+		addActor(characterController);
 		
 		// Sitas turi buti paskutinis pridetas aktorius
 		addActor(gameUi);

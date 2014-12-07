@@ -83,7 +83,7 @@ public class PlayerCharacter extends SpriteActor {
 	}
 	
 	public void performSkill(final SkillSlot slot) {
-		if(slot == SkillSlot.Secondary) {
+		if(slot == SkillSlot.Secondary && secondarySkill != null) {
 			if(secondarySkill.getCooldownLeft() == 0) {
 				final float cooldown = secondarySkill.getSkillInfo().skill.activate(this, gameWorld, secondarySkill.getLevel());
 				secondarySkill.setCooldown(cooldown);

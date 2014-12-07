@@ -107,21 +107,23 @@ public class SkillBar extends Group {
 						final int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 					
 						if(bar.exchangeSkill(SkillButton.this, mouseX, mouseY)) {
-							Log.trace(this, "Exchanged");
+							bar.enableLayout();
+							setPosition(startX, startY);
 						}
-						
-						setTouchable(Touchable.disabled);
-						addAction(
-								Steps.action(
-										Steps.sequence(
-											ActorSteps.moveTo(startX, startY, 0.1f, Interpolation.circleOut),
-											ActorSteps.touchable(Touchable.enabled),
-											Steps.run(new Runnable() {
-												@Override
-												public void run() {
-													bar.enableLayout();
-												}
-											}))));
+						else {
+							setTouchable(Touchable.disabled);
+							addAction(
+									Steps.action(
+											Steps.sequence(
+												ActorSteps.moveTo(startX, startY, 0.1f, Interpolation.circleOut),
+												ActorSteps.touchable(Touchable.enabled),
+												Steps.run(new Runnable() {
+													@Override
+													public void run() {
+														bar.enableLayout();
+													}
+												}))));
+						}
 					}
 				}
 			});
@@ -274,11 +276,13 @@ public class SkillBar extends Group {
 	}
 	
 	public boolean exchangeSkill(final SkillButton original, final float x, final float y) {
-		final SkillButton targetButton = findButtonInCoords(x, y);
+		final SkillButton targetButton = findButtonInCoords(x, y, true);
 		if(targetButton != null) {
 			final SkillState targetSkill = targetButton.getState();
 			targetButton.setState(original.getState());
 			original.setState(targetSkill);
+			
+			changeActiveButton(targetButton);
 		}
 		
 		return false;
@@ -288,7 +292,7 @@ public class SkillBar extends Group {
 							final float x, 
 							final float y) {
 		
-		final SkillButton button = findButtonInCoords(x, y);
+		final SkillButton button = findButtonInCoords(x, y, false);
 		if(button != null) {
 			button.setState(skill);
 			if(buttons.indexOf(button, true) == activeIndex) {
@@ -304,9 +308,13 @@ public class SkillBar extends Group {
 		return false;
 	}
 	
-	private SkillButton findButtonInCoords(final float x, final float y) {
+	public SkillButton findButtonInCoords(final float x, final float y, final boolean skipActive) {
 		final Vector2 tmp = new Vector2();
 		for(int i = 0; i < buttons.size; i += 1) {
+			if(skipActive && i == activeIndex) {
+				continue;
+			}
+			
 			final SkillButton button = buttons.get(i);
 			button.localToStageCoordinates(tmp.set(0f, 0f));
 			
@@ -317,6 +325,13 @@ public class SkillBar extends Group {
 			
 			final float btnRight = tmp.x;
 			final float btnTop = tmp.y;
+
+			/*System.out.println("MouseX: " + x);
+			System.out.println("MouseY: " + y);
+			System.out.println("BtnX: " + btnX);
+			System.out.println("BtnY: " + btnY);
+			System.out.println("BtnRight: " + btnRight);
+			System.out.println("BtnTop: " + btnTop);*/
 			
 			if(x < btnX || x > btnRight || y < btnY || y > btnTop) {
 				continue;
@@ -334,6 +349,10 @@ public class SkillBar extends Group {
 	}
 	
 	private void changeActiveIndex(final int newIndex) {
+		if(newIndex == activeIndex) {
+			return;
+		}
+		
 		buttons.get(activeIndex).shrink();
 		buttons.get(newIndex).grow();
 		activeIndex = newIndex;
@@ -343,7 +362,7 @@ public class SkillBar extends Group {
 		}
 	}
 	
-	private void changeActiveButton(final SkillButton button) {
+	public void changeActiveButton(final SkillButton button) {
 		for(int i = 0; i < buttons.size; i += 1) {
 			if(button == buttons.get(i)) {
 				changeActiveIndex(i);

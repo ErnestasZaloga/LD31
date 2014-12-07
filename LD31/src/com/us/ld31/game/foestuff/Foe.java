@@ -89,37 +89,32 @@ public class Foe extends SpriteActor{
 				foeTileX = path.get(pathIndex);
 				foeTileY = path.get(pathIndex + 1);
 				
-				final int tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
-				final int tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
+				int tileXCh = 0;
+				int tileYCh = 0;
 				
-				Log.trace(tileSize);
+				tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
+				tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
 				
 				time += delta;
 				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = (float)(lerpX + ((tileSize * tileXCh) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
-				float y = (float)(lerpY + ((tileSize * tileYCh) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
-				
-				Log.trace(x, y);
-				
-				//float x = foeTileX * tileSize;
-				//float y = foeTileY * tileSize;
-				
-				this.setPosition(x, y);
-				//Log.trace(tmpX, tmpY);
+				float x = (float)(lerpX + ((tileSize * tileXCh)/* * div*/));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
+				float y = (float)(lerpY + ((tileSize * tileYCh)/* * div*/)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
 				
 				if(time > secondsPerTile) {
+					//moved = true;
 					pathIndex += 2;
 					time %= secondsPerTile;
-					Log.trace(lerpX, lerpY, getX(), getY());
 					lerpX = x;//foeTileX * tileSize;
 					lerpY = y;//foeTileY * tileSize;
-					//this.setPosition(lerpX, lerpY);
+					this.setPosition(lerpX, lerpY);
 					allowNextTravel = true;
 				}
 			}
 		}
 	}
+	
+	private boolean moved = true;
 	
 	public void translocate(float x, float y) {
 		lerpX = x;
@@ -171,7 +166,7 @@ public class Foe extends SpriteActor{
 			return;
 		}
 		
-		for(int i =0; i < path.size; i += 2) {
+		for(int i=0; i < path.size; i += 2) {
 			final SpriteActor tile = new SpriteActor(world.getApp().assets.uiBlock);
 			tile.setSize(world.getWorldMap().getTileSize(), world.getWorldMap().getTileSize());
 			tile.setPosition(path.get(i) * world.getWorldMap().getTileSize(), path.get(i + 1) * world.getWorldMap().getTileSize());

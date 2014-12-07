@@ -27,23 +27,45 @@ public class MessageWidget extends Group {
 	}
 	
 	public void showWarning(final String warning) {
-		createLabel(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), warning, warningLabelStyle);
+		createLabel(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), warning, warningLabelStyle, 1f);
 	}
 	
-	public void showDamage(final Actor location, 
-						   final int damage) {
+	public void showDamageToPlayer(final Actor location, 
+						   		   final int damage,
+						   		   final boolean critical) {
 		
-		createLabel(location.getX() + location.getWidth() / 2f, location.getTop(), "" + damage, damageLabelStyle);
+		createLabel(location.getX() + location.getWidth() / 2f, location.getTop(), "" + damage, damageLabelStyle, 1f);
 	}
 	
-	public void showMiss(final Actor location) {
-		createLabel(location.getX() + location.getWidth() / 2f, location.getTop(), "MISS", damageLabelStyle);
+	public void showDamageToEnemy(final Actor location, 
+								  final int damage,
+								  final boolean critical) {
+		
+		
+	}
+	
+	public void showHealing(final Actor location, 
+							final int amount,
+							final boolean critical) {
+		
+		
+	}
+	
+	public void showEnemyDodged(final Actor location) {
+		
+	}
+	
+	public void showPlayerDodged(final String name,
+						 		 final Actor location) {
+		
+		createLabel(location.getX() + location.getWidth() / 2f, location.getTop(), "MISS", damageLabelStyle, 1f);
 	}
 	
 	private void createLabel(final float x, 
 							 final float y,
 							 final String text,
-							 final LabelStyle labelStyle) {
+							 final LabelStyle labelStyle,
+							 final float scale) {
 		
 		final Label label = new Label(text, labelStyle);
 		label.pack();

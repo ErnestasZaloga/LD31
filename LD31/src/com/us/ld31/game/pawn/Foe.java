@@ -1,4 +1,4 @@
-package com.us.ld31.game.foestuff;
+package com.us.ld31.game.pawn;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -6,13 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.GameWorld;
-import com.us.ld31.game.PlayerCharacter;
 import com.us.ld31.utils.Astar;
-import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.tiles.Tile;
 
-public class Foe extends SpriteActor{
+public class Foe extends Pawn {
 	
 	private Array<SpriteActor> tiles = new Array<SpriteActor>();
 	

@@ -3,8 +3,8 @@ package com.us.ld31.game.skills.translocations;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.us.ld31.game.GameWorld;
+import com.us.ld31.game.pawn.Pawn;
 import com.us.ld31.game.skills.Skill;
 import com.us.ld31.utils.tiles.Tile;
 
@@ -15,7 +15,7 @@ public class ControlledBlink implements Skill {
 	private int rangeInTiles = 5;
 	
 	@Override
-	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
+	public float activate(Pawn user, GameWorld gameWorld, int skillLevel) {
 		//Check if the target tile is free to land on
 		boolean canLand = false;
 		float mouseX = Gdx.input.getX();

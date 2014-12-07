@@ -1,14 +1,13 @@
-package com.us.ld31.game;
+package com.us.ld31.game.stats;
 
 import com.us.ld31.game.skills.SkillTree;
 
 public class CharacterStats extends Stats {
 
 	private int level = 1;
-	private int freePoints;
+	private int statPoints;
 	private int skillPoints = 5;
 	private int experience;
-	private int gold;
 	private final SkillTree[] skills = new SkillTree[3];
 	
 	public SkillTree[] getSkills() {
@@ -22,21 +21,13 @@ public class CharacterStats extends Stats {
 	public int getSkillPoints() {
 		return skillPoints;
 	}
-	
-	public void addGold(final int amount) {
-		this.gold += amount;
+
+	public void setStatPoints(final int statPoints) {
+		this.statPoints = statPoints;
 	}
 	
-	public void spendGold(final int amount) {
-		this.gold -= amount;
-	}
-	
-	public int getGold() {
-		return gold;
-	}
-	
-	public void spendFreePoints() {
-		freePoints = 0;
+	public int getStatPoints() {
+		return statPoints;
 	}
 	
 	public boolean addExperience(final int exp) {
@@ -47,7 +38,7 @@ public class CharacterStats extends Stats {
 			levelUp = true;
 			experience -= level * 100;
 			level += 1;
-			freePoints += 3;
+			statPoints += 3;
 			skillPoints += 1;
 		}
 		
@@ -56,10 +47,6 @@ public class CharacterStats extends Stats {
 	
 	public int getLevel() {
 		return level;
-	}
-	
-	public int getFreePoints() {
-		return freePoints;
 	}
 	
 	public int getExperience() {

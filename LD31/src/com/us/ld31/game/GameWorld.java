@@ -8,15 +8,20 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.us.ld31.LD31;
-import com.us.ld31.game.PlayerCharacter.SkillSlot;
 import com.us.ld31.game.combat.Projectile;
 import com.us.ld31.game.combat.ProjectileFactory;
-import com.us.ld31.game.foestuff.Foe;
-import com.us.ld31.game.foestuff.FoeManager;
+import com.us.ld31.game.pawn.Foe;
+import com.us.ld31.game.pawn.FoeManager;
+import com.us.ld31.game.pawn.PlayerCharacter;
+import com.us.ld31.game.pawn.PlayerCharacter.SkillSlot;
 import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.MeleeAttack;
 import com.us.ld31.game.skills.warrior.Charge;
+<<<<<<< Updated upstream
 import com.us.ld31.game.skills.warrior.WarriorSkillTree;
+=======
+import com.us.ld31.game.stats.CharacterStats;
+>>>>>>> Stashed changes
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;

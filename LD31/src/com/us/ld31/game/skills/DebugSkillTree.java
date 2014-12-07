@@ -1,9 +1,9 @@
 package com.us.ld31.game.skills;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.us.ld31.LD31;
 import com.us.ld31.game.GameWorld;
+import com.us.ld31.game.pawn.Pawn;
 
 public class DebugSkillTree implements SkillTree.Source {
 
@@ -19,7 +19,7 @@ public class DebugSkillTree implements SkillTree.Source {
 		
 		final Skill debugSkill = new Skill() {
 			@Override
-			public float activate(final Actor owner, 
+			public float activate(final Pawn owner, 
 								  final GameWorld gameWorld, 
 								  final int skillLevel) {
 				

@@ -1,21 +1,21 @@
-package com.us.ld31.game;
+package com.us.ld31.game.pawn;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
-import com.us.ld31.game.foestuff.Foe;
+import com.us.ld31.game.GameWorld;
 import com.us.ld31.game.skills.Skill;
 import com.us.ld31.game.skills.SkillState;
 import com.us.ld31.game.skills.SkillTree;
+import com.us.ld31.game.stats.CharacterStats;
 import com.us.ld31.utils.Log;
-import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.steps.Steps;
 import com.us.ld31.utils.steps.scene.ActorSteps;
 import com.us.ld31.utils.tiles.Tile;
 import com.us.ld31.utils.tiles.WorldMap;
 
-public class PlayerCharacter extends SpriteActor {
+public class PlayerCharacter extends Pawn {
 
 	public static enum SkillSlot {
 		Primary,

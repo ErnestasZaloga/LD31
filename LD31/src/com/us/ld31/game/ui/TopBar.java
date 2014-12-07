@@ -16,7 +16,6 @@ public class TopBar extends Group {
 		DEX("DEX"),
 		INT("INT"),
 		PT("PT"),
-		GP("GOLD"),
 		LVL("LVL");
 		
 		private final String name;
@@ -150,7 +149,6 @@ public class TopBar extends Group {
 	private final StatWidget dexWidget;
 	private final StatWidget intWidget;
 	private final StatWidget ptWidget;
-	private final StatWidget gpWidget;
 	private final StatWidget lvlWidget;
 	
 	public TopBar(final GameUi gameUi) {
@@ -164,7 +162,6 @@ public class TopBar extends Group {
 		dexWidget = new StatWidget(gameUi, Stat.DEX, new Color(1f, 1f, 1f, 1f), gameUi.getApp().assets.uiDexIcon);
 		intWidget = new StatWidget(gameUi, Stat.INT, new Color(1f, 1f, 1f, 1f), gameUi.getApp().assets.uiIntIcon);
 		ptWidget = new StatWidget(gameUi, Stat.PT, new Color(1f, 1f, 1f, 1f), null);
-		gpWidget = new StatWidget(gameUi, Stat.GP, Color.valueOf("FFE100"), null);
 		lvlWidget = new StatWidget(gameUi, Stat.LVL, new Color(1f, 1f, 1f, 1f), null);
 		
 		addActor(background);
@@ -172,7 +169,6 @@ public class TopBar extends Group {
 		addActor(dexWidget);
 		addActor(intWidget);
 		addActor(ptWidget);
-		addActor(gpWidget);
 		addActor(lvlWidget);
 		
 		final float space = gameUi.getApp().space.vertical(2);
@@ -181,7 +177,6 @@ public class TopBar extends Group {
 		dexWidget.setY(space / 2f);
 		intWidget.setY(space / 2f);
 		ptWidget.setY(space / 2f);
-		gpWidget.setY(space / 2f);
 		lvlWidget.setY(space / 2f);
 		
 		background.setHeight(getHeight());
@@ -203,10 +198,6 @@ public class TopBar extends Group {
 		return ptWidget;
 	}
 	
-	public StatWidget getGpWidget() {
-		return gpWidget;
-	}
-	
 	public StatWidget getLvlWidget() {
 		return lvlWidget;
 	}
@@ -222,8 +213,7 @@ public class TopBar extends Group {
 		background.setWidth(width);
 		final float space = gameUi.getApp().space.horizontal(4f);
 		
-		gpWidget.setX(width - gpWidget.getWidth() - space * 3f);
-		lvlWidget.setX(gpWidget.getX() - lvlWidget.getWidth() - space);
+		lvlWidget.setX(width - lvlWidget.getWidth() - space * 3f);
 		
 		strWidget.setX(width * 0.14f);
 		dexWidget.setX(strWidget.getRight() + gameUi.getApp().space.horizontal(1f));

@@ -1,12 +1,11 @@
 package com.us.ld31.game.skills.translocations;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.us.ld31.game.GameWorld;
-import com.us.ld31.game.PlayerCharacter;
-import com.us.ld31.game.foestuff.Foe;
+import com.us.ld31.game.pawn.Foe;
+import com.us.ld31.game.pawn.Pawn;
+import com.us.ld31.game.pawn.PlayerCharacter;
 import com.us.ld31.game.skills.Skill;
 import com.us.ld31.utils.tiles.Tile;
 
@@ -17,7 +16,7 @@ public class BlinkOthersAway implements Skill {
 	private float range;
 	
 	@Override
-	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
+	public float activate(Pawn user, GameWorld gameWorld, int skillLevel) {
 		range = rangeInTiles * gameWorld.getWorldMap().getTileSize();
 		PlayerCharacter caster = (PlayerCharacter) user;
 		for(Foe f : caster.getFoesInRange(rangeInTiles)) {

@@ -89,37 +89,43 @@ public class Foe extends SpriteActor{
 				foeTileX = path.get(pathIndex);
 				foeTileY = path.get(pathIndex + 1);
 				
-				final int tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
-				final int tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
+				int tileXCh = 0;
+				int tileYCh = 0;
 				
-				Log.trace(tileSize);
+				//if(moved) {
+					tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
+					tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
+					//moved = false;
+				//}
 				
 				time += delta;
 				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = (float)(lerpX + ((tileSize * tileXCh) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
-				float y = (float)(lerpY + ((tileSize * tileYCh) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
+				Log.trace(/*tileXCh, tileYCh, foeTileX,*/ getX());
 				
-				Log.trace(x, y);
+				float x = (float)(lerpX + ((tileSize * tileXCh)/* * div*/));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
+				float y = (float)(lerpY + ((tileSize * tileYCh)/* * div*/)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
 				
 				//float x = foeTileX * tileSize;
 				//float y = foeTileY * tileSize;
 				
-				this.setPosition(x, y);
+				///this.setPosition(x, y);
 				//Log.trace(tmpX, tmpY);
 				
 				if(time > secondsPerTile) {
+					//moved = true;
 					pathIndex += 2;
 					time %= secondsPerTile;
-					Log.trace(lerpX, lerpY, getX(), getY());
 					lerpX = x;//foeTileX * tileSize;
 					lerpY = y;//foeTileY * tileSize;
-					//this.setPosition(lerpX, lerpY);
+					this.setPosition(lerpX, lerpY);
 					allowNextTravel = true;
 				}
 			}
 		}
 	}
+	
+	private boolean moved = true;
 	
 	public void translocate(float x, float y) {
 		lerpX = x;

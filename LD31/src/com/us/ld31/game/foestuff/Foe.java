@@ -3,6 +3,7 @@ package com.us.ld31.game.foestuff;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.Character;
 import com.us.ld31.game.GameWorld;
@@ -11,6 +12,8 @@ import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 
 public class Foe extends SpriteActor{
+	
+	private Array<SpriteActor> tiles = new Array<SpriteActor>();
 	
 	private float tilesPerSecond = 5;
 	private float secondsPerTile = 1f/tilesPerSecond;
@@ -54,8 +57,8 @@ public class Foe extends SpriteActor{
 		super.act(delta);
 		
 		if(firstAct) {
-			tmpX = getX();
-			tmpY = getY();
+			lerpX = getX();
+			lerpY = getY();
 			tileSize = world.getWorldMap().getTileSize();
 			character = world.getCharacter();
 			
@@ -65,7 +68,7 @@ public class Foe extends SpriteActor{
 			firstAct = false;
 		}
 		
-		if((playerX != lastPlayerX || playerY != lastPlayerY) && allowNextTravel) {
+		if((playerX != lastPlayerX || playerY != lastPlayerY)) {
 			travelTo(playerX, playerY);
 			lastPlayerX = playerX;
 			lastPlayerY = playerY;
@@ -73,59 +76,66 @@ public class Foe extends SpriteActor{
 			playerX = (int)(character.getX() / tileSize);
 			playerY = (int)(character.getY() / tileSize);
 		}
-		
+
 		//Log.trace(Vector2.dst(character.getX(), character.getY(), getX(), getY()));
-		if(shouldTravel && Vector2.dst(character.getX(), character.getY(), getX(), getY()) > distance * tileSize) {
+		if(Vector2.dst(character.getX(), character.getY(), getX(), getY()) > distance * tileSize) {
 			if(pathIndex >= path.size) {
-				shouldTravel = false;
-				pathIndex = 0;
+				//shouldTravel = false;
+				//pathIndex = 0;
 			} else {
 				foeTileX = path.get(pathIndex);
 				foeTileY = path.get(pathIndex + 1);
 				
+				final int tileXCh = foeTileX - (int)(getX() / tileSize);
+				final int tileYCh = foeTileY - (int)(getY() / tileSize);
+				
 				time += delta;
-				float div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
+				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = MathUtils.lerp(tmpX, foeTileX * tileSize, div);
-				float y = MathUtils.lerp(tmpY, foeTileY * tileSize, div);
+				float x = (float)(lerpX + (tileSize * tileXCh) * div);//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
+				float y = (float)(lerpY + (tileSize * tileYCh) * div); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
 				
-				/*float x = foeTileX * tileSize;
-				float y = foeTileY * tileSize;
-				*/
-				allowNextTravel = false;
+				//float x = foeTileX * tileSize;
+				//float y = foeTileY * tileSize;
 				
 				this.setPosition(x, y);
 				//Log.trace(tmpX, tmpY);
 				
-				if(time >= secondsPerTile) {
+				if(time > secondsPerTile) {
 					pathIndex += 2;
-					time %= secondsPerTile;
-					tmpX = foeTileX * tileSize;
-					tmpY = foeTileY * tileSize;
-					this.setPosition(tmpX, tmpY);
-					allowNextTravel = true;
+					time = 0;//%= secondsPerTile;
+					lerpX = getX();//foeTileX * tileSize;
+					lerpY = getY();//foeTileY * tileSize;
+					//this.setPosition(lerpX, lerpY);
 				}
 			}
-		} else {
-			allowNextTravel = true;
-		}
+		} 
 	}
 	
-	private boolean allowNextTravel;
-	private float tmpX = 0, tmpY = 0;
+	private float lerpX = 0, lerpY = 0;
 	
 	/**
 	 * coordinates in tile system
 	 * */
 	public void travelTo(int x, int y) {
+		shouldTravel = false;
+		
+		for(int i =0; i < tiles.size; i += 1) {
+			tiles.get(i).remove();
+		}
+		tiles.clear();
+		
 		tileSize = world.getWorldMap().getTileSize();
 		astar.getPath(x, 
 					  y, 
 					 (int)(getX() / tileSize), 
 					 (int)(getY() / tileSize),
 					 path);
-		tmpX = getX();
-		tmpY = getY();
+		lerpX = getX();
+		lerpY = getY();
+		
+		pathIndex = 0;
+		
 		if(path.size >= 2) {
 			path.removeRange(0, 1);
 		}
@@ -141,11 +151,17 @@ public class Foe extends SpriteActor{
 			Log.trace(0);
 			return;
 		}
-		pathIndex = 0;
-		foeTileX = path.get(0);
-		foeTileY = path.get(1);
+		
+		for(int i =0; i < path.size; i += 2) {
+			final SpriteActor tile = new SpriteActor(world.getApp().assets.uiBlock);
+			tile.setSize(world.getWorldMap().getTileSize(), world.getWorldMap().getTileSize());
+			tile.setPosition(path.get(i) * world.getWorldMap().getTileSize(), path.get(i + 1) * world.getWorldMap().getTileSize());
+			
+			getParent().addActor(tile);
+			tiles.add(tile);
+		}
+		
 		shouldTravel = true;
-		allowNextTravel = false;
 		time = 0;
 	}
 	
@@ -155,7 +171,6 @@ public class Foe extends SpriteActor{
 		
 		if(parent != null) {
 			firstAct = true;
-			allowNextTravel = true;
 		}
 	}
 	

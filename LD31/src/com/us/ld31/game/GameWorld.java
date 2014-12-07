@@ -68,6 +68,10 @@ public class GameWorld extends Group {
 		});
 	}
 	
+	public LD31 getApp() {
+		return app;
+	}
+	
 	public void begin() {
 		WorldGenerator.generateWorld(app, worldMap);
 		addActor(character);

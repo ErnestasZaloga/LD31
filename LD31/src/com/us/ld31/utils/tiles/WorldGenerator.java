@@ -25,11 +25,11 @@ public class WorldGenerator {
 			}
 		}
 		//Scatter some rocks around
-		for(int i=0; i<40; i++) {
+		/*for(int i=0; i<40; i++) {
 			int randX = MathUtils.random(0, map.length-1);
 			int randY = MathUtils.random(0, map[0].length-1);
 			map[randX][randY] = rock;
-		}
+		}*/
 		//TODO scatter some trees
 		//...
 		
@@ -52,7 +52,7 @@ public class WorldGenerator {
 		}
 		
 		//Then generate buildings
-		drawBuildings(map, cityX, cityY);
+		//drawBuildings(map, cityX, cityY);
 		
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {

@@ -9,7 +9,7 @@ import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.skills.Skill;
 import com.us.ld31.utils.tiles.Tile;
 
-public class BlinkAwayOther implements Skill {
+public class BlinkOtherAway implements Skill {
 
 	private float cooldown = 20;
 	private int rangeInTiles = 6;

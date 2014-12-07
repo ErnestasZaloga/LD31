@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
-import com.us.ld31.game.Character;
+import com.us.ld31.game.PlayerCharacter;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
@@ -22,7 +22,7 @@ public class Foe extends SpriteActor{
 	
 	private final GameWorld world;
 	private Astar astar;
-	private Character character;
+	private PlayerCharacter character;
 	
 	private IntArray path = new IntArray();
 	private int pathIndex = 0;

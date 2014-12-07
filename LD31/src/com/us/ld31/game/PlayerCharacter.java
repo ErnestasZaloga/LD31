@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
+import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.skills.SkillState;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
@@ -12,7 +13,7 @@ import com.us.ld31.utils.steps.scene.ActorSteps;
 import com.us.ld31.utils.tiles.Tile;
 import com.us.ld31.utils.tiles.WorldMap;
 
-public class Character extends SpriteActor {
+public class PlayerCharacter extends SpriteActor {
 
 	public static enum SkillSlot {
 		Primary,
@@ -64,7 +65,7 @@ public class Character extends SpriteActor {
 	public float portalX = -1;
 	public float portalY = -1;
 	
-	public Character(final GameWorld gameWorld) {
+	public PlayerCharacter(final GameWorld gameWorld) {
 		this.gameWorld = gameWorld;
 		this.worldMap = gameWorld.getWorldMap();
 	}
@@ -231,6 +232,18 @@ public class Character extends SpriteActor {
 			float dy = getY()-t.getY();
 			if(Math.sqrt(dx*dx+dy*dy) <= range*worldMap.getTileSize()) {
 				result.add(t);
+			}
+		}
+		return result;
+	}
+	
+	public Array<Foe> getFoesInRange(int range) {
+		Array<Foe> result = new Array<Foe>();
+		for(Foe f : gameWorld.getFoeManager().getAllFoes()) {
+			float dx = getX()-f.getX();
+			float dy = getY()-f.getY();
+			if(Math.sqrt(dx*dx+dy*dy) <= range*worldMap.getTileSize()) {
+				result.add(f);
 			}
 		}
 		return result;

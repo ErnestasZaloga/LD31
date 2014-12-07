@@ -8,12 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.us.ld31.LD31;
-import com.us.ld31.game.Character.SkillSlot;
+import com.us.ld31.game.PlayerCharacter.SkillSlot;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
-import com.us.ld31.game.skills.translocations.BlinkAwayOther;
-import com.us.ld31.game.skills.translocations.Portal;
+import com.us.ld31.game.skills.translocations.BlinkOthersAway;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;
@@ -25,7 +24,7 @@ import com.us.ld31.utils.tiles.WorldMap;
 public class GameWorld extends Group {
 
 	private final LD31 app;
-	private final Character character;
+	private final PlayerCharacter character;
 	private Astar astar;
 	private FoeManager foeManager;
 	private final WorldMap worldMap;
@@ -43,7 +42,7 @@ public class GameWorld extends Group {
 		addActor(worldMap);
 		
 		// Svarbu kad butu sukurtas PO worldMap
-		character = new Character(this);
+		character = new PlayerCharacter(this);
 		characterController.addListener(new TouchListener() {
 			@Override
 			public void touched() {
@@ -131,7 +130,8 @@ public class GameWorld extends Group {
 //			ControlledBlink skill = new ControlledBlink();
 //			BlinkOther skill = new BlinkOther();
 //			BlinkAwayOther skill = new BlinkAwayOther();
-			Portal skill = new Portal();
+//			Portal skill = new Portal();
+			BlinkOthersAway skill = new BlinkOthersAway();
 			skill.activate(character, this, 1);
 		}
 			
@@ -141,8 +141,8 @@ public class GameWorld extends Group {
 		else {
 			super.act(delta);
 			
-			for(int i = 0; i < Character.MovementDirection.list.length; i += 1) {
-				final Character.MovementDirection direction = Character.MovementDirection.list[i];
+			for(int i = 0; i < PlayerCharacter.MovementDirection.list.length; i += 1) {
+				final PlayerCharacter.MovementDirection direction = PlayerCharacter.MovementDirection.list[i];
 				if(Gdx.input.isKeyJustPressed(direction.key)) {
 					character.movement(direction, true);
 				}
@@ -185,7 +185,7 @@ public class GameWorld extends Group {
 		return worldMap;
 	}
 	
-	public Character getCharacter() {
+	public PlayerCharacter getCharacter() {
 		return character;
 	}
 	

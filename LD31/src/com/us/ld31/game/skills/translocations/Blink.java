@@ -3,7 +3,7 @@ package com.us.ld31.game.skills.translocations;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import com.us.ld31.game.Character;
+import com.us.ld31.game.PlayerCharacter;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.skills.Skill;
@@ -18,8 +18,8 @@ public class Blink implements Skill {
 	@Override
 	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
 		Array<Tile> tiles;
-		if(user instanceof Character) {
-			Character u = (Character) user;
+		if(user instanceof PlayerCharacter) {
+			PlayerCharacter u = (PlayerCharacter) user;
 			tiles = u.getTilesInRange(rangeInTiles*skillLevel);
 		} else {
 			Foe u = (Foe) user;

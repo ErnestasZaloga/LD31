@@ -2,12 +2,14 @@ package com.us.ld31.game.foestuff;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.Character;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
+import com.us.ld31.utils.tiles.Tile;
 
 public class Foe extends SpriteActor{
 	
@@ -185,5 +187,18 @@ public class Foe extends SpriteActor{
 		this.hp = hp;
 	}
 
+	public Array<Tile> getTilesInRange(int range) {
+		Array<Tile> result = new Array<Tile>();
+		for(int i=0; i<world.getWorldMap().getChildren().size; i++) {
+			Tile t = (Tile) world.getWorldMap().getChildren().get(i);
+			t.getColor().a = 1;
+			float dx = getX()-t.getX();
+			float dy = getY()-t.getY();
+			if(Math.sqrt(dx*dx+dy*dy) <= range*world.getWorldMap().getTileSize()) {
+				result.add(t);
+			}
+		}
+		return result;
+	}
 	
 }

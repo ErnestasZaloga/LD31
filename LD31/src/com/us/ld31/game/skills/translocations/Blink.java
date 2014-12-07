@@ -2,7 +2,10 @@ package com.us.ld31.game.skills.translocations;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
+import com.us.ld31.game.Character;
 import com.us.ld31.game.GameWorld;
+import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.skills.Skill;
 import com.us.ld31.utils.tiles.Tile;
 
@@ -13,6 +16,30 @@ public class Blink implements Skill {
 	private int rangeInTiles = 7;
 
 	@Override
+	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
+		Array<Tile> tiles;
+		if(user instanceof Character) {
+			Character u = (Character) user;
+			tiles = u.getTilesInRange(rangeInTiles*skillLevel);
+		} else {
+			Foe u = (Foe) user;
+			tiles = u.getTilesInRange(rangeInTiles*skillLevel);
+		}
+		for(Tile t : tiles) {
+			if(!t.isWalkable()) {
+				tiles.removeValue(t, false);
+			}
+		}
+		
+		int t = MathUtils.random(tiles.size-1);
+		
+		user.setX(tiles.get(t).getX());
+		user.setY(tiles.get(t).getY());
+		
+		return cooldown;
+	}
+	
+	/*@Override
 	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
 		float dx = 0;
 		float dy = 0;
@@ -51,6 +78,6 @@ public class Blink implements Skill {
 		}
 		
 		return cooldown;
-	}
+	}*/
 
 }

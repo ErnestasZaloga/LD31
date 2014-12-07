@@ -11,12 +11,11 @@ import com.us.ld31.LD31;
 import com.us.ld31.game.Character.SkillSlot;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
-import com.us.ld31.game.skills.translocations.Blink;
+import com.us.ld31.game.skills.DebugSkillTree;
 import com.us.ld31.game.skills.translocations.BlinkAwayOther;
-import com.us.ld31.game.skills.translocations.BlinkOther;
-import com.us.ld31.game.skills.translocations.ControlledBlink;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
+import com.us.ld31.game.ui.SkillBar.SkillButton;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
@@ -49,7 +48,6 @@ public class GameWorld extends Group {
 			public void touched() {
 				if(getButton() == Input.Buttons.LEFT) {
 					character.performSkill(SkillSlot.Primary);
-					gameUi.getSkillBar().markForLevelUp();
 				}
 				else if(getButton() == Input.Buttons.RIGHT) {
 					character.performSkill(SkillSlot.Secondary);
@@ -70,10 +68,19 @@ public class GameWorld extends Group {
 					gameUi.showPauseUi();
 				}
 				else {
+					if(character.getStats().getSkillPoints() > 0) {
+						gameUi.getSkillBar().markForLevelUp();
+					}
+					
 					gameUi.hidePauseUi();
 					paused = false;
 				}
 			}
+			
+			@Override
+			public void onActiveSkillChanged(final SkillButton button) {
+			}
+			
 		});
 		
 		addListener(new TouchListener() {
@@ -99,6 +106,12 @@ public class GameWorld extends Group {
 		addActor(character);
 		character.begin();
 		
+		final CharacterStats stats = new CharacterStats();
+		stats.getSkills()[0] = new DebugSkillTree(app).create();
+		stats.getSkills()[1] = new DebugSkillTree(app).create();
+		stats.getSkills()[2] = new DebugSkillTree(app).create();
+
+		character.setStats(stats);
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);
 
 		addActor(characterController);
@@ -107,6 +120,7 @@ public class GameWorld extends Group {
 		addActor(gameUi);
 		
 		gameUi.begin();
+		gameUi.getSkillBar().markForLevelUp();
 	}
 	
 	@Override

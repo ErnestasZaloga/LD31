@@ -92,8 +92,14 @@ public class GameUi extends Group {
 		topBar.begin();
 	}
 	
+	public boolean isPauseUiVisible() {
+		return pauseOverlay.hasParent();
+	}
+	
 	public void showSkillbook() {
 		addActor(skillbook);
+		skillbook.begin();
+		
 		if(delegate != null) {
 			delegate.onPauseStateChanged();
 		}

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
+import com.us.ld31.game.skills.SkillState;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.steps.Steps;
 import com.us.ld31.utils.steps.scene.ActorSteps;
@@ -56,13 +58,37 @@ public class Character extends SpriteActor {
 	private final Action[] movementActions = new Action[4];
 	private final IntArray tiles = new IntArray();
 	
+	private CharacterStats stats;
+	private SkillState secondarySkill;
+	
 	public Character(final GameWorld gameWorld) {
 		this.gameWorld = gameWorld;
 		this.worldMap = gameWorld.getWorldMap();
 	}
 	
+	public void setSecondarySkill(final SkillState secondarySkill) {
+		this.secondarySkill = secondarySkill;
+	}
+	
+	public void setStats(final CharacterStats stats) {
+		this.stats = stats;
+	}
+	
+	public CharacterStats getStats() {
+		return stats;
+	}
+	
 	public void performSkill(final SkillSlot slot) {
-		
+		if(slot == SkillSlot.Secondary) {
+			if(secondarySkill.getCooldownLeft() == 0) {
+				final float cooldown = secondarySkill.getSkillInfo().skill.activate(this, gameWorld, secondarySkill.getLevel());
+				secondarySkill.setCooldown(cooldown);
+				secondarySkill.setCooldownLeft(cooldown);
+			}
+			else {
+				Log.trace(this, "Still in cooldown");
+			}
+		}
 	}
 	
 	public void begin() {

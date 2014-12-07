@@ -16,6 +16,7 @@ import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;
+import com.us.ld31.game.ui.Skillbook.SkillIcon;
 import com.us.ld31.utils.Astar;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.tiles.WorldGenerator;
@@ -82,8 +83,22 @@ public class GameWorld extends Group {
 			
 			@Override
 			public void onActiveSkillChanged(final SkillButton button) {
+				character.setSecondarySkill(button.getState());
 			}
-			
+
+			@Override
+			public void onLevelUp(final SkillIcon skillIcon) {
+				skillIcon.getSkillState().setLevel(skillIcon.getSkillState().getLevel() + 1);
+				character.getStats().setSkillPoints(character.getStats().getSkillPoints() - 1);
+				gameUi.getSkillbook().setSkillPoints(character.getStats().getSkillPoints());
+				
+				if(character.getStats().getSkillPoints() == 0) {
+					gameUi.getSkillbook().disableForLevelUp();
+				}
+				else {
+					gameUi.getSkillbook().enableForLevelUp();
+				}
+			}
 		});
 		
 		foeGroup.addListener(new TouchListener() {
@@ -126,6 +141,10 @@ public class GameWorld extends Group {
 		gameUi.begin();
 		gameUi.getSkillbook().setSkillTree(character.getStats().getSkills());
 		gameUi.getSkillbook().setSkillPoints(character.getStats().getSkillPoints());
+		
+		if(character.getStats().getSkillPoints() > 0) {
+			gameUi.getSkillbook().enableForLevelUp();
+		}
 	}
 	
 	@Override

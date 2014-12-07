@@ -20,6 +20,10 @@ public class CharacterStats extends Stats {
 		return skills;
 	}
 	
+	public void setSkillPoints(final int skillPoints) {
+		this.skillPoints = skillPoints;
+	}
+	
 	public int getSkillPoints() {
 		return skillPoints;
 	}

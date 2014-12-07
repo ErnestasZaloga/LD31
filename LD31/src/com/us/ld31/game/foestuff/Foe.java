@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.GameWorld;
 import com.us.ld31.game.PlayerCharacter;
 import com.us.ld31.utils.Astar;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.tiles.Tile;
 
@@ -32,8 +33,8 @@ public class Foe extends SpriteActor{
 	private int lastPlayerX;
 	private int lastPlayerY;
 	
-	private int foeTileX;
-	private int foeTileY;
+	private int nextTileX;
+	private int nextTileY;
 	
 	private int distance = 10;
 	private int difficulity;
@@ -85,22 +86,25 @@ public class Foe extends SpriteActor{
 				allowNextTravel = true;
 			} else {
 				allowNextTravel = false;
-				foeTileX = path.get(pathIndex);
-				foeTileY = path.get(pathIndex + 1);
+				nextTileX = path.get(pathIndex);
+				nextTileY = path.get(pathIndex + 1);
 				
-				int tileXCh = 0;
-				int tileYCh = 0;
+				int tileXChange = 0;
+				int tileYChange = 0;
 				
-				tileXCh = MathUtils.clamp(foeTileX - MathUtils.floor((getX() / tileSize)), -1, 1);
-				tileYCh = MathUtils.clamp(foeTileY - MathUtils.floor((getY() / tileSize)), -1, 1);
+				tileXChange = MathUtils.clamp(nextTileX - getTileX(), -1, 1);
+				tileYChange = MathUtils.clamp(nextTileY - getTileY(), -1, 1);
 				
 				time += delta;
 				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = (float)(lerpX + ((tileSize * tileXCh) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
-				float y = (float)(lerpY + ((tileSize * tileYCh) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
+				float x = (float)(lerpX + ((tileSize * tileXChange) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
+				float y = (float)(lerpY + ((tileSize * tileYChange) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
 				
 				this.setPosition(x, y);
+				
+				lerpX = x;
+				lerpY = y;
 				
 				if(time > secondsPerTile) {
 					//moved = true;
@@ -113,6 +117,14 @@ public class Foe extends SpriteActor{
 				}
 			}
 		}
+	}
+	
+	public int getTileX() {
+		return (int)(getX() / tileSize);
+	}
+	
+	public int getTileY() {
+		return (int)(getY() / tileSize);
 	}
 	
 	private boolean moved = true;

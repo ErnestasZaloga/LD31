@@ -9,10 +9,10 @@ import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.skills.Skill;
 import com.us.ld31.utils.tiles.Tile;
 
-public class BlinkOtherAway implements Skill {
-
+public class BlinkOtherCloser implements Skill {
+	
 	private float cooldown = 20;
-	private int rangeInTiles = 6;
+	private int rangeInTiles = 4;
 	
 	@Override
 	public float activate(Actor user, GameWorld gameWorld, int skillLevel) {
@@ -26,17 +26,17 @@ public class BlinkOtherAway implements Skill {
 					tiles.removeValue(t, false);
 				}
 			}
-			//Remove all the tiles which would bring target closer to the caster
+			//Remove all the tiles which would bring target further away from the caster
 			Array<Tile> availableTargetTiles = new Array<Tile>();
 			if(user.getX() <= targetActor.getX()) {  //If caster is to the left to the target
 				for(Tile t : tiles) {
-					if(t.getX() >= targetActor.getX()) {
+					if(t.getX() <= targetActor.getX()) {
 						if(user.getY() <= targetActor.getY()) {
-							if(t.getY() >= targetActor.getY()) {
+							if(t.getY() <= targetActor.getY()) {
 								availableTargetTiles.add(t);
 							}
 						} else {
-							if(t.getY() < targetActor.getY()) {
+							if(t.getY() > targetActor.getY()) {
 								availableTargetTiles.add(t);
 							}
 						}
@@ -44,13 +44,13 @@ public class BlinkOtherAway implements Skill {
 				}
 			} else {  //If caster is to the right...
 				for(Tile t : tiles) {
-					if(t.getX() < targetActor.getX()) {
+					if(t.getX() > targetActor.getX()) {
 						if(user.getY() <= targetActor.getY()) {
-							if(t.getY() >= targetActor.getY()) {
+							if(t.getY() <= targetActor.getY()) {
 								availableTargetTiles.add(t);
 							}
 						} else {
-							if(t.getY() < targetActor.getY()) {
+							if(t.getY() > targetActor.getY()) {
 								availableTargetTiles.add(t);
 							}
 						}
@@ -60,7 +60,6 @@ public class BlinkOtherAway implements Skill {
 			int t = MathUtils.random(availableTargetTiles.size-1);
 			System.out.println(t);
 			System.out.println(availableTargetTiles.get(t).getX() + " " + availableTargetTiles.get(t).getY());
-			availableTargetTiles.get(t).getColor().a = 0.5f;
 			targetActor.translocate(availableTargetTiles.get(t).getX(), availableTargetTiles.get(t).getY());
 		} else {
 			gameWorld.getGameUi().getMessages().showWarning("Invalid target!");
@@ -68,5 +67,4 @@ public class BlinkOtherAway implements Skill {
 		
 		return cooldown;
 	}
-
 }

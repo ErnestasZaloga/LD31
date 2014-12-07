@@ -12,7 +12,7 @@ import com.us.ld31.game.PlayerCharacter.SkillSlot;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
-import com.us.ld31.game.skills.translocations.BlinkOthersAway;
+import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;
@@ -124,7 +124,8 @@ public class GameWorld extends Group {
 		addActor(gameUi);
 		
 		gameUi.begin();
-		gameUi.getSkillBar().markForLevelUp();
+		gameUi.getSkillbook().setSkillTree(character.getStats().getSkills());
+		gameUi.getSkillbook().setSkillPoints(character.getStats().getSkillPoints());
 	}
 	
 	@Override
@@ -135,7 +136,9 @@ public class GameWorld extends Group {
 //			BlinkOther skill = new BlinkOther();
 //			BlinkAwayOther skill = new BlinkAwayOther();
 //			Portal skill = new Portal();
-			BlinkOthersAway skill = new BlinkOthersAway();
+//			BlinkOthersAway skill = new BlinkOthersAway();
+//			BlinkOtherCloser skill = new BlinkOtherCloser();
+			BlinkOthersCloser skill = new BlinkOthersCloser();
 			skill.activate(character, this, 1);
 		}
 			

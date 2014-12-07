@@ -37,8 +37,8 @@ public class GameUi extends Group {
 		
 		setTouchable(Touchable.childrenOnly);
 		
-		healthBar = new SideBar(this, Color.valueOf("AB0000"));
-		expBar = new SideBar(this, Color.valueOf("FFCC00"));
+		healthBar = new SideBar(this, Color.valueOf("AB0000"), app.assets.uiHealthBar);
+		expBar = new SideBar(this, Color.valueOf("FFCC00"), app.assets.uiExpBar);
 		
 		addActor(healthBar);
 		addActor(expBar);

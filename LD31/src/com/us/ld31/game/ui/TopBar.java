@@ -1,6 +1,8 @@
 package com.us.ld31.game.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -31,33 +33,46 @@ public class TopBar extends Group {
 	public static class StatWidget extends Group {
 		private final SpriteActor arrowUp = new SpriteActor();
 		private final SpriteActor arrowDown = new SpriteActor();
+		private final SpriteActor icon = new SpriteActor();
 		private final Label title;
 		private final Label value;
 		private boolean editable;
+		private final Actor titleActor;
 		
 		public StatWidget(final GameUi gameUi, 
 						  final Stat stat,
-						  final Color colorMod) {
+						  final Color colorMod,
+						  final TextureRegion icon) {
 
 			setTransform(false);
 			
 			final LabelStyle style = new LabelStyle(gameUi.getApp().assets.fontSmall, colorMod);
 			title = new Label(stat.getName() + ": ", style);
 			value = new Label("99", style);
+			value.pack();
 			
 			arrowUp.setRegion(gameUi.getApp().assets.uiArrowUp);
 			arrowDown.setRegion(gameUi.getApp().assets.uiArrowDown);
 			arrowUp.setSizeScale(0.35f);
 			arrowDown.setSizeScale(0.35f);
 			
-			addActor(title);
+			if(icon != null) {
+				this.icon.setRegion(icon);
+				this.icon.setSize(value.getHeight() / 2f, value.getHeight() / 2f);
+				titleActor = this.icon;
+				addActor(this.icon);
+			}
+			else {
+				titleActor = title;
+				addActor(title);
+			}
+			
 			addActor(value);
 			addActor(arrowUp);
 			addActor(arrowDown);
 			
 			title.setFontScale(0.7f);
 			title.pack();
-			value.pack();
 			
 			arrowUp.addListener(new TouchListener() {
 				@Override
@@ -91,13 +106,13 @@ public class TopBar extends Group {
 				}
 			});
 
-			title.setY(arrowDown.getTop());
-			value.setPosition(title.getRight(), arrowDown.getTop());
+			titleActor.setY(arrowDown.getTop());
+			value.setPosition(titleActor.getRight(), arrowDown.getTop());
 			
 			arrowDown.setX(value.getX() + value.getWidth() / 2f - arrowUp.getWidth() / 2f);
 			arrowUp.setPosition(arrowDown.getX(), value.getTop() - arrowUp.getHeight() * 2f);
 			
-			setWidth(title.getWidth() + value.getWidth());
+			setWidth(titleActor.getWidth() + value.getWidth());
 			setHeight(arrowUp.getTop());
 			
 			arrowDown.setVisible(false);
@@ -143,15 +158,14 @@ public class TopBar extends Group {
 		
 		setTransform(false);
 		
-		background.setRegion(gameUi.getApp().assets.uiBlock);
-		background.setColor(Color.BLACK);
+		background.setRegion(gameUi.getApp().assets.uiTopBarBackground);
 		
-		strWidget = new StatWidget(gameUi, Stat.STR, new Color(1f, 1f, 1f, 1f));
-		dexWidget = new StatWidget(gameUi, Stat.DEX, new Color(1f, 1f, 1f, 1f));
-		intWidget = new StatWidget(gameUi, Stat.INT, new Color(1f, 1f, 1f, 1f));
-		ptWidget = new StatWidget(gameUi, Stat.PT, new Color(1f, 1f, 1f, 1f));
-		gpWidget = new StatWidget(gameUi, Stat.GP, Color.valueOf("FFE100"));
-		lvlWidget = new StatWidget(gameUi, Stat.LVL, new Color(1f, 1f, 1f, 1f));
+		strWidget = new StatWidget(gameUi, Stat.STR, new Color(1f, 1f, 1f, 1f), gameUi.getApp().assets.uiStrIcon);
+		dexWidget = new StatWidget(gameUi, Stat.DEX, new Color(1f, 1f, 1f, 1f), gameUi.getApp().assets.uiDexIcon);
+		intWidget = new StatWidget(gameUi, Stat.INT, new Color(1f, 1f, 1f, 1f), gameUi.getApp().assets.uiIntIcon);
+		ptWidget = new StatWidget(gameUi, Stat.PT, new Color(1f, 1f, 1f, 1f), null);
+		gpWidget = new StatWidget(gameUi, Stat.GP, Color.valueOf("FFE100"), null);
+		lvlWidget = new StatWidget(gameUi, Stat.LVL, new Color(1f, 1f, 1f, 1f), null);
 		
 		addActor(background);
 		addActor(strWidget);
@@ -208,13 +222,13 @@ public class TopBar extends Group {
 		background.setWidth(width);
 		final float space = gameUi.getApp().space.horizontal(4f);
 		
-		gpWidget.setX(width - gpWidget.getWidth() - space);
+		gpWidget.setX(width - gpWidget.getWidth() - space * 3f);
 		lvlWidget.setX(gpWidget.getX() - lvlWidget.getWidth() - space);
 		
-		strWidget.setX(space);
-		dexWidget.setX(strWidget.getRight() + space);
-		intWidget.setX(dexWidget.getRight() + space);
-		ptWidget.setX(intWidget.getRight() + space);
+		strWidget.setX(width * 0.14f);
+		dexWidget.setX(strWidget.getRight() + gameUi.getApp().space.horizontal(1f));
+		intWidget.setX(dexWidget.getRight() + gameUi.getApp().space.horizontal(1f));
+		ptWidget.setX(intWidget.getRight() + gameUi.getApp().space.horizontal(1f));
 	}
 	
 }

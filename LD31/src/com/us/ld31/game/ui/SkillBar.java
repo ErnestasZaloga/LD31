@@ -31,6 +31,7 @@ public class SkillBar extends Group {
 		private final Label mapping;
 		private SkillState state;
 		
+		private boolean coolingDown;
 		private boolean shrinked = true;
 		
 		public SkillButton(final SkillBar bar, 
@@ -136,11 +137,15 @@ public class SkillBar extends Group {
 			super.act(delta);
 			
 			if(state != null && !gameUi.isPauseUiVisible()) {
-				final float totalCooldown = state.getCooldown();
-				
-				if(totalCooldown > 0f) {
-					if(state.updateCooldown(delta)) {
-						state.setCooldown(0f);
+				if(state.getCooldownLeft() > 0f) {
+					coolingDown = true;
+					cooldownOverlay.setColor(Color.BLACK);
+					cooldownOverlay.getColor().a = 0.5f;
+					cooldownOverlay.setHeight(icon.getHeight() * (state.getCooldownLeft() / state.getCooldown()));
+				}
+				else {
+					if(coolingDown) {
+						coolingDown = false;
 						cooldownOverlay.setHeight(icon.getHeight());
 						cooldownOverlay.clearActions();
 						cooldownOverlay.setColor(Color.GREEN);
@@ -151,17 +156,14 @@ public class SkillBar extends Group {
 												ActorSteps.alphaTo(0.7f, 0.5f, Interpolation.circleOut),
 												ActorSteps.alphaTo(0f, 0.5f))));
 					}
-					else {
-						cooldownOverlay.setColor(Color.BLACK);
-						cooldownOverlay.getColor().a = 0.5f;
-						cooldownOverlay.setHeight(icon.getHeight() * (state.getCooldownLeft() / totalCooldown));
-					}
 				}
 			}
 		}
 
 		public void setState(final SkillState state) {
 			this.state = state;
+			
+			coolingDown = false;
 			
 			final float iconSize = icon.getWidth();
 			if(state != null) {

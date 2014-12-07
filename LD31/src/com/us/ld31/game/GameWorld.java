@@ -92,11 +92,9 @@ public class GameWorld extends Group {
 				character.getStats().setSkillPoints(character.getStats().getSkillPoints() - 1);
 				gameUi.getSkillbook().setSkillPoints(character.getStats().getSkillPoints());
 				
+				gameUi.getSkillbook().enableForLevelUp();
 				if(character.getStats().getSkillPoints() == 0) {
 					gameUi.getSkillbook().disableForLevelUp();
-				}
-				else {
-					gameUi.getSkillbook().enableForLevelUp();
 				}
 			}
 		});

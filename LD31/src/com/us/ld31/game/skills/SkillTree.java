@@ -21,4 +21,17 @@ public class SkillTree {
 		this.states = states;
 	}
 	
+	public void updateCooldowns(final float delta) {
+		updateCooldowns(delta, states);
+	}
+	
+	private void updateCooldowns(final float delta, 
+								 final Array<SkillState> states) {
+		
+		for(int i = 0; i < states.size; i += 1) {
+			states.get(i).updateCooldown(delta);
+			updateCooldowns(delta, states.get(i).getChildren());
+		}
+	}
+	
 }

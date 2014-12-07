@@ -50,7 +50,7 @@ public class Skillbook extends Group {
 			iconOverlay.getColor().a = 0.5f;
 			iconOverlay.setSize(icon.getWidth(), icon.getHeight());
 			label = new Label("0", new LabelStyle(gameUi.getApp().assets.fontBig, Color.YELLOW));
-			levelUpButton.setRegion(gameUi.getApp().assets.uiMissing);
+			levelUpButton.setRegion(gameUi.getApp().assets.uiArrowUp);
 			
 			setSize(icon.getWidth(), icon.getHeight());
 			levelUpButton.setSize(icon.getWidth() / 2f, icon.getHeight() / 2f);
@@ -86,6 +86,13 @@ public class Skillbook extends Group {
 				
 				@Override
 				public void touched() {
+					if(levelUpButton.isVisible()) {
+						final Delegate delegate = gameUi.getDelegate();
+						if(delegate != null) {
+							delegate.onLevelUp(SkillIcon.this);
+						}
+					}
+					
 					touchX = Gdx.input.getX();
 					touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 				
@@ -390,8 +397,8 @@ public class Skillbook extends Group {
 		setTouchable(Touchable.childrenOnly);
 
 		table.addActor(tableBackground);
-		tableBackground.setRegion(gameUi.getApp().assets.uiBlock);
-		tableBackground.setColor(Color.BLACK);
+		tableBackground.setRegion(gameUi.getApp().assets.uiSkillbookBg);
+		//tableBackground.setColor(Color.BLACK);
 
 		table.addActor(sep1);
 		table.addActor(sep2);
@@ -419,7 +426,7 @@ public class Skillbook extends Group {
 		points.setText("SP: " + skillPoints);
 		points.pack();
 		
-		points.setPosition(gameUi.getApp().space.horizontal(1f), title.getY());
+		points.setPosition(gameUi.getApp().space.horizontal(3f), title.getY());
 	}
 	
 	public void enableForLevelUp() {
@@ -481,7 +488,7 @@ public class Skillbook extends Group {
 				table.getHeight() - title.getHeight());
 		
 		final float skillTreeWidth = table.getWidth() / 4f;
-		final float skillTreeHeight = title.getY() - title.getHeight() / 2f;
+		final float skillTreeHeight = title.getY() - title.getHeight() * 0.25f;
 		
 		float skillTreeX = 0f;
 		for(int i = 0; i < skillTrees.length; i += 1) {
@@ -505,7 +512,7 @@ public class Skillbook extends Group {
 		infoTitle.setX(skillTrees[2].getRight());
 		infoText.setX(skillTrees[2].getRight() + skillTreeWidth * 0.1f);
 		
-		points.setPosition(gameUi.getApp().space.horizontal(1f), title.getY());
+		points.setPosition(gameUi.getApp().space.horizontal(3f), title.getY());
 	}
 	
 }

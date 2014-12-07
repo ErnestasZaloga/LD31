@@ -21,6 +21,8 @@ public class Assets implements Disposable {
 	public final TextureRegion uiMissing;
 	public final TextureRegion uiHealthBar;
 	public final TextureRegion uiExpBar;
+	public final TextureRegion uiSkillbookIcon;
+	public final TextureRegion uiSkillbookBg;
 	public final BitmapFont fontBig;
 	public final BitmapFont fontSmall;
 	
@@ -42,6 +44,8 @@ public class Assets implements Disposable {
 		uiIntIcon = atlas.findRegion("int");
 		uiHealthBar = atlas.findRegion("hp");
 		uiExpBar = atlas.findRegion("kazkas");
+		uiSkillbookIcon = atlas.findRegion("skillicon");
+		uiSkillbookBg = atlas.findRegion("skillbg");
 		uiArrowDown = new TextureRegion(uiArrowUp);
 		uiArrowDown.flip(false, true);
 

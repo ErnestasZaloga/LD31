@@ -65,18 +65,6 @@ public class Skillbook extends Group {
 			levelUpButton.setVisible(false);
 			label.setVisible(false);
 			
-			levelUpButton.addListener(new TouchListener() {
-				@Override
-				public void touched() {
-					Log.trace(this, "Touch");
-					
-					final Delegate delegate = gameUi.getDelegate();
-					if(delegate != null) {
-						delegate.onLevelUp(SkillIcon.this);
-					}
-				}
-			});
-
 			addListener(new TouchListener() {
 				private int touchX;
 				private int touchY;

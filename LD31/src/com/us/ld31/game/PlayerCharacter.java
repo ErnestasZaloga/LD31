@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.us.ld31.game.foestuff.Foe;
+import com.us.ld31.game.skills.Skill;
 import com.us.ld31.game.skills.SkillState;
 import com.us.ld31.game.skills.SkillTree;
 import com.us.ld31.utils.Log;
@@ -61,6 +62,7 @@ public class PlayerCharacter extends SpriteActor {
 	private final IntArray tiles = new IntArray();
 	
 	private CharacterStats stats;
+	private Skill primarySkill;
 	private SkillState secondarySkill;
 	
 	public float portalX = -1;
@@ -71,8 +73,20 @@ public class PlayerCharacter extends SpriteActor {
 		this.worldMap = gameWorld.getWorldMap();
 	}
 	
+	public void setPrimarySkill(final Skill primarySkill) {
+		this.primarySkill = primarySkill;
+	}
+	
+	public Skill getPrimarySkill() {
+		return primarySkill;
+	}
+	
 	public void setSecondarySkill(final SkillState secondarySkill) {
 		this.secondarySkill = secondarySkill;
+	}
+	
+	public SkillState getSecondarySkill() {
+		return secondarySkill;
 	}
 	
 	public void setStats(final CharacterStats stats) {
@@ -93,6 +107,9 @@ public class PlayerCharacter extends SpriteActor {
 			else {
 				Log.trace(this, "Still in cooldown");
 			}
+		}
+		else if(slot == SkillSlot.Primary && primarySkill != null) {
+			primarySkill.activate(this, gameWorld, 1);
 		}
 	}
 	

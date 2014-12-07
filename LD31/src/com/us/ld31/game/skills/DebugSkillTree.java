@@ -33,7 +33,7 @@ public class DebugSkillTree implements SkillTree.Source {
 			.descrption("Something something blablabla")
 			.icon(app.assets.tileRoad)
 			.skill(debugSkill)
-			.levelCap(1)
+			.levelCap(4)
 		.build();
 		
 		final SkillState skillRow1Column1 = new SkillState(blink);

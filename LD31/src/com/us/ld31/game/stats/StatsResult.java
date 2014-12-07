@@ -35,6 +35,7 @@ public class StatsResult {
 								    final Pawn source) {
 		
 		gameUi.getMessages().showHealing(source, damage, wasCritical);
+		source.getStats().setHitPoints(source.getStats().getHitPoints() + damage);
 	}
 	
 	public void uploadDamageResult(final GameUi gameUi, 

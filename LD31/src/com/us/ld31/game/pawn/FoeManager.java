@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.us.ld31.game.GameWorld;
+import com.us.ld31.game.stats.EnemyStats;
 
 
 public class FoeManager {
@@ -58,6 +59,7 @@ public class FoeManager {
 		foe.setAstar(world.getAstar());
 		foe.setDistance(distance);
 		foe.setSpeed(speed);
+		foe.setStats(new EnemyStats());
 		
 		foes.add(foe);
 		

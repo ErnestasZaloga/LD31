@@ -3,7 +3,6 @@ package com.us.ld31.game.stats;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
-import com.us.ld31.game.ui.GameUi;
 
 public class Stats {
 
@@ -162,6 +161,9 @@ public class Stats {
 			if(finalResistance > 1f) {
 				finalResistance = 0f;
 			}
+			else if(finalResistance < 0f) {
+				finalResistance = 0f;
+			}
 			
 			float finalCriticalChance = criticalChanceBonus + source.getCriticalChance();
 			
@@ -187,8 +189,32 @@ public class Stats {
 
 			final int damage = skillBonus + (int)(source.getRawMagicDamage() * (1f + damageBonus));
 			final float magicResistance = target.getMagicResistance() * (1f + target.getMagicResistanceBonus());
+			float dodgeChance = target.getDefensiveDodgeChance() * (1f + target.getDodgeChanceBonus()) - hitChanceBonus;
+			if(dodgeChance < 0f) {
+				dodgeChance = 0f;
+			}
 			
-			return rawDamageFormula(0, 0, 0);//return rawDamageFormula(skillBonus + (int)(source.getRawMagicDamage(), target.getMagicResistance(), target.getDefensiveDodgeChance());
+			return rawDamageFormula(damage, magicResistance, dodgeChance);
+		}
+		
+		public StatsResult calcRangedDamageAmount(final Stats target, 
+												  final int skillBonus) {
+			
+			final int damage = skillBonus + (int)(source.getRawRangedDamage() * (1f + damageBonus));
+			final float resistance = (getAttackRating() / target.getDefenseRating()) - 1f;
+			final float dodgeChance = target.getDefensiveDodgeChance() * (1f + target.getDodgeChanceBonus()) - hitChanceBonus;
+			
+			return rawDamageFormula(damage, resistance, dodgeChance);
+		}
+		
+		public StatsResult caclMeleeDamageAmount(final Stats target, 
+												 final int skillBonus) {
+			
+			final int damage = skillBonus + (int)(source.getRawMeleeDamage() + (1f + damageBonus));
+			final float resistance = (getAttackRating() / target.getDefenseRating()) - 1f;
+			final float dodgeChance = target.getDefensiveDodgeChance() * (1f + target.getDodgeChanceBonus()) - hitChanceBonus;
+			
+			return rawDamageFormula(damage,resistance, dodgeChance);
 		}
 	}
 	

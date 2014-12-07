@@ -10,6 +10,8 @@ import com.us.ld31.game.skills.Skill;
 
 public class PowerHit implements Skill{
 	
+	private boolean skillSuccessful;
+	
 	private float cooldown = 6f;
 	private float rangeInTiles = 0.3f;
 	private float range;
@@ -35,14 +37,22 @@ public class PowerHit implements Skill{
 						   					(player.getWidth() + player.getHeight()) / 4;
 				
 				if(Vector2.dst(target.getX(), target.getY(), playerX, playerY) <= trueRange) {
-					//TODO success
+					//***
+					//Successful
+					//****
 					gameWorld.getGameUi().getMessages().showWarning("damage");
 					gameWorld.getProjectileFactory().createPowerAttack(playerX, playerY, 0);
+					skillSuccessful = true;
 				} else {
+					//***
+					//not
+					//****
 					gameWorld.getGameUi().getMessages().showWarning("target not in range");
+					skillSuccessful = false;
 				}
 			} else {
 				gameWorld.getGameUi().getMessages().showWarning("Invalid target");
+				skillSuccessful = false;
 			}
 		} 
 		//
@@ -56,11 +66,13 @@ public class PowerHit implements Skill{
 				//TODO success
 				gameWorld.getGameUi().getMessages().showWarning("damage");
 				gameWorld.getProjectileFactory().createPowerAttack(user.getX(), user.getY(), 0);
+				skillSuccessful = true;
 			} else {
 				//gameWorld.getGameUi().getMessages().showWarning("target not in range");
+				skillSuccessful = false;
 			}
 		} 
-		return cooldown;
+		return skillSuccessful ? cooldown : 0;
 	}
 	
 }

@@ -5,10 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
-import com.us.ld31.game.PlayerCharacter;
 import com.us.ld31.game.GameWorld;
+import com.us.ld31.game.PlayerCharacter;
 import com.us.ld31.utils.Astar;
-import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.tiles.Tile;
 
@@ -98,8 +97,10 @@ public class Foe extends SpriteActor{
 				time += delta;
 				double div = time / secondsPerTile > 1f? 1f : time / secondsPerTile;
 				
-				float x = (float)(lerpX + ((tileSize * tileXCh)/* * div*/));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
-				float y = (float)(lerpY + ((tileSize * tileYCh)/* * div*/)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
+				float x = (float)(lerpX + ((tileSize * tileXCh) * div));//MathUtils.lerp(lerpX, foeTileX * tileSize, div);
+				float y = (float)(lerpY + ((tileSize * tileYCh) * div)); //MathUtils.lerp(lerpY, foeTileY * tileSize, div);
+				
+				this.setPosition(x, y);
 				
 				if(time > secondsPerTile) {
 					//moved = true;

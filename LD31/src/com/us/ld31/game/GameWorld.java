@@ -12,10 +12,7 @@ import com.us.ld31.game.PlayerCharacter.SkillSlot;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
-<<<<<<< HEAD
 import com.us.ld31.game.skills.translocations.BlinkOthersAway;
-=======
->>>>>>> e8da438ca30f88130b9f4060b200304df11af62b
 import com.us.ld31.game.ui.Delegate;
 import com.us.ld31.game.ui.GameUi;
 import com.us.ld31.game.ui.SkillBar.SkillButton;

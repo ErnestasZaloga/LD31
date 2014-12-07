@@ -15,6 +15,7 @@ public class Projectile extends SpriteActor {
 	private float dir;
 	private float speed;
 	private float damage;
+	private float range;
 
 	public Projectile(float startX, float startY) {
 		this.x = startX;
@@ -64,6 +65,14 @@ public class Projectile extends SpriteActor {
 
 	public void setDamage(float damage) {
 		this.damage = damage;
+	}
+
+	public float getRange() {
+		return range;
+	}
+
+	public void setRange(float range) {
+		this.range = range;
 	}
 	
 }

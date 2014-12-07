@@ -58,8 +58,7 @@ public class GameWorld extends Group {
 			@Override
 			public void touched() {
 				if(getButton() == Input.Buttons.LEFT) {
-					System.out.println("left");
-					projectileFactory.createMeleeAttack(character.getX(), character.getY(), 0);
+//					projectileFactory.createRangedAttack(character.getX()+character.getWidth()/2, character.getY()+character.getHeight()/2, 90);
 					character.performSkill(SkillSlot.Primary);
 				}
 				else if(getButton() == Input.Buttons.RIGHT) {

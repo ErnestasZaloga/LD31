@@ -13,15 +13,21 @@ public class ProjectileFactory {
 		this.projectileGroup = projectileGroup;
 	}
 	
-//	public Projectile createMeleeAttack(float startY, float startX, float dir) {
 	public void createMeleeAttack(float startX, float startY, float dir) {
 		Projectile p = new Projectile(startX, startY);
 		p.setDir(dir);
-		p.setRegion(app.assets.uiArrowDown);
+		p.setRegion(app.assets.attackMelee);
 		p.setDamage(-5);
 		p.setSpeed(15);
 		projectileGroup.addActor(p);
-		System.out.println("added");
-		//return p;
+	}
+	
+	public void createRangedAttack(float startX, float startY, float dir) {
+		Projectile p = new Projectile(startX, startY);
+		p.setDir(dir);
+		p.setRegion(app.assets.attackRanged);
+		p.setDamage(-5);
+		p.setSpeed(15);
+		projectileGroup.addActor(p);
 	}
 }

@@ -30,6 +30,9 @@ public class Assets implements Disposable {
 	public final TextureRegion tileRock;
 	public final TextureRegion tileTree;
 	
+	public final TextureRegion attackRanged;
+	public final TextureRegion attackMelee;
+	
 	public Assets() {
 		atlas = new TextureAtlas(Gdx.files.internal("textures/Game.pack"));
 		
@@ -55,6 +58,9 @@ public class Assets implements Disposable {
 
 		fontBig = new BitmapFont(Gdx.files.internal("fonts/FontBig.fnt"), atlas.findRegion("FontBig"));
 		fontSmall = new BitmapFont(Gdx.files.internal("fonts/FontSmall.fnt"), atlas.findRegion("FontSmall"));
+		
+		attackRanged = atlas.findRegion("RangedArrow");
+		attackMelee = atlas.findRegion("Sword");
 	}
 	
 	@Override

@@ -19,35 +19,35 @@ FontBig
   index: -1
 FontSmall
   rotate: false
-  xy: 515, 323
+  xy: 1029, 581
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 arrow
   rotate: false
-  xy: 515, 299
+  xy: 773, 299
   size: 26, 22
   orig: 26, 22
   offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 1029, 581
+  xy: 773, 323
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 grass1
   rotate: false
-  xy: 773, 323
+  xy: 1287, 581
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 grass2
   rotate: false
-  xy: 1287, 581
+  xy: 1031, 323
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
@@ -68,22 +68,22 @@ missing
   index: -1
 road
   rotate: false
-  xy: 1031, 323
+  xy: 1545, 581
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 1545, 581
+  xy: 1289, 323
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 tree
   rotate: false
-  xy: 1289, 323
-  size: 256, 256
-  orig: 256, 256
+  xy: 515, 67
+  size: 256, 512
+  orig: 256, 512
   offset: 0, 0
   index: -1

@@ -12,7 +12,7 @@ public class WorldGenerator {
 	private static char road = '=';
 	private static char house = '#';
 	private static char shop = '$';
-//	private static char grass = '.';
+	private static char tree = 'T';
 	
 	public static WorldMap generateWorld(LD31 app, WorldMap worldMap) {
 		float tileWH = worldMap.getTileSize();
@@ -25,13 +25,17 @@ public class WorldGenerator {
 			}
 		}
 		//Scatter some rocks around
-		for(int i=0; i<40; i++) {
+		for(int i=0; i<20; i++) {
 			int randX = MathUtils.random(0, map.length-1);
 			int randY = MathUtils.random(0, map[0].length-1);
 			map[randX][randY] = rock;
 		}
 		//TODO scatter some trees
-		//...
+		for(int i=0; i<25; i++) {
+			int randX = MathUtils.random(0, map.length-1);
+			int randY = MathUtils.random(0, map[0].length-1);
+			map[randX][randY] = tree;
+		}
 		
 		//Add roads
 		int cityX = (int) Math.ceil(worldMap.getTilesX()/2);
@@ -41,11 +45,11 @@ public class WorldGenerator {
 		//Convert chars to actual actors
 		for(int x=0; x<map.length; x++) {
 			for(int y=0; y<map[0].length; y++) {
-				if(map[x][y] == grass) {
+				if(map[x][y] == grass || map[x][y] == rock || map[x][y] == tree) {
 					worldMap.addActor(tileFactory.createGrassTile(x*tileWH, y*tileWH));
-				} else if(map[x][y] == rock) {
+				}/* else if(map[x][y] == rock) {
 					worldMap.addActor(tileFactory.createRockTile(x*tileWH, y*tileWH));
-				} else if(map[x][y] == road) {
+				}*/ else if(map[x][y] == road) {
 					worldMap.addActor(tileFactory.createRoadTile(x*tileWH, y*tileWH));
 				}
 			}
@@ -68,6 +72,26 @@ public class WorldGenerator {
 					worldMap.addActor(t);
 				} else if(map[x][y] == house) {
 					Tile t = tileFactory.createHouseTile(x*tileWH, y*tileWH);
+					int width = (int) (t.getWidth()/tileWH);
+					int height = (int) (t.getHeight()/tileWH);
+					for(int dx=0; dx<width; dx++) {
+						for(int dy=0; dy<height; dy++) {
+							worldMap.occupiedIndexes.add(new Vector2(x+dx, y+dy));
+						}
+					}
+					worldMap.addActor(t);
+				} else if(map[x][y] == rock) {
+					Tile t = tileFactory.createRockTile(x*tileWH, y*tileWH);
+					int width = (int) (t.getWidth()/tileWH);
+					int height = (int) (t.getHeight()/tileWH);
+					for(int dx=0; dx<width; dx++) {
+						for(int dy=0; dy<height; dy++) {
+							worldMap.occupiedIndexes.add(new Vector2(x+dx, y+dy));
+						}
+					}
+					worldMap.addActor(t);
+				} else if(map[x][y] == tree) {
+					Tile t = tileFactory.createTreeTile(x*tileWH, y*tileWH);
 					int width = (int) (t.getWidth()/tileWH);
 					int height = (int) (t.getHeight()/tileWH);
 					for(int dx=0; dx<width; dx++) {

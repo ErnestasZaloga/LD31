@@ -63,6 +63,8 @@ public class Skillbook extends Group {
 			levelUpButton.addListener(new TouchListener() {
 				@Override
 				public void touched() {
+					Log.trace(this, "Touch");
+					
 					final Delegate delegate = gameUi.getDelegate();
 					if(delegate != null) {
 						delegate.onLevelUp(SkillIcon.this);
@@ -293,7 +295,7 @@ public class Skillbook extends Group {
 		setTransform(false);
 		this.gameUi = gameUi;
 		
-		points = new Label("Skill Points: 0", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.YELLOW));
+		points = new Label("SP: 0", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.YELLOW));
 		
 		infoTitle = new Label("Title", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.YELLOW));
 		infoText = new Label("Text", new LabelStyle(gameUi.getApp().assets.fontSmall, Color.WHITE));
@@ -351,10 +353,10 @@ public class Skillbook extends Group {
 	}
 	
 	public void setSkillPoints(final int skillPoints) {
-		points.setText("Skill Points: " + skillPoints);
+		points.setText("SP: " + skillPoints);
 		points.pack();
 		
-		points.setPosition(table.getWidth() - points.getWidth() - gameUi.getApp().space.horizontal(1f), title.getY());
+		points.setPosition(gameUi.getApp().space.horizontal(1f), title.getY());
 	}
 	
 	public void enableForLevelUp() {
@@ -373,8 +375,6 @@ public class Skillbook extends Group {
 		for(int i = 0; i < skillTrees.length; i += 1) {
 			this.skillTrees[i].setSkillTree(skillTrees[i]);
 		}
-		
-		enableForLevelUp();
 	}
 	
 	public void begin() {
@@ -442,7 +442,7 @@ public class Skillbook extends Group {
 		infoTitle.setX(skillTrees[2].getRight());
 		infoText.setX(skillTrees[2].getRight() + skillTreeWidth * 0.1f);
 		
-		points.setPosition(table.getWidth() - points.getWidth() - gameUi.getApp().space.horizontal(1f), title.getY());
+		points.setPosition(gameUi.getApp().space.horizontal(1f), title.getY());
 	}
 	
 }

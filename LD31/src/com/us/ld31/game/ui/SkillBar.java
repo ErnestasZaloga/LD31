@@ -4,18 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Array;
-import com.us.ld31.game.GameWorld;
-import com.us.ld31.game.skills.Skill;
-import com.us.ld31.game.skills.SkillInfo;
 import com.us.ld31.game.skills.SkillState;
+import com.us.ld31.utils.Log;
 import com.us.ld31.utils.SpriteActor;
 import com.us.ld31.utils.TouchListener;
 import com.us.ld31.utils.steps.Steps;
@@ -72,11 +71,62 @@ public class SkillBar extends Group {
 			mapping.pack();
 			
 			addListener(new TouchListener() {
+				private int touchX;
+				private int touchY;
+				private float startX;
+				private float startY;
+				private boolean dragged;
+				
 				@Override
 				public void touched() {
 					bar.changeActiveButton(SkillButton.this);
+					touchX = Gdx.input.getX();
+					touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
+				
+					startX = SkillButton.this.getX();
+					startY = SkillButton.this.getY();
+					
+					toFront();
+					dragged = false;
+				}
+				
+				@Override
+				public void dragged() {
+					dragged = true;
+					final int deltaX = Gdx.input.getX() - touchX;
+					final int deltaY = (Gdx.graphics.getHeight() - Gdx.input.getY()) - touchY;
+				
+					setPosition(startX + deltaX, startY + deltaY);
+					bar.disableLayout();
+				}
+				
+				@Override
+				public void untouched() {
+					if(dragged) {
+						final int mouseX = Gdx.input.getX();
+						final int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+					
+						if(bar.exchangeSkill(SkillButton.this, mouseX, mouseY)) {
+							Log.trace(this, "Exchanged");
+						}
+						
+						setTouchable(Touchable.disabled);
+						addAction(
+								Steps.action(
+										Steps.sequence(
+											ActorSteps.moveTo(startX, startY, 0.1f, Interpolation.circleOut),
+											ActorSteps.touchable(Touchable.enabled),
+											Steps.run(new Runnable() {
+												@Override
+												public void run() {
+													bar.enableLayout();
+												}
+											}))));
+					}
 				}
 			});
+			
+			setState(null);
 		}
 		
 		@Override
@@ -110,11 +160,16 @@ public class SkillBar extends Group {
 
 		public void setState(final SkillState state) {
 			this.state = state;
+			
+			final float iconSize = icon.getWidth();
 			if(state != null) {
-				final float iconSize = icon.getWidth();
 				icon.setRegion(state.getSkillInfo().icon);
-				icon.setSize(iconSize, iconSize);
 			}
+			else {
+				icon.setRegion(gameUi.getApp().assets.uiMissing);
+			}
+			
+			icon.setSize(iconSize, iconSize);
 		}
 		
 		public SkillState getState() {
@@ -154,6 +209,7 @@ public class SkillBar extends Group {
 	private int activeIndex;
 	private final SpriteActor skillbookIcon = new SpriteActor();
 	private final Label levelUpRemainder;
+	private boolean layoutEnabled = true;
 	
 	public SkillBar(final GameUi gameUi) {
 		setTransform(false);
@@ -215,16 +271,61 @@ public class SkillBar extends Group {
 				return true;
 			}
 		});
+	}
+	
+	public boolean exchangeSkill(final SkillButton original, final float x, final float y) {
+		final SkillButton targetButton = findButtonInCoords(x, y);
+		if(targetButton != null) {
+			final SkillState targetSkill = targetButton.getState();
+			targetButton.setState(original.getState());
+			original.setState(targetSkill);
+		}
 		
-		buttons.get(0).setState(new SkillState(new SkillInfo.Builder().icon(gameUi.getApp().assets.uiMissing).name("").descrption("").skill(new Skill() {
-			@Override
-			public float activate(final Actor owner, 
-								  final GameWorld gameWorld, 
-								  final int skillLevel) {
-				
-				return 0f;
+		return false;
+	}
+	
+	public boolean addSkill(final SkillState skill, 
+							final float x, 
+							final float y) {
+		
+		final SkillButton button = findButtonInCoords(x, y);
+		if(button != null) {
+			button.setState(skill);
+			if(buttons.indexOf(button, true) == activeIndex) {
+				final Delegate delegate = gameUi.getDelegate();
+				if(delegate != null) {
+					delegate.onActiveSkillChanged(button);
+				}
 			}
-		}).build()));
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private SkillButton findButtonInCoords(final float x, final float y) {
+		final Vector2 tmp = new Vector2();
+		for(int i = 0; i < buttons.size; i += 1) {
+			final SkillButton button = buttons.get(i);
+			button.localToStageCoordinates(tmp.set(0f, 0f));
+			
+			final float btnX = tmp.x;
+			final float btnY = tmp.y;
+			
+			button.localToStageCoordinates(tmp.set(button.getWidth(), button.getHeight()));
+			
+			final float btnRight = tmp.x;
+			final float btnTop = tmp.y;
+			
+			if(x < btnX || x > btnRight || y < btnY || y > btnTop) {
+				continue;
+			}
+			
+			return button;
+		}
+		
+		return null;
 	}
 	
 	public void markForLevelUp() {
@@ -273,24 +374,26 @@ public class SkillBar extends Group {
 	public void act(final float delta) {
 		super.act(delta);
 		
-		final float space = gameUi.getApp().space.horizontal(1f);
-		float layoutX = space;
-		for(int i = 0; i < buttons.size; i += 1) {
-			final SkillButton button = buttons.get(i);
-			
-			if(!button.isVisible()) {
-				continue;
+		if(layoutEnabled) {
+			final float space = gameUi.getApp().space.horizontal(1f);
+			float layoutX = space;
+			for(int i = 0; i < buttons.size; i += 1) {
+				final SkillButton button = buttons.get(i);
+				
+				if(!button.isVisible()) {
+					continue;
+				}
+				
+				final float buttonWidth = button.getWidth();
+				final float realButtonWidth = buttonWidth * button.getScaleX();
+	
+				button.setX(layoutX);
+				layoutX += realButtonWidth + space;
 			}
 			
-			final float buttonWidth = button.getWidth();
-			final float realButtonWidth = buttonWidth * button.getScaleX();
-
-			button.setX(layoutX);
-			layoutX += realButtonWidth + space;
+			setWidth(layoutX);
+			setX(getParent().getWidth() / 2f - getWidth() / 2f);
 		}
-		
-		setWidth(layoutX);
-		setX(getParent().getWidth() / 2f - getWidth() / 2f);
 		
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
 			changeActiveIndex(0);
@@ -310,6 +413,14 @@ public class SkillBar extends Group {
 		else if(Gdx.input.isKeyJustPressed(Keys.NUM_6)) {
 			changeActiveIndex(5);
 		}
+	}
+	
+	private void enableLayout() {
+		layoutEnabled = true;
+	}
+	
+	private void disableLayout() {
+		layoutEnabled = false;
 	}
 	
 	@Override

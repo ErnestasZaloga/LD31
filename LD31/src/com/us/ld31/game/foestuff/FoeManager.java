@@ -32,7 +32,27 @@ public class FoeManager {
 		
 	}
 	
+	float time = 0;
+	float spawnInterval = 10;
+	private boolean canSpawn = true;
+	
+	public void update(float delta) {
+		time += delta;
+		if(time > spawnInterval) {
+			canSpawn = true;
+		} else {
+			canSpawn = false;
+		}
+	}
+	
+	public boolean canSpawn() {
+		return canSpawn;
+	}
+	
 	public Foe makeFoe(TextureRegion region, int distance, int speed) {
+		canSpawn = false;
+		time = 0;
+		
 		Foe foe = foePool.obtain();
 		foe.setRegion(region);
 		foe.setAstar(world.getAstar());

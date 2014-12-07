@@ -110,7 +110,7 @@ public class GameWorld extends Group {
 			}
 		});
 		
-		foeGroup.addListener(new TouchListener() {
+		/*characterController.addListener(new TouchListener() {
 			@Override
 			public void touched() {
 				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
@@ -121,7 +121,7 @@ public class GameWorld extends Group {
 				
 				foeGroup.addActor(foe);
 			}
-		});
+		});*/
 	}
 	
 	public LD31 getApp() {
@@ -180,6 +180,18 @@ public class GameWorld extends Group {
 		}
 		else {
 			super.act(delta);
+			
+			foeManager.update(delta);
+			if(foeManager.canSpawn()) {
+				Foe foe = foeManager.makeFoe(app.assets.tileHouse, 7, 6);
+				foe.setSize(32, 32);
+				
+				Vector2 pos = foeManager.getRandomSpawnPoint();
+				foe.setPosition(pos.x, pos.y);
+				
+				foeGroup.addActor(foe);
+			}
+			
 			
 			for(int i = 0; i < PlayerCharacter.MovementDirection.list.length; i += 1) {
 				final PlayerCharacter.MovementDirection direction = PlayerCharacter.MovementDirection.list[i];

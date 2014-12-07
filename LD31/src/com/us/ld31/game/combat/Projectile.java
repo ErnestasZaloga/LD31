@@ -25,6 +25,7 @@ public class Projectile extends SpriteActor {
 	public void update(float delta) {
 		x += speed * MathUtils.cosDeg(dir);
 		y += speed * MathUtils.sinDeg(dir);
+		setRotation(dir);
 	}
 
 	public float getX() {

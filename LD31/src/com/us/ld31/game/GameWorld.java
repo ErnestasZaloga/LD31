@@ -14,6 +14,7 @@ import com.us.ld31.game.combat.ProjectileFactory;
 import com.us.ld31.game.foestuff.Foe;
 import com.us.ld31.game.foestuff.FoeManager;
 import com.us.ld31.game.skills.DebugSkillTree;
+import com.us.ld31.game.skills.MeleeAttack;
 import com.us.ld31.game.skills.translocations.BlinkOthersCloser;
 import com.us.ld31.game.skills.warrior.Charge;
 import com.us.ld31.game.skills.warrior.PowerHit;
@@ -55,6 +56,7 @@ public class GameWorld extends Group {
 		
 		// Svarbu kad butu sukurtas PO worldMap
 		character = new PlayerCharacter(this);
+		character.setPrimarySkill(new MeleeAttack());
 		characterController.addListener(new TouchListener() {
 			@Override
 			public void touched() {

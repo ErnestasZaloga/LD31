@@ -14,8 +14,9 @@ import com.us.ld31.game.pawn.Foe;
 import com.us.ld31.game.pawn.FoeManager;
 import com.us.ld31.game.pawn.PlayerCharacter;
 import com.us.ld31.game.pawn.PlayerCharacter.SkillSlot;
-import com.us.ld31.game.skills.DebugSkillTree;
+import com.us.ld31.game.skills.BowSkillTree;
 import com.us.ld31.game.skills.MeleeAttack;
+import com.us.ld31.game.skills.TranslocationsSkillTree;
 import com.us.ld31.game.skills.warrior.Charge;
 import com.us.ld31.game.skills.warrior.WarriorSkillTree;
 import com.us.ld31.game.stats.CharacterStats;
@@ -139,16 +140,13 @@ public class GameWorld extends Group {
 		character.begin();
 		
 		final CharacterStats stats = new CharacterStats();
-		/*stats.getSkills()[0] = new DebugSkillTree(app).create();
-=======
 		stats.getSkills()[0] = new TranslocationsSkillTree(app).create();
->>>>>>> origin/master
-		stats.getSkills()[1] = new DebugSkillTree(app).create();
-		stats.getSkills()[2] = new DebugSkillTree(app).create();*/
-		
-		stats.getSkills()[0] = new WarriorSkillTree(app).create();
 		stats.getSkills()[1] = new WarriorSkillTree(app).create();
-		stats.getSkills()[2] = new DebugSkillTree(app).create();
+		stats.getSkills()[2] = new BowSkillTree(app).create();
+		
+//		stats.getSkills()[0] = new WarriorSkillTree(app).create();
+//		stats.getSkills()[1] = new WarriorSkillTree(app).create();
+//		stats.getSkills()[2] = new DebugSkillTree(app).create();
 
 		character.setStats(stats);
 		character.setPosition(getWidth() / 2f, getHeight() / 2f);

@@ -90,7 +90,7 @@ public class WarriorSkillTree implements SkillTree.Source{
 		states.add(skillRow1Column1);
 		//states.add(skillRow1Column2);
 		
-		return new SkillTree("Debug Skill Tree", this, states);
+		return new SkillTree("Warrior Skill Tree", this, states);
 	}
 
 }
